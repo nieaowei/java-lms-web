@@ -11,8 +11,7 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name = "user_info")
-//@DynamicUpdate
-//@Data
+@DynamicUpdate
 @JsonIgnoreProperties({"handler","hibernateLazyInitializer"})
 public class UserEntity {
     /*
@@ -25,7 +24,7 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long uiid;
     private String username;
-    @ColumnTransformer(read = "md5(password)",write = "MD5(?)")
+    @ColumnTransformer(write = "MD5(?)")
     private String password;
     private String phonenum;
     @Column(insertable = false,updatable = false)

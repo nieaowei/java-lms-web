@@ -1,16 +1,16 @@
 package com.lms.result;
 
-public class Result {
+public class Result<T> {
     private int status;
     private String msg;
-    private Object data;
+    private T data;
 
     public Result(int status, String msg) {
         this.status = status;
         this.msg = msg;
     }
 
-    public Result(int status, String msg, Object data) {
+    public Result(int status, String msg, T data) {
         this.status = status;
         this.msg = msg;
         this.data = data;
@@ -32,11 +32,11 @@ public class Result {
         this.msg = msg;
     }
 
-    public Object getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(T data) {
         this.data = data;
     }
 }
