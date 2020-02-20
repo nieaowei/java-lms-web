@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
+
     @Autowired
-    UserDAO userDAO;
+    private UserDAO userDAO;
+
     public boolean isExist(String username) {
         UserEntity user = getByName(username);
         return null!=user;
@@ -22,8 +24,14 @@ public class UserService {
         return userDAO.getByUsernameAndPassword(username, password);
     }
 
-    public void add(UserEntity user) {
+    /**
+     * 增加，更新可在一起，建议直接更名为save
+     * @param user
+     */
+    public void save(UserEntity user) {
         userDAO.save(user);
     }
+
+    public void delete(UserEntity user){userDAO.delete(user);}
 
 }

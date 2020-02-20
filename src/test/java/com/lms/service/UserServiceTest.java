@@ -13,13 +13,13 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @WebAppConfiguration
 public class UserServiceTest {
     @Autowired
-    UserService userService;//new UserService();
+    private UserService userService;//new UserService();
     @Test
     public void add() {
         UserEntity userEntity=new UserEntity();
-        userEntity.setUsername("nieaowei5");
-        userEntity.setPassword("12345");
-        userEntity.setPhonenum("13232332312");
+        userEntity.setUsername("nieaowei5555");
+        userEntity.setPassword("12345555");
+        userEntity.setPhonenum("13879790909");
         userService.add(userEntity);
         System.out.println(userEntity.getUsername());
     }

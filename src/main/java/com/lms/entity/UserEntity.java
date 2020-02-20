@@ -2,13 +2,17 @@ package com.lms.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
 import org.hibernate.annotations.ColumnTransformer;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
 @Table(name = "user_info")
+@DynamicUpdate
+@Data
 @JsonIgnoreProperties({"handler","hibernateLazyInitializer"})
 public class UserEntity {
     /*
@@ -28,53 +32,4 @@ public class UserEntity {
     private Timestamp createtime;
     @Column(insertable = false,updatable = false)
     private Timestamp updatetime;
-
-    public Timestamp getCreatetime() {
-        return createtime;
-    }
-
-    public void setCreatetime(Timestamp createtime) {
-        this.createtime = createtime;
-    }
-
-    public Timestamp getUpdatetime() {
-        return updatetime;
-    }
-
-    public void setUpdatetime(Timestamp updatetime) {
-        this.updatetime = updatetime;
-    }
-
-    public String getPhonenum() {
-        return phonenum;
-    }
-
-    public void setPhonenum(String phonenum) {
-        this.phonenum = phonenum;
-    }
-
-    public Long getUiid() {
-        return uiid;
-    }
-
-    public void setUiid(Long uiid) {
-        this.uiid = uiid;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
 }
