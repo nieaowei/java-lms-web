@@ -1,6 +1,6 @@
 package com.lms.dao;
 
-import com.lms.Entity.UserEntity;
+import com.lms.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserDAO extends JpaRepository<UserEntity,Integer> {

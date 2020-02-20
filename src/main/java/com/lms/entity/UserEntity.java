@@ -1,7 +1,8 @@
-package com.lms.Entity;
+package com.lms.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.ColumnTransformer;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -20,9 +21,12 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long uiid;
     private String username;
+    @ColumnTransformer(read = "md5(password)",write = "MD5(?)")
     private String password;
     private String phonenum;
+    @Column(insertable = false,updatable = false)
     private Timestamp createtime;
+    @Column(insertable = false,updatable = false)
     private Timestamp updatetime;
 
     public Timestamp getCreatetime() {
