@@ -16,11 +16,18 @@ public class UserServiceTest {
     private UserService userService;//new UserService();
     @Test
     public void add() {
-        UserEntity userEntity=new UserEntity();
-        userEntity.setUsername("nieaowei5555");
-        userEntity.setPassword("12345555");
-        userEntity.setPhonenum("13879790909");
-        userService.save(userEntity);
-        System.out.println(userEntity.getUsername());
+        UserEntity userEntity;
+//        userEntity.setUsername("nieaowei1555");
+//        userEntity.setPassword("12345555");
+//        userEntity.setPhonenum("13879700109");
+//        userService.save(userEntity);
+//        System.out.println(userEntity.getUsername());
+        userEntity=userService.get("nieaowei1234","nieaowei");
+        if (null != userEntity){
+            System.out.println(userEntity.getUsername());
+        }else{
+            System.out.println("falid");
+        }
+
     }
 }

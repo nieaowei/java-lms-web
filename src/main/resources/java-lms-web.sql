@@ -11,7 +11,7 @@ create table user_info(
 
 select * from user_info;
 
-insert into user_info (username, password, phonenum)values ('nieaowei123',md5('nieaowei'),'13702011111');
+insert into user_info (username, password, phonenum)values ('nieaowei12345',HEX(AES_ENCRYPT('nieaowei', 'password')),'12722011111');
 
 update user_info set password='123' where username='nieaowei';
 
@@ -19,4 +19,6 @@ delete from user_info where username='nieaowei1';
 
 drop table user_info;
 
-select * from user_info where username='nieaowei123' and password=md5('nieaowei');
+select * from user_info where username='nieaowei1234' and md5(password)=md5('bdc084f13154d81708096482d7d614fa');
+
+select md5(password) from user_info;
