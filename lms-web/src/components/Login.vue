@@ -1,5 +1,4 @@
 <template>
-
         <el-card class="login-card" shadow="never">
             <el-form :model="loginForm" class="login-container" ref="loginForm" status-icon="true" :rules="rules" label-width="65px" label-position="left">
                 <h3>用户登录</h3>
@@ -15,7 +14,6 @@
                 <el-button  v-on:click="jumpRegister" class="register-bt" type="text" >立即注册</el-button>
             </div>
         </el-card>
-
 </template>
 
 <script>
@@ -63,7 +61,7 @@
                             return false;
                         }
                     this.$axios
-                        .post('/login', {
+                        .post('/user/login', {
                             username: this.loginForm.username,
                             password: this.loginForm.password
                         })

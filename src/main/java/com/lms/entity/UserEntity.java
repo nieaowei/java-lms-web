@@ -11,8 +11,8 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name = "user_info")
-@DynamicUpdate
-@Data
+//@DynamicUpdate
+//@Data
 @JsonIgnoreProperties({"handler","hibernateLazyInitializer"})
 public class UserEntity {
     /*
