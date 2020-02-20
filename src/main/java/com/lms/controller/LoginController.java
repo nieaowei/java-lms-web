@@ -1,6 +1,6 @@
 package com.lms.controller;
 
-import com.lms.Entity.UserEntity;
+import com.lms.entity.UserEntity;
 import com.lms.result.Result;
 import com.lms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.HtmlUtils;
-
-import java.util.Objects;
 
 @Controller
 public class LoginController {
@@ -23,8 +21,6 @@ public class LoginController {
     @ResponseBody
     public Result login(@RequestBody UserEntity requestUser){
         String username = requestUser.getUsername();
-        username = HtmlUtils.htmlEscape(username);
-
         UserEntity user = userService.get(username,requestUser.getPassword());
         if (null == user){
             String msg = "账号或密码错误";

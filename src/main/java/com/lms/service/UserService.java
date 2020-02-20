@@ -1,6 +1,6 @@
 package com.lms.service;
 
-import com.lms.Entity.UserEntity;
+import com.lms.entity.UserEntity;
 import com.lms.dao.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
