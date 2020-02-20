@@ -20,7 +20,7 @@ public class UserServiceTest {
         userEntity.setUsername("nieaowei5555");
         userEntity.setPassword("12345555");
         userEntity.setPhonenum("13879790909");
-        userService.add(userEntity);
+        userService.save(userEntity);
         System.out.println(userEntity.getUsername());
     }
 }

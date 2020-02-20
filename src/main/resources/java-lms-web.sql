@@ -11,7 +11,7 @@ create table user_info(
 
 select * from user_info;
 
-insert into user_info (username, password, phonenum)values ('nieaowei',md5('nieaowei'),'13701011111');
+insert into user_info (username, password, phonenum)values ('nieaowei123',md5('nieaowei'),'13702011111');
 
 update user_info set password='123' where username='nieaowei';
 
@@ -19,4 +19,4 @@ delete from user_info where username='nieaowei1';
 
 drop table user_info;
 
-select * from user_info where username='nieaowei' and password=md5('nieaowei');
+select * from user_info where username='nieaowei123' and password=md5('nieaowei');

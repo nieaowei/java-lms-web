@@ -21,6 +21,7 @@ public class LoginController {
     @ResponseBody
     public Result login(@RequestBody UserEntity requestUser){
         String username = requestUser.getUsername();
+        username = HtmlUtils.htmlEscape(username);
         UserEntity user = userService.get(username,requestUser.getPassword());
         if (null == user){
             String msg = "账号或密码错误";
