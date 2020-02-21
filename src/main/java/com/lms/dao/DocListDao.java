@@ -10,5 +10,4 @@ import java.util.List;
 public interface DocListDao extends JpaRepository<DocList, Integer> {
     DocList findByName(String name);
     Page<DocList> findAll(Pageable pageable);
-    DocList save(DocList docList);
 }

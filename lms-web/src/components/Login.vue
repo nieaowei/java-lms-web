@@ -1,6 +1,6 @@
 <template>
         <el-card class="login-card" shadow="never">
-            <el-form :model="loginForm" class="login-container" ref="loginForm" status-icon="true" :rules="rules" label-width="65px" label-position="left">
+            <el-form :model="loginForm" class="login-container" ref="loginForm" :status-icon="true" :rules="rules" label-width="65px" label-position="left">
                 <h3>用户登录</h3>
                 <el-form-item label="账号：" prop="username">
                     <el-input type="text" v-model="loginForm.username" placeholder="请输入用户名"></el-input>

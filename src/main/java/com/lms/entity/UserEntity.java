@@ -7,13 +7,15 @@ import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name = "user_info")
 @DynamicUpdate
 @JsonIgnoreProperties({"handler","hibernateLazyInitializer"})
-public class UserEntity {
+public class UserEntity   {
     /*
     TABLE：使用一个特定的数据库表格来保存主键。
     SEQUENCE：根据底层数据库的序列来生成主键，条件是数据库支持序列。
@@ -21,6 +23,7 @@ public class UserEntity {
     AUTO：主键由程序控制。
      */
     @Id
+    @Column(name ="uiid")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long uiid;
     private String username;

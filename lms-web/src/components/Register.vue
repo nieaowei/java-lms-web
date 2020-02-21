@@ -1,7 +1,7 @@
 <template>
 
     <el-card class="register-card" shadow="never">
-        <el-form :model="registerForm" ref="registerForm" status-icon="true" :rules="rules" class="register-container" label-width="100px" label-position="left">
+        <el-form :model="registerForm" ref="registerForm" :status-icon="true" :rules="rules" class="register-container" label-width="100px" label-position="left">
             <h3>用户注册</h3>
             <el-form-item label="账号：" prop="username" :rules="[
                             { required: true, message: '账号不能为空'}]">
