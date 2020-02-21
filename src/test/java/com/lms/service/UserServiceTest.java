@@ -16,7 +16,7 @@ public class UserServiceTest {
     private UserService userService;//new UserService();
     @Test
     public void add() {
-        UserEntity userEntity;
+        UserEntity userEntity=new UserEntity();
 //        userEntity.setUsername("nieaowei1555");
 //        userEntity.setPassword("12345555");
 //        userEntity.setPhonenum("13879700109");

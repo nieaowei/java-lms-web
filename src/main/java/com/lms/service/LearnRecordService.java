@@ -2,6 +2,7 @@ package com.lms.service;
 
 import com.lms.dao.LearnRecordDao;
 import com.lms.entity.LearnRecord;
+import com.lms.entity.UserEntity;
 import com.lms.vo.LearnVO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,8 +17,8 @@ public class LearnRecordService {
     @Resource
     private LearnRecordDao learnRecordDao;
 
-    public LearnRecord findByUiid(Integer uiid){
-        return learnRecordDao.findByUiid(uiid);
+    public List<LearnRecord> findByUiid(UserEntity uiid){
+        return learnRecordDao.findByUserEntity(uiid);
     }
 
     public Page<LearnRecord> findAll(Pageable pageable){

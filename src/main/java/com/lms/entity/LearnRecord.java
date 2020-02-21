@@ -4,29 +4,33 @@ import lombok.Data;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
-
+@Entity
 @Table(name = "learn_record")
 @Data
 @DynamicUpdate
-public class LearnRecord {
+@IdClass(LearnRecordPK.class)
+public class LearnRecord  {
     /**
      * 文档学习记录表id
      */
-    @Id
+    @Column(unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer lrid;
     /**
      * 文档表记录id，外键
      */
     @Id
-    @JoinColumn(name = "dlid")
+    @ManyToOne(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @JoinColumn(name = "dlid",referencedColumnName = "dlid")
     private DocList docList;
     /**
      * 学习人id，用户表id
      */
     @Id
-    @JoinColumn(name = "uiid")
+    @ManyToOne(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @JoinColumn(name = "uiid",referencedColumnName = "uiid")
     private UserEntity userEntity;
     /**
      * 学习时长
@@ -35,9 +39,12 @@ public class LearnRecord {
     /**
      * 创建时间
      */
-    private Timestamp createTime;
+    private Timestamp createtime;
     /**
      * 更新时间
      */
-    private Timestamp updateTime;
+    private Timestamp updatetime;
+
+    public LearnRecord() {
+    }
 }
