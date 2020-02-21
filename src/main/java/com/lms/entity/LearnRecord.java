@@ -10,25 +10,23 @@ import java.sql.Timestamp;
 @Table(name = "learn_record")
 @Data
 @DynamicUpdate
-@IdClass(LearnRecordPK.class)
 public class LearnRecord  {
     /**
      * 文档学习记录表id
      */
+    @Id
     @Column(unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer lrid;
     /**
      * 文档表记录id，外键
      */
-    @Id
     @ManyToOne(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JoinColumn(name = "dlid",referencedColumnName = "dlid")
     private DocList docList;
     /**
      * 学习人id，用户表id
      */
-    @Id
     @ManyToOne(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JoinColumn(name = "uiid",referencedColumnName = "uiid")
     private UserEntity userEntity;
