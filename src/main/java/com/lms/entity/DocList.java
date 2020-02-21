@@ -20,7 +20,7 @@ public class DocList {
      * 文档上传人ID，用户表外键
      */
     @Id
-    @JoinColumn(name = "uuid")
+    @JoinColumn(name = "uiid")
     private UserEntity userEntity;
     /**
      * 用户名
