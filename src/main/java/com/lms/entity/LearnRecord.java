@@ -19,13 +19,15 @@ public class LearnRecord {
     /**
      * 文档表记录id，外键
      */
+    @Id
     @JoinColumn(name = "dlid")
-    private Integer dlid;
+    private DocList docList;
     /**
      * 学习人id，用户表id
      */
+    @Id
     @JoinColumn(name = "uiid")
-    private Integer uiid;
+    private UserEntity userEntity;
     /**
      * 学习时长
      */

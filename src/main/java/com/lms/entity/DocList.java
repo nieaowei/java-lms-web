@@ -19,8 +19,9 @@ public class DocList {
     /**
      * 文档上传人ID，用户表外键
      */
+    @Id
     @JoinColumn(name = "uuid")
-    private Integer uuid;
+    private UserEntity userEntity;
     /**
      * 用户名
      */
