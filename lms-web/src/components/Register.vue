@@ -93,7 +93,7 @@
     .register-card{
         width: 350px;
         position: center;
-        margin: 15% auto auto auto;
+        margin: 10% auto auto auto;
         box-shadow: 0 0 10px #cac6c6;
     }
     .register-card:hover{
