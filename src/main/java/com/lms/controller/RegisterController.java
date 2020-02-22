@@ -20,7 +20,7 @@ public class RegisterController {
     @CrossOrigin
     @PostMapping(value = "/user/register")
     @ResponseBody
-    public Result Register(@RequestBody UserEntity requestUser){
+    public Result register(@RequestBody UserEntity requestUser){
         UserEntity user = new UserEntity();
         user.setUsername(requestUser.getUsername());
         user.setPassword(requestUser.getPassword());
