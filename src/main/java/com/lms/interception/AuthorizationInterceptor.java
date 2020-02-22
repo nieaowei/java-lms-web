@@ -49,14 +49,14 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         }
         Token tokenEntity = tokenService.findByToken(token);
         // 查询token信息是否为null或者过期，则抛出异常
-        if (tokenEntity == null || tokenEntity.getExpireTime().isBefore(LocalDateTime.now())){
-            throw new Exception("token为null或者过期");
-        }
-        if (!TokenUtil.validateToken(String.valueOf(tokenEntity.getUiid()), token)){
+//        if (tokenEntity == null || tokenEntity.getExpireTime().isBefore(LocalDateTime.now())){
+//            throw new Exception("token为null或者过期");
+//        }
+        /*if (!TokenUtil.validateToken(String.valueOf(tokenEntity.getUiid()), token)){
             throw new Exception("token验证失败");
         }
         //否则，存入request，后根据UIID获得用户信息
         request.setAttribute(UIID, tokenEntity.getUiid());
-        return true;
+        */return true;
     }
 }

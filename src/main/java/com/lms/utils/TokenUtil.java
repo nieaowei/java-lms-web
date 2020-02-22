@@ -1,35 +1,38 @@
 package com.lms.utils;
 
-import ch.qos.logback.core.util.DatePatternToRegexUtil;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.lms.entity.UserEntity;
-import org.springframework.boot.autoconfigure.cache.CacheProperties;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 
 import java.util.Date;
+import java.util.List;
 
 public class TokenUtil {
 
-    private static long EXPIRE_TIME = 2 * 60 * 60;// 过期时间戳
-    private static long FAIL_TIME = 24 * 60 * 60;// 失效时间
+    private static final long EXPIRE_TIME = 2 * 60 * 60;// 过期时间戳
+    private static final long FAIL_TIME = 24 * 60 * 60;// 失效时间
+    private static final String KEY = "leaningmanagersystem";
+    private static final String ISSUER = "lms";
+    private static final Algorithm ALGORITHM = Algorithm.HMAC256(KEY);
+    private static final Long EXPIRE_CODE = (long) -1;
+    private static final Long OTHER_CODE = (long) -2;
 
     /**
      * 根据UIID获取令牌
      * @param uiid
      * @return
      */
-    public static String getToken(String uiid) {
+    public static String getToken(Long uiid) {
         long nowMillis = System.currentTimeMillis();
         Date now = new Date(nowMillis);
-        Date expireTime = new Date(nowMillis + EXPIRE_TIME);
         try{
-            Algorithm algorithm = Algorithm.HMAC256(String.valueOf(FAIL_TIME));
             return JWT.create()
-                    .withIssuer(uiid)
+                    .withAudience(uiid.toString())
+                    .withIssuer(ISSUER)
                     .withIssuedAt(now)
-                    .withExpiresAt(expireTime)
-                    .sign(algorithm);
+                    .withExpiresAt(new Date(now.getTime()+100))
+                    .sign(ALGORITHM);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -38,23 +41,30 @@ public class TokenUtil {
 
     /**
      * 检验token
-     * @param uiid
      * @param token
      * @return
      */
-    public static boolean validateToken(String uiid, String token){
-        boolean active = true;
+    public static Long validateToken(String token){
+        String auther = "-1";
         try {
-            Algorithm algorithm = Algorithm.HMAC256(String.valueOf(FAIL_TIME));
-            JWTVerifier verifier = JWT.require(algorithm).withIssuer(uiid).build();
+            JWTVerifier verifier = JWT.require(ALGORITHM).withIssuer(ISSUER).build();
             verifier.verify(token);
-        }catch (Exception e){
-            active = false;
+            List<String> authers = JWT.decode(token).getAudience();
+            if (authers.size() != 1){
+                return OTHER_CODE;
+            }else{
+                auther=authers.get(0);
+            }
+        }catch (TokenExpiredException e){
+            return EXPIRE_CODE;
+        } catch (Exception e){
+            return OTHER_CODE;
         }
-        return active;
+        return Long.parseLong(auther.toString());
     }
 
     public boolean saveToken(){
         return false;
     }
+
 }
