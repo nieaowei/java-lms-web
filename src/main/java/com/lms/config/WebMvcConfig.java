@@ -1,5 +1,6 @@
-package com.lms.interception;
+package com.lms.config;
 
+import com.lms.interception.AuthorizationInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
