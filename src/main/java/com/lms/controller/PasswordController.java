@@ -19,7 +19,7 @@ public class PasswordController {
     @CrossOrigin
     @PostMapping(value = "/user/changepd")
     @ResponseBody
-    public Result Register(@RequestBody UserEntity requestUser){
+    public Result changepd(@RequestBody UserEntity requestUser){
         int status = 200;
         String msg = "修改成功";
 
