@@ -42,7 +42,7 @@ public class TokenUtil {
      * @param token
      * @return
      */
-    private static boolean validateToken(String uiid, String token){
+    public static boolean validateToken(String uiid, String token){
         boolean active = true;
         try {
             Algorithm algorithm = Algorithm.HMAC256(String.valueOf(FAIL_TIME));

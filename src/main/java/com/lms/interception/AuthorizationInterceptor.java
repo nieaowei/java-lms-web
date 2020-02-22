@@ -3,6 +3,7 @@ package com.lms.interception;
 import com.lms.annotation.Login;
 import com.lms.entity.Token;
 import com.lms.service.TokenService;
+import com.lms.utils.TokenUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.method.HandlerMethod;
@@ -50,6 +51,9 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         // 查询token信息是否为null或者过期，则抛出异常
         if (tokenEntity == null || tokenEntity.getExpireTime().isBefore(LocalDateTime.now())){
             throw new Exception("token为null或者过期");
+        }
+        if (!TokenUtil.validateToken(String.valueOf(tokenEntity.getUiid()), token)){
+            throw new Exception("token验证失败");
         }
         //否则，存入request，后根据UIID获得用户信息
         request.setAttribute(UIID, tokenEntity.getUiid());
