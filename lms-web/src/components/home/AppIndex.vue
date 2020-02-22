@@ -1,7 +1,7 @@
 <template>
     <div class="main-container">
         <el-container  style="height: 100%" class="outside-container" >
-            <el-header height="80px">学习管理系统</el-header>
+            <el-header height="80px">xxxx</el-header>
             <el-container>
                 <el-aside>
                         <el-card>
@@ -17,44 +17,43 @@
                             </el-card>
                             <el-menu
                                     default-active="1"
-                                    class="el-menu-vertical"
-                                    @open="handleOpen"
-                                    @close="handleClose">
-                                <el-menu-item index="1">
-                                    <template slot="title">
+                                    @select="handleSelect">
+                                <el-menu-item index="1" >
+<!--                                    <template slot="title">-->
                                         <i class="el-icon-menu"></i>
                                         <span>我的课程</span>
-                                    </template>
+<!--                                    </template>-->
                                 </el-menu-item>
                                 <el-menu-item index="2">
                                     <i class="el-icon-user"></i>
-                                    <span slot="title">个人资料</span>
+                                    <span>个人资料</span>
                                 </el-menu-item>
                                 <el-menu-item index="3">
                                     <i class="el-icon-document-copy"></i>
-                                    <span slot="title">文档课程</span>
+                                    <span >文档课程</span>
                                 </el-menu-item>
                                 <el-menu-item index="4">
                                     <i class="el-icon-video-camera"></i>
-                                    <span slot="title">视频课程</span>
+                                    <span>视频课程</span>
                                 </el-menu-item>
                                 <el-menu-item index="5">
                                     <i class="el-icon-edit-outline"></i>
-                                    <span slot="title">在线考核</span>
+                                    <span>在线考核</span>
                                 </el-menu-item>
                                 <el-menu-item index="6">
                                     <i class="el-icon-document"></i>
-                                    <span slot="title">退出</span>
+                                    <span >退出</span>
                                 </el-menu-item>
                             </el-menu>
                         </el-card>
                 </el-aside>
                 <el-main>
-                    <person></person>
+                    <keep-alive>
+                        <component v-bind:is="currentView"></component>
+                    </keep-alive>
                 </el-main>
             </el-container>
             <el-footer>
-                footer
             </el-footer>
         </el-container>
     </div>
@@ -62,11 +61,24 @@
 
 <script>
     import MyClass from "./MyClass";
-    import Person from "./Person";
+    import MyProfile from "./MyProfile";
     export default {
         name: "AppIndex",
-        // eslint-disable-next-line vue/no-unused-components
-        components: {Person, MyClass},
+        components: {MyProfile, MyClass},
+        data(){
+            return{
+                currentView: MyProfile,
+                menuViews: [MyClass,MyProfile]
+            }
+        },
+        methods:{
+            handleSelect(key,keyPath) {
+                //todo 处理菜单响应
+                console.log('菜单响应');
+                console.log(keyPath)
+                this.currentView=this.menuViews[parseInt(key,10)-1];
+            },
+        }
 
     }
 </script>
@@ -105,7 +117,7 @@
         color: #333;
         text-align: center;
         /*line-height: 200px;*/
-        width: 200px;
+        width: 100px;
     }
 
     .el-main {

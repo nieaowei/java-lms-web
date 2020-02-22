@@ -51,11 +51,6 @@
         },
         methods: {
             login () {
-                // this.$refs['loginForm'].validate((valid) => {
-                //     if (valid) {
-                //         return false;
-                //     }
-                // });
                 this.$refs['loginForm'].validate((valid) =>{
                         if (!valid) {
                             return false;

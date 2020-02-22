@@ -1,6 +1,6 @@
 <template>
     <el-card body-style="padding:1px">
-        <el-tabs type="card" stretch="true">
+        <el-tabs type="card" :stretch="true">
             <el-tab-pane>
                 <span slot="label"><i class="el-icon-date"></i> 学习文档</span>
                 <el-row :gutter="10" >
@@ -13,7 +13,7 @@
                                 <span>语文课</span>
                                 <el-progress :percentage="50"></el-progress>
                                 <div class="bottom clearfix">
-                                    <time class="time">{{ currentDate }}</time>
+<!--                                    <time class="time">{{ currentDate }}</time>-->
                                     <el-button type="primary" class="button">开始学习</el-button>
                                 </div>
                             </div>
@@ -33,7 +33,7 @@
                                 <span>属性课</span>
                                 <el-progress :percentage="50"></el-progress>
                                 <div class="bottom clearfix">
-                                    <time class="time">{{ currentDate }}</time>
+<!--                                    <time class="time">{{ currentDate }}</time>-->
                                     <el-button type="primary" class="button">开始学习</el-button>
                                 </div>
                             </div>
@@ -54,7 +54,6 @@
         name: "MyClass",
         data() {
             return {
-                coll_active: ['1','2','3'],
                 fits: 'fill',
                 url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'
             }
