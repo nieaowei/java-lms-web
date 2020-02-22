@@ -13,7 +13,7 @@ spring:
     show-sql: true
     properties.hibernate.format_sql: true
   redis:
-    host: localhost
+    host: 47.240.54.3
     port: 6379
     jedis:
       pool:

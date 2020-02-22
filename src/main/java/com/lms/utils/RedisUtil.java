@@ -1,5 +1,6 @@
-package com.lms.service;
+package com.lms.utils;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Service;
 
@@ -10,8 +11,8 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @Service
-public class RedisService {
-    @Resource
+public class RedisUtil {
+    @Autowired
     private RedisTemplate redisTemplate;
 
     /**
