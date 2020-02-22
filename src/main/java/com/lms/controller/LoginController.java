@@ -4,6 +4,7 @@ import com.lms.entity.UserEntity;
 import com.lms.result.Result;
 import com.lms.service.UserService;
 import com.lms.utils.TokenUtil;
+import com.lms.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,6 +28,7 @@ public class LoginController {
     public Result login(@RequestBody UserEntity requestUser,
                         HttpSession session,
                         HttpServletResponse response){
+        UserVO userVO = new UserVO();
         String username = requestUser.getUsername();
         UserEntity user = userService.get(username,requestUser.getPassword());
         if (null == user){
@@ -34,7 +36,8 @@ public class LoginController {
             return new Result(404,msg);
         }else{
             session.setAttribute("user", user);
-            String token = TokenUtil.getToken(user);
+            userVO.setUiid(user.getUiid());
+            String token = TokenUtil.getToken(userVO);
             Cookie cookie = new Cookie("token", token);
             cookie.setPath("/");
             response.addCookie(cookie);
