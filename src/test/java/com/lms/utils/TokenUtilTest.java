@@ -11,7 +11,7 @@ public class TokenUtilTest {
         userEntity.setUsername("nieaowei");
         userEntity.setPassword("nieaowei1");
         TokenUtil tokenUtil= new TokenUtil();
-        String token = tokenUtil.getToken(userEntity);
-        System.out.println(token);
+//        String token = tokenUtil.getToken(userEntity);
+//        System.out.println(token);
     }
 }

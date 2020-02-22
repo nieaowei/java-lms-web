@@ -33,6 +33,7 @@ public class TokenService {
         long indate = LocalDateTime.now().toInstant(ZoneOffset.of("+8")).toEpochMilli() + EXPIRE;
         LocalDateTime tokenExpireDateTime = LocalDateTime.ofInstant(new Date(indate).toInstant(), ZoneId.systemDefault());
         String token = generateToken();
+        //todo 缺少builder方法
         Token tokenEntity = Token.builder().expireTime(tokenExpireDateTime).uiid(uiid).token(token).updateTime(now).build();
         tokenDao.save(tokenEntity);
         return tokenEntity;
@@ -44,6 +45,7 @@ public class TokenService {
      */
     public void expireToken(long uiid){
         LocalDateTime now = LocalDateTime.now();
+        //todo 缺少builder方法
         Token token = Token.builder().uiid(uiid).expireTime(now).updateTime(now).build();
         tokenDao.save(token);
     }
