@@ -10,11 +10,10 @@ import java.util.List;
 
 public class TokenUtil {
 
-    private static final long EXPIRE_TIME = 2 * 60 * 60;// 过期时间戳
-    private static final long FAIL_TIME = 24 * 60 * 60;// 失效时间
+    private static final long EXPIRE_TIME = 30*60 * 1000;// 过期时间，30分钟
     private static final String KEY = "leaningmanagersystem";
-    private static final String ISSUER = "lms";
-    private static final Algorithm ALGORITHM = Algorithm.HMAC256(KEY);
+    private static final String ISSUER = "lms";//签发机构，用于校验
+    private static final Algorithm ALGORITHM = Algorithm.HMAC256(KEY); //签发秘钥，用于校验
     private static final Long EXPIRE_CODE = (long) -1;
     private static final Long OTHER_CODE = (long) -2;
 
@@ -31,18 +30,17 @@ public class TokenUtil {
                     .withAudience(uiid.toString())
                     .withIssuer(ISSUER)
                     .withIssuedAt(now)
-                    .withExpiresAt(new Date(now.getTime()+100))
+                    .withExpiresAt(new Date(now.getTime()+EXPIRE_TIME))
                     .sign(ALGORITHM);
         }catch (Exception e){
             e.printStackTrace();
         }
         return null;
     }
-
     /**
      * 检验token
      * @param token
-     * @return
+     * @return 返回用户io
      */
     public static Long validateToken(String token){
         String auther = "-1";
