@@ -23,7 +23,7 @@ public class LearnRecordServiceTest {
     public void findByUiid() {
         UserEntity userEntity = new UserEntity();
         userEntity.setUiid(new Long(111));
-        List<LearnRecord> learnRecords=learnRecordService.findByUiid(userEntity);
+        List<LearnRecord> learnRecords=learnRecordService.findByUserEntity(userEntity);
         for (int i=0;i<learnRecords.size();i++){
             System.out.println(learnRecords.get(i));
         }
