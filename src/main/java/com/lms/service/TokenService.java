@@ -38,6 +38,10 @@ public class TokenService {
         return tokenEntity;
     }
 
+    /**
+     * 设置过期
+     * @param uiid
+     */
     public void expireToken(long uiid){
         LocalDateTime now = LocalDateTime.now();
         Token token = Token.builder().uiid(uiid).expireTime(now).updateTime(now).build();
