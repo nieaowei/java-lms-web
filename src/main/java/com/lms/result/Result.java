@@ -5,6 +5,9 @@ public class Result<T> {
     private String msg;
     private T data;
 
+    public Result() {
+    }
+
     public Result(int status, String msg) {
         this.status = status;
         this.msg = msg;
