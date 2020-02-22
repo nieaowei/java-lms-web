@@ -17,8 +17,8 @@ public class LearnRecordService {
     @Resource
     private LearnRecordDao learnRecordDao;
 
-    public List<LearnRecord> findByUiid(UserEntity uiid){
-        return learnRecordDao.findByUserEntity(uiid);
+    public List<LearnRecord> findByUserEntity(UserEntity user){
+        return learnRecordDao.findByUserEntity(user);
     }
 
     public Page<LearnRecord> findAll(Pageable pageable){
