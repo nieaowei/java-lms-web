@@ -8,4 +8,5 @@ public interface UserDAO extends JpaRepository<UserEntity,Integer> {
     UserEntity findByUsername(String username);
     @Query(value="select * from user_info where username=?1 and password=md5(?2)",nativeQuery = true)
     UserEntity getByUsernameAndPassword(String username,String password);
+    UserEntity findByUiid(Long uiid);
 }
