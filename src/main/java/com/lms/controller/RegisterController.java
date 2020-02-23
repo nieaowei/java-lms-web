@@ -5,14 +5,11 @@ import com.lms.result.Result;
 import com.lms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.HtmlUtils;
 
 
-@Controller
+@RestController
 public class RegisterController {
     @Autowired
     private UserService userService;
@@ -20,7 +17,7 @@ public class RegisterController {
     @CrossOrigin
     @PostMapping(value = "/user/register")
     @ResponseBody
-    public Result register(@RequestBody UserEntity requestUser){
+    public Result<String> register(@RequestBody UserEntity requestUser){
         UserEntity user = new UserEntity();
         user.setUsername(requestUser.getUsername());
         user.setPassword(requestUser.getPassword());

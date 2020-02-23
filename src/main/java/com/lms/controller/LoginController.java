@@ -7,34 +7,31 @@ import com.lms.service.UserService;
 import com.lms.utils.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import redis.clients.jedis.Jedis;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@Controller
+@RestController
 public class LoginController {
     @Autowired
-    private UserService userService;
+    UserService userService;
 
     @CrossOrigin
     @PostMapping(value = "/user/login")
-    @ResponseBody
     public Result<String> login(@RequestBody UserEntity requestUser, HttpServletResponse response){
         String username = requestUser.getUsername();
         UserEntity user = userService.get(username,requestUser.getPassword());
         if (null != user){
-            String token = TokenUtil.getToken(user.getUiid());
-            response.addCookie(new Cookie("token",token));
-            Jedis jedis = new Jedis("localhost", 6370);
-            jedis.expire(String.valueOf(user.getUiid()), (int) TokenUtil.EXPIRE_TIME);
-            jedis.set(token, String.valueOf(user.getUiid()));
-            jedis.expire(token, (int) TokenUtil.EXPIRE_TIME);
-            jedis.close();
+            Cookie cookie= new Cookie("token",TokenUtil.getToken(user.getUiid()));
+            cookie.setDomain("localhost");
+            cookie.setPath("/");
+            cookie.setMaxAge((int)TokenUtil.EXPIRE_TIME);
+            response.addCookie(cookie);
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            response.setHeader("Access-Control-Allow-Credentials", "true");
             return new Result<String>(200,"登录成功");
         }
         return new Result<String>(404,"账号或密码错误");
