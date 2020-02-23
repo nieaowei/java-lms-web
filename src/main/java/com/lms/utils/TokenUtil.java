@@ -10,12 +10,12 @@ import java.util.List;
 
 public class TokenUtil {
 
-    private static final long EXPIRE_TIME = 30*60 * 1000;// 过期时间，30分钟
-    private static final String KEY = "leaningmanagersystem";
-    private static final String ISSUER = "lms";//签发机构，用于校验
-    private static final Algorithm ALGORITHM = Algorithm.HMAC256(KEY); //签发秘钥，用于校验
-    private static final Long EXPIRE_CODE = (long) -1;
-    private static final Long OTHER_CODE = (long) -2;
+    public static final long EXPIRE_TIME = 30*60 * 1000;// 过期时间，30分钟
+    public static final String KEY = "leaningmanagersystem";
+    public static final String ISSUER = "lms";//签发机构，用于校验
+    public static final Algorithm ALGORITHM = Algorithm.HMAC256(KEY); //签发秘钥，用于校验
+    public static final Long EXPIRE_CODE = (long) -1;
+    public static final Long OTHER_CODE = (long) -2;
 
     /**
      * 根据UIID获取令牌

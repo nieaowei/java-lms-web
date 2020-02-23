@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class PasswordController {
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @CrossOrigin
     @PostMapping(value = "/user/changepd")

@@ -15,7 +15,7 @@ import org.springframework.web.util.HtmlUtils;
 @Controller
 public class RegisterController {
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @CrossOrigin
     @PostMapping(value = "/user/register")
