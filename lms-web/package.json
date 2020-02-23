@@ -3,14 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "sudo vue-cli-service serve --port 80",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "core-js": "^3.6.4",
     "element-ui": "^2.13.0",
-    "vue": "^2.6.11"
+    "vue": "^2.6.11",
+    "vue-pdf": "^4.0.8"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.2.0",

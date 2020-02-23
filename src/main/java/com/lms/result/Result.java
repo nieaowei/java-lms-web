@@ -1,9 +1,14 @@
 package com.lms.result;
 
-public class Result<T> {
+import java.io.Serializable;
+
+public class Result<T> implements Serializable {
     private int status;
     private String msg;
     private T data;
+
+    public Result() {
+    }
 
     public Result(int status, String msg) {
         this.status = status;

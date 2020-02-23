@@ -4,6 +4,7 @@ import com.lms.dao.LearnRecordDao;
 import com.lms.entity.LearnRecord;
 import com.lms.entity.UserEntity;
 import com.lms.vo.LearnVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -14,11 +15,11 @@ import java.util.List;
 @Service
 public class LearnRecordService {
 
-    @Resource
+    @Autowired
     private LearnRecordDao learnRecordDao;
 
-    public List<LearnRecord> findByUiid(UserEntity uiid){
-        return learnRecordDao.findByUserEntity(uiid);
+    public List<LearnRecord> findByUserEntity(UserEntity user){
+        return learnRecordDao.findByUserEntity(user);
     }
 
     public Page<LearnRecord> findAll(Pageable pageable){

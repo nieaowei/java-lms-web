@@ -18,4 +18,5 @@ public interface LearnRecordDao extends JpaRepository<LearnRecord, Integer> {
     List<LearnVO> findAllLearnVO();
     @Query(nativeQuery = true, value = "select d.name,d.duration,l.duration from learn_record l,doc_list d where name = ?1 and l.dlid = d.dlid")
     LearnVO findLearnVoByName(String name);
+
 }

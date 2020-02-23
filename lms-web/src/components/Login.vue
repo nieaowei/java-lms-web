@@ -51,22 +51,19 @@
         },
         methods: {
             login () {
-                // this.$refs['loginForm'].validate((valid) => {
-                //     if (valid) {
-                //         return false;
-                //     }
-                // });
                 this.$refs['loginForm'].validate((valid) =>{
                         if (!valid) {
                             return false;
                         }
                     this.$axios
-                        .post('/user/login', {
+                        .post('api/user/login', {
                             username: this.loginForm.username,
                             password: this.loginForm.password
-                        })
+                        },
+                        )
                         .then(successResponse => {
-                            if (successResponse.data.code === 200) {
+                            console.log("成功响应")
+                            if (successResponse.data['status']===200) {
                                 this.$router.replace({path: '/index'})
                             }
                         })

@@ -11,7 +11,7 @@ create table user_info(
 
 select * from user_info;
 
-insert into user_info (username, password, phonenum)values ('nieaowei12345',HEX(AES_ENCRYPT('nieaowei', 'password')),'12722011111');
+insert into user_info (username, password, phonenum)values ('nieaowei',md5('nieaowei'),'12222012111');
 
 update user_info set password='123' where username='nieaowei';
 
@@ -35,26 +35,30 @@ create table doc_list(
 )engine=innodb auto_increment=100 charset = utf8;
 
 create table learn_record(
-    lrid bigint auto_increment unique ,
-    dlid bigint not null,
-    uiid bigint not null,
+    lrid bigint auto_increment primary key ,
+    dlid bigint not null ,
+    uiid bigint not null ,
     duration int default 0 not null ,
     createtime timestamp default current_timestamp comment '创建时间',
     updatetime timestamp default current_timestamp on update current_timestamp comment '更新时间',
     foreign key (uiid) references user_info(uiid) on delete cascade ,
     foreign key (dlid) references doc_list(dlid) on delete cascade,
-    primary key (dlid,uiid)
-
+    constraint unique (dlid,uiid)
 )engine=innodb auto_increment=100 charset = utf8;
+
 drop table learn_record;
 
 select  * from doc_list;
 insert into doc_list (name, path, uiid,duration) values('语文','/dsad/ad/asd',111,1000);
 insert into doc_list (name, path, uiid,duration) values('语文1','/dsad/ad/asd',111,1000);
 
-insert into learn_record (dlid, uiid,duration) values(101,111,0);
-insert into learn_record (dlid, uiid,duration) values(102,111,0);
+insert into learn_record (dlid, uiid,duration) values(101,103,0);
+insert into learn_record (dlid, uiid,duration) values(103,103,0);
+insert into learn_record (dlid, uiid,duration) values(104,101,0);
+
+insert into learn_record (dlid, uiid,duration) values(103,111,0);
 insert into learn_record (dlid, uiid,duration) values(101,113,0);
+
 
 
 insert into learn_record (dlid, uiid,duration) values(101,null,0);
