@@ -2,6 +2,8 @@ package com.lms.controller;
 
 import com.lms.entity.LearnRecord;
 import com.lms.entity.UserEntity;
+import com.lms.interception.AuthInterceptor;
+import com.lms.interception.RequiredToken;
 import com.lms.result.Result;
 import com.lms.service.LearnRecordService;
 import com.lms.service.UserService;
@@ -16,36 +18,18 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@Controller
+@RestController
+@RequiredToken
 public class LearnRecordController {
     @Autowired
-    UserService userService;
     LearnRecordService learnRecordService;
 
     @CrossOrigin
     @GetMapping(value = "/user/learnrecord")
-    @ResponseBody
-    public Result getLearnRecord(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-        //解析token中的uiid
-        Long uiid = -1L;
-        Cookie[] cookies = request.getCookies();
-        for(Cookie cookie:cookies){
-            if(cookie.getName().equalsIgnoreCase("token")){
-                uiid = TokenUtil.validateToken(cookie.getValue());
-            }
-        }
-
-        //判断uiid是否有效（token是否有效）
-        if (null == userService.getByUiid(uiid)){
-            //token无效，跳转登录页面
-            response.sendRedirect("/user/login");
-            return new Result(201,"token校验失败，请重新登录");
-        }else{
-            //token有效，返回课程数据
-            List<LearnRecord> data = null;
-            data = learnRecordService.findByUserEntity(userService.getByUiid(uiid));
-            return new Result<List<LearnRecord>>(200,"查询成功",data);
-        }
+    public Result getLearnRecord(HttpServletRequest request) throws IOException {
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUiid((Long) request.getAttribute(AuthInterceptor.RESULT_KEY));
+        List<LearnRecord> data = learnRecordService.findByUserEntity(userEntity);
+        return new Result<List<LearnRecord>>(200,"成功",data);
     }
 }
