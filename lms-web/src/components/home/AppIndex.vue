@@ -4,8 +4,8 @@
             <el-header height="80px">xxxx</el-header>
             <el-container>
                 <el-aside>
-                        <el-card>
-                            <el-card>
+                        <el-card class="outside-card">
+                            <el-card class="inside-card">
                                 <el-avatar :size="100"
                                            fit="fill"
                                            src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"></el-avatar>
@@ -15,6 +15,7 @@
                                     </div>
                                 </div>
                             </el-card>
+                            
                             <el-menu
                                     default-active="1"
                                     @select="handleSelect">
@@ -84,18 +85,18 @@
 </script>
 
 <style scoped>
-    .transition-box {
-        margin-bottom: 10px;
-        width: 200px;
-        height: 100px;
-        border-radius: 4px;
-        background-color: #409EFF;
-        text-align: center;
-        color: #fff;
-        padding: 40px 20px;
-        box-sizing: border-box;
-        margin-right: 20px;
-    }
+    /*.transition-box {*/
+    /*    margin-bottom: 10px;*/
+    /*    width: 200px;*/
+    /*    height: 100px;*/
+    /*    border-radius: 4px;*/
+    /*    background-color: #409EFF;*/
+    /*    text-align: center;*/
+    /*    color: #fff;*/
+    /*    padding: 40px 20px;*/
+    /*    box-sizing: border-box;*/
+    /*    margin-right: 20px;*/
+    /*}*/
 
     .el-header{
         background-color: #B3C0D1;
@@ -117,12 +118,13 @@
         color: #333;
         text-align: center;
         /*line-height: 200px;*/
-        width: 100px;
+        /*min-width: 100px;*/
+        /*width: 20%;*/
     }
 
     .el-main {
-        background-color: #E9EEF3;
-        color: #333;
+        /*background-color: #E9EEF3;*/
+        /*color: #333;*/
         text-align: center;
         /*line-height: 160px;*/
     }
@@ -137,10 +139,13 @@
         margin-top: 13px;
         line-height: 12px;
     }
+    .outside-card{
+        box-shadow: 0 0 5px #cac6c6;
+        margin: 10px;
+    }
 
-    .button {
-        padding: 0;
-        float: right;
+    .inside-card{
+
     }
     .el-card{
         box-shadow: 0 0 5px #cac6c6;

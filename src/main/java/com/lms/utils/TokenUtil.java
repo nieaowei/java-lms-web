@@ -40,7 +40,7 @@ public class TokenUtil {
     /**
      * 检验token
      * @param token
-     * @return 返回用户io
+     * @return 返回用户id
      */
     public static Long validateToken(String token){
         String auther = "-1";

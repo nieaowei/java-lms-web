@@ -13,7 +13,7 @@
                                 <span>语文课</span>
                                 <el-progress :percentage="50"></el-progress>
                                 <div class="bottom clearfix">
-<!--                                    <time class="time">{{ currentDate }}</time>-->
+                                    <time class="time"></time>
                                     <el-button type="primary" class="button">开始学习</el-button>
                                 </div>
                             </div>
@@ -62,6 +62,10 @@
 </script>
 
 <style scoped>
+    .bottom {
+        margin-top: 13px;
+        line-height: 12px;
+    }
     .el-card{
         box-shadow: 0 0 5px #cac6c6;
     }
