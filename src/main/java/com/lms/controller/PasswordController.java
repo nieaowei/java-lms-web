@@ -2,10 +2,9 @@ package com.lms.controller;
 
 
 import com.lms.entity.UserEntity;
-import com.lms.result.Result;
+import com.lms.vo.ResultVO;
 import com.lms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,7 +14,7 @@ public class PasswordController {
 
     @CrossOrigin
     @PostMapping(value = "/user/changepd")
-    public Result changepd(@RequestBody UserEntity requestUser){
+    public ResultVO changepd(@RequestBody UserEntity requestUser){
         int status = 200;
         String msg = "修改成功";
 
@@ -28,6 +27,6 @@ public class PasswordController {
             user.setPassword(requestUser.getPassword());
             userService.save(user);
         }
-        return new Result(status,msg);
+        return new ResultVO(status,msg);
     }
 }
