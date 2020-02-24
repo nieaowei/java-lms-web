@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 import org.hibernate.procedure.spi.ParameterRegistrationImplementor;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Table;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 /**
  * 用户token
  */
+@Entity
 @Data
 //@Table("token")
 @Builder

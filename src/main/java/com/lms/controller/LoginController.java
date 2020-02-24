@@ -2,6 +2,7 @@ package com.lms.controller;
 
 import com.lms.annotation.AuthToken;
 import com.lms.entity.UserEntity;
+import com.lms.utils.ResultVOUtil;
 import com.lms.vo.ResultVO;
 import com.lms.service.UserService;
 import com.lms.utils.TokenUtil;
@@ -16,6 +17,11 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginController {
     @Autowired
     UserService userService;
+
+    @GetMapping("test")
+    public ResultVO testRestController(){
+        return ResultVOUtil.success();
+    }
 
     @CrossOrigin
     @PostMapping(value = "/user/login")
