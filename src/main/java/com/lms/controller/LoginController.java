@@ -18,11 +18,6 @@ public class LoginController {
     @Autowired
     UserService userService;
 
-    @GetMapping("test")
-    public ResultVO testRestController(){
-        return ResultVOUtil.success();
-    }
-
     @CrossOrigin
     @PostMapping(value = "/user/login")
     public ResultVO<String> login(@RequestBody UserEntity requestUser, HttpServletResponse response){
@@ -44,8 +39,8 @@ public class LoginController {
      * 测试权限访问
      */
     @GetMapping(value = "test")
-    @AuthToken
-    public ModelAndView test(){
-        return new ModelAndView("success");
+//    @AuthToken
+    public ResultVO test(){
+        return ResultVOUtil.success();
     }
 }

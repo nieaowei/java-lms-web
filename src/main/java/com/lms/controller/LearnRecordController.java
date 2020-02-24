@@ -21,6 +21,16 @@ public class LearnRecordController {
     @Autowired
     LearnRecordService learnRecordService;
 
+    @GetMapping("/learntest")
+    public ResultVO test(){
+        LearnVO learnVO = new LearnVO();
+        learnVO.setCurrentDuration(100);
+        learnVO.setDocListId(100);
+        learnVO.setDocListName("hello");
+        learnVO.setTotalDuration(200);
+        return ResultVOUtil.success(learnVO);
+    }
+
     @CrossOrigin
     @GetMapping(value = "/user/learnrecord")
     @RequiredToken

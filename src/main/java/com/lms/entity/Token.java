@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 /**
  * 用户token
  */
-@Entity
+//@Entity
 @Data
 //@Table("token")
 @Builder
