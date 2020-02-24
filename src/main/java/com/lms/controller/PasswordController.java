@@ -2,8 +2,9 @@ package com.lms.controller;
 
 
 import com.lms.entity.UserEntity;
-import com.lms.vo.ResultVO;
+import com.lms.interception.RequiredToken;
 import com.lms.service.UserService;
+import com.lms.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,19 +15,14 @@ public class PasswordController {
 
     @CrossOrigin
     @PostMapping(value = "/user/changepd")
-    public ResultVO changepd(@RequestBody UserEntity requestUser){
-        int status = 200;
-        String msg = "修改成功";
-
+    @RequiredToken
+    public Result<String> changepd(@RequestBody UserEntity requestUser){
         UserEntity user = userService.getByName(requestUser.getUsername());
         if(!userService.isPassWordCompliance(requestUser)){
-            status = 201;
-            msg = "密码不合格，应为8-16位数字字母混合";
+            return new Result<String>().setStatus(202).setMsg("密码不符合要求");
         }
-        else{
-            user.setPassword(requestUser.getPassword());
-            userService.save(user);
-        }
-        return new ResultVO(status,msg);
+        user.setPassword(requestUser.getPassword());
+        userService.save(user);
+        return new Result<String>().setStatus(200).setMsg("修改成功");
     }
 }

@@ -1,8 +1,8 @@
 package com.lms.controller;
 
 import com.lms.entity.UserEntity;
-import com.lms.vo.ResultVO;
 import com.lms.service.UserService;
+import com.lms.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,22 +15,18 @@ public class RegisterController {
     @CrossOrigin
     @PostMapping(value = "/user/register")
     @ResponseBody
-    public ResultVO<String> register(@RequestBody UserEntity requestUser){
+    public Result<String> register(@RequestBody UserEntity requestUser){
         UserEntity user = new UserEntity();
         user.setUsername(requestUser.getUsername());
         user.setPassword(requestUser.getPassword());
         user.setPhonenum(requestUser.getPhonenum());
-        int status = 200;
-        String msg = "注册成功";
         if(!userService.isPassWordCompliance(user)){
-            status = 201;
-            msg = "密码不合格，应为8-16位数字字母混合";
+            return new Result<String>().setStatus(201).setMsg("密码不符合要求。");
         }
-        else if(!userService.isPhoneNumCompliance(user)){
-            status = 202;
-            msg = "输入的手机号不是一个正确的手机号";
+        if(!userService.isPhoneNumCompliance(user)){
+            return new Result<String>().setStatus(202).setMsg("手机号码格式错误");
         }
-        else{userService.save(user);}
-        return new ResultVO(status,msg);
+        userService.save(user);
+        return new Result<String>().setStatus(200).setMsg("注册成功");
     }
 }

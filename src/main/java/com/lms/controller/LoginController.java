@@ -1,14 +1,11 @@
 package com.lms.controller;
 
-import com.lms.annotation.AuthToken;
 import com.lms.entity.UserEntity;
-import com.lms.utils.ResultVOUtil;
-import com.lms.vo.ResultVO;
+import com.lms.utils.Result;
 import com.lms.service.UserService;
 import com.lms.utils.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -20,7 +17,7 @@ public class LoginController {
 
     @CrossOrigin
     @PostMapping(value = "/user/login")
-    public ResultVO<String> login(@RequestBody UserEntity requestUser, HttpServletResponse response){
+    public Result<String> login(@RequestBody UserEntity requestUser, HttpServletResponse response){
         String username = requestUser.getUsername();
         UserEntity user = userService.get(username,requestUser.getPassword());
         if (null != user){
@@ -31,16 +28,8 @@ public class LoginController {
             response.addCookie(cookie);
             response.setHeader("Access-Control-Allow-Origin", "*");
             response.setHeader("Access-Control-Allow-Credentials", "true");
-            return new ResultVO<String>(200,"登录成功");
+            return new Result<String>().setStatus(200).setMsg("登录成功");
         }
-        return new ResultVO<String>(404,"账号或密码错误");
-    }
-    /**
-     * 测试权限访问
-     */
-    @GetMapping(value = "test")
-//    @AuthToken
-    public ResultVO test(){
-        return ResultVOUtil.success();
+        return new Result<String>().setStatus(400).setMsg("登录失败");
     }
 }

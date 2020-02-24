@@ -39,47 +39,59 @@ public class UserEntity   {
         return uiid;
     }
 
-    public void setUiid(Long uiid) {
+    public UserEntity setUiid(Long uiid) {
         this.uiid = uiid;
+        return this;
+
     }
 
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
+    public UserEntity setUsername(String username) {
         this.username = username;
+        return this;
+
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public UserEntity setPassword(String password) {
         this.password = password;
+        return this;
+
     }
 
     public String getPhonenum() {
         return phonenum;
     }
 
-    public void setPhonenum(String phonenum) {
+    public UserEntity setPhonenum(String phonenum) {
         this.phonenum = phonenum;
+        return this;
+
     }
 
     public Timestamp getCreatetime() {
         return createtime;
     }
 
-    public void setCreatetime(Timestamp createtime) {
+    public UserEntity setCreatetime(Timestamp createtime) {
         this.createtime = createtime;
+        return this;
+
     }
 
     public Timestamp getUpdatetime() {
         return updatetime;
     }
 
-    public void setUpdatetime(Timestamp updatetime) {
+    public UserEntity setUpdatetime(Timestamp updatetime) {
         this.updatetime = updatetime;
+        return this;
+
     }
 }

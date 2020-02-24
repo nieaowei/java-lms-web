@@ -23,6 +23,8 @@ select * from user_info where username='nieaowei1234' and md5(password)=md5('bdc
 
 select md5(password) from user_info;
 
+select d.dlid,d.name,d.duration doc_duration,l.duration from doc_list d ,learn_record l where l.dlid = d.dlid and l.uiid=103;
+
 create table doc_list(
     dlid bigint primary key auto_increment comment '主键递增',
     name varchar(16) not null comment '文档名',

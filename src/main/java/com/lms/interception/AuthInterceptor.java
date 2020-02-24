@@ -1,6 +1,5 @@
 package com.lms.interception;
 
-import com.lms.entity.Token;
 import com.lms.utils.TokenUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.web.method.HandlerMethod;

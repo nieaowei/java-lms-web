@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,11 +31,24 @@ public class LearnRecordService {
         return learnRecordDao.save(learnRecord);
     }
 
-    public List<LearnVO> findAllLearnVO(){
-        return learnRecordDao.findAllLearnVO();
+    public List<LearnVO> findLearnRecordByUiid(Long uiid){
+        List<LearnRecord> learnRecords = learnRecordDao.findByUserEntity(new UserEntity().setUiid(uiid));
+        List<LearnVO> learnVOList=new ArrayList<>();
+        for (LearnRecord learnrecord : learnRecords) {
+            LearnVO learnVO = new LearnVO().setName(learnrecord.getDocList().getName())
+                    .setDlid(learnrecord.getDocList().getDlid())
+                    .setDoc_duration(learnrecord.getDocList().getDuration())
+                    .setDuration(learnrecord.getDuration());
+            learnVOList.add(learnVO);
+        }
+        return learnVOList;
     }
 
-    public LearnVO findLearnVoByName(String name){
-        return learnRecordDao.findLearnVoByName(name);
-    }
+////    public List<LearnVO> findAllLearnVO(Long uiid){
+////        return learnRecordDao.findAllLearnVO(uiid);
+////    }
+//
+//    public LearnVO findLearnVoByName(String name){
+//        return learnRecordDao.findLearnVoByName(name);
+//    }
 }

@@ -1,6 +1,5 @@
 package com.lms.utils;
 
-import com.lms.entity.Token;
 import com.lms.entity.UserEntity;
 import org.junit.Test;
 
