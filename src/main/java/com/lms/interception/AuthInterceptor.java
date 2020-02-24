@@ -13,10 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 @Service
 public class AuthInterceptor implements HandlerInterceptor {
     final static String COOKIE_KEY="token";
-    public final static String RESULT_KEY = "uuid";
+    public final static String RESULT_KEY = "uiid";
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        System.out.println("拦截");
+        System.out.println("拦截处理");
+        //不是处理方法，放行
         if (!(handler instanceof HandlerMethod)){
             return true;
         }
@@ -27,9 +28,10 @@ public class AuthInterceptor implements HandlerInterceptor {
          */
         HandlerMethod method = (HandlerMethod)handler;
         RequiredToken requiredToken = method.getMethod().getAnnotation(RequiredToken.class);
-        if (null != requiredToken){
+        if (null == requiredToken){//没有注解放行
             return true;
         }
+        //有注解，进行拦截
         if (null!=request){
                 Cookie[] cookies = request.getCookies();
                 if(null!=cookies){
@@ -37,6 +39,7 @@ public class AuthInterceptor implements HandlerInterceptor {
                         if(COOKIE_KEY.equals(cookie.getName())){
                             Long uiid = TokenUtil.validateToken(cookie.getValue());
                             if (uiid.equals(TokenUtil.EXPIRE_CODE)||uiid.equals(TokenUtil.OTHER_CODE)){
+                                //todo 登录
                                 return false;
                             }
                             request.setAttribute(RESULT_KEY,uiid);

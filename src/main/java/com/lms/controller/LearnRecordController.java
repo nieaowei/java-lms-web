@@ -14,13 +14,13 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequiredToken
 public class LearnRecordController {
     @Autowired
     LearnRecordService learnRecordService;
 
     @CrossOrigin
     @GetMapping(value = "/user/learnrecord")
+    @RequiredToken
     public ResultVO getLearnRecord(HttpServletRequest request) throws IOException {
         UserEntity userEntity = new UserEntity();
         userEntity.setUiid((Long) request.getAttribute(AuthInterceptor.RESULT_KEY));
