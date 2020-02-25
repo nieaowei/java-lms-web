@@ -4,11 +4,11 @@
             <el-tab-pane>
                 <span slot="label"><i class="el-icon-date"></i> 学习文档</span>
                 <el-row :gutter="10" >
-                    <el-col :xs="12" :sm="10" :md="8" :lg="6" :xl="4"  :offset="1" v-for="fit in fits" :key="fit" >
+                    <el-col :xs="12" :sm="10" :md="8" :lg="6" :xl="4"  :offset="1" v-for="data in datas" :key="data" >
                         <el-card :body-style="{ padding: '0px' }">
                             <el-image
                                     :src="url"
-                                    :fit="fit"></el-image>
+                                    fit="fill"></el-image>
                             <div style="padding: 14px;">
                                 <span>语文课</span>
                                 <el-progress :percentage="50"></el-progress>

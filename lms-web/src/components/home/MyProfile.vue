@@ -7,12 +7,12 @@
                 </el-form-item>
                 <el-form-item label="用户名：" prop="password" :rules="[
                             { required: true, message: '密码不能为空'}]">
-                    <el-input type="text" disabled="true" v-model="registerForm.password" placeholder="请输入密码"></el-input>
+                    <el-input type="text" :disabled="true" v-model="registerForm.password" placeholder="请输入密码"></el-input>
                 </el-form-item>
                 <el-form-item label="手机号码：" prop="phonenum" :rules="[
                             { required: true, message: '手机号码不能为空'},
                             {type:'number', message: '手机号码格式不正确'}]">
-                    <el-input type="text" disabled="true" v-model.number="registerForm.phonenum" placeholder="请输入手机号码"></el-input>
+                    <el-input type="text" :disabled="true" v-model.number="registerForm.phonenum" placeholder="请输入手机号码"></el-input>
                 </el-form-item>
             </el-form>
     </el-card>
