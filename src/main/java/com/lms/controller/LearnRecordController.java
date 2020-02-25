@@ -8,6 +8,10 @@ import com.lms.utils.Result;
 import com.lms.vo.LearnVO;
 import com.lms.service.LearnRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,4 +32,21 @@ public class LearnRecordController {
         List<LearnVO> learnVOList = learnRecordService.findLearnRecordByUiid(uiid);
         return new Result<List<LearnVO>>().setStatus(200).setMsg("获取成功").setData(learnVOList);
     }
+
+    @CrossOrigin
+    @PostMapping(value = "/user/addRecord")
+    @RequiredToken
+    public void addRecord(@RequestParam("record") LearnRecord learnRecord){
+        learnRecordService.save(learnRecord);
+    }
+
+    @CrossOrigin
+    @PostMapping(value = "/user/listRecord")
+    @RequiredToken
+    public Result list(@PageableDefault(size = 5, sort = {"lrid"}, direction = Sort.Direction.DESC)
+                       Pageable pageable){
+        Page<LearnRecord> pageableList = learnRecordService.findAll(pageable);
+        return new Result<Page<LearnRecord>>().setData(pageableList).setStatus(500).setMsg("成功");
+    }
+    
 }
