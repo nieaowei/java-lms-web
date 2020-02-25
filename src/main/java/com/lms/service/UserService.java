@@ -16,6 +16,10 @@ public class UserService {
         return null!=user;
     }
 
+    public UserEntity findByUiidAndPassword(Long uiid, String password){
+        return userDAO.findByUiidAndPassword(uiid, password);
+    }
+
     public UserEntity getByName(String username) {
         return userDAO.findByUsername(username);
     }
