@@ -1,17 +1,17 @@
-module.exports={
-    configureWebpack:{
-        resolve:{
-            alias:{
-                "syyles":"@assets/styles"
+module.exports = {
+    configureWebpack: {
+        resolve: {
+            alias: {
+                "syyles": "@assets/styles"
             }
         }
     },
-    devServer:{
-        proxy:{
-            '/api':{
-                target:'http://localhost:8081/',
-                pathRewrite:{
-                    '^/api':''
+    devServer: {
+        proxy: {
+            '/api': {
+                target: 'http://localhost:8081/',
+                pathRewrite: {
+                    '^/api': ''
                 },
                 changeOrigin: true,
             }
