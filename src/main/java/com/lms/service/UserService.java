@@ -32,7 +32,7 @@ public class UserService {
         return userDAO.getByUsernameAndPassword(username, password);
     }
 
-    public UserEntity getByUiid(Long uiid){return userDAO.findByUiid(uiid);}
+    public UserEntity findByUiid(Long uiid){return userDAO.findByUiid(uiid);}
 
     /**
      * 增加，更新可在一起，建议直接更名为save

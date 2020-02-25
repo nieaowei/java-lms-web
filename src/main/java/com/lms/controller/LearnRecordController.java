@@ -1,9 +1,12 @@
 package com.lms.controller;
 
+import com.lms.entity.DocList;
 import com.lms.entity.LearnRecord;
 import com.lms.entity.UserEntity;
 import com.lms.interception.AuthInterceptor;
 import com.lms.interception.RequiredToken;
+import com.lms.service.DocListService;
+import com.lms.service.UserService;
 import com.lms.utils.Result;
 import com.lms.vo.LearnVO;
 import com.lms.service.LearnRecordService;
@@ -22,7 +25,13 @@ import java.util.List;
 @RestController
 public class LearnRecordController {
     @Autowired
-    LearnRecordService learnRecordService;
+    private LearnRecordService learnRecordService;
+
+    @Autowired
+    private DocListService docListService;
+
+    @Autowired
+    private UserService userService;
 
     @CrossOrigin
     @GetMapping(value = "/user/learnrecord")
@@ -36,8 +45,13 @@ public class LearnRecordController {
     @CrossOrigin
     @PostMapping(value = "/user/addRecord")
     @RequiredToken
-    public void addRecord(@RequestParam("record") LearnRecord learnRecord){
-        learnRecordService.save(learnRecord);
+    public void addRecord(HttpServletRequest request){
+        List<DocList> docListList = docListService.findByUserEntity(userService.findByUiid((Long) request.getAttribute(AuthInterceptor.RESULT_KEY)));
+        for (DocList docList: docListList){
+            LearnRecord learnRecord = new LearnRecord();
+            learnRecord.setDocList(docList);
+            learnRecordService.save(learnRecord);
+        }
     }
 
     @CrossOrigin
@@ -48,5 +62,5 @@ public class LearnRecordController {
         Page<LearnRecord> pageableList = learnRecordService.findAll(pageable);
         return new Result<Page<LearnRecord>>().setData(pageableList).setStatus(500).setMsg("成功");
     }
-    
+
 }
