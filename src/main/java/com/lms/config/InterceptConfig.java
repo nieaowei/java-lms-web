@@ -13,6 +13,7 @@ public class InterceptConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        assert registry != null;
         registry.addInterceptor(authInterceptor).addPathPatterns("/**");
     }
 }

@@ -8,7 +8,6 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 @Entity
 @Table(name = "doc_list")
-@Data
 @DynamicUpdate
 public class DocList  {
     /**
@@ -50,8 +49,9 @@ public class DocList  {
         return dlid;
     }
 
-    public void setDlid(Integer dlid) {
+    public DocList setDlid(Integer dlid) {
         this.dlid = dlid;
+        return this;
     }
 
 
@@ -59,39 +59,45 @@ public class DocList  {
         return name;
     }
 
-    public void setName(String name) {
+    public DocList setName(String name) {
         this.name = name;
+        return this;
+
     }
 
     public String getPath() {
         return path;
     }
 
-    public void setPath(String path) {
+    public DocList setPath(String path) {
         this.path = path;
+        return this;
     }
 
     public Integer getDuration() {
         return duration;
     }
 
-    public void setDuration(Integer duration) {
+    public DocList setDuration(Integer duration) {
         this.duration = duration;
+        return this;
     }
 
     public Timestamp getCreatetime() {
         return createtime;
     }
 
-    public void setCreatetime(Timestamp createtime) {
+    public DocList setCreatetime(Timestamp createtime) {
         this.createtime = createtime;
+        return this;
     }
 
     public Timestamp getUpdatetime() {
         return updatetime;
     }
 
-    public void setUpdatetime(Timestamp updatetime) {
+    public DocList setUpdatetime(Timestamp updatetime) {
         this.updatetime = updatetime;
+        return this;
     }
 }

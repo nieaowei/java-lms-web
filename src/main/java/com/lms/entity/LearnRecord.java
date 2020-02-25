@@ -8,7 +8,6 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 @Entity
 @Table(name = "learn_record")
-@Data
 @DynamicUpdate
 public class LearnRecord  {
     /**
@@ -43,6 +42,57 @@ public class LearnRecord  {
      */
     private Timestamp updatetime;
 
-    public LearnRecord() {
+    public Integer getLrid() {
+        return lrid;
+    }
+
+    public LearnRecord setLrid(Integer lrid) {
+        this.lrid = lrid;
+        return this;
+    }
+
+    public DocList getDocList() {
+        return docList;
+    }
+
+    public LearnRecord setDocList(DocList docList) {
+        this.docList = docList;
+        return this;
+    }
+
+    public UserEntity getUserEntity() {
+        return userEntity;
+    }
+
+    public LearnRecord setUserEntity(UserEntity userEntity) {
+        this.userEntity = userEntity;
+        return this;
+    }
+
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public LearnRecord setDuration(Integer duration) {
+        this.duration = duration;
+        return this;
+    }
+
+    public Timestamp getCreatetime() {
+        return createtime;
+    }
+
+    public LearnRecord setCreatetime(Timestamp createtime) {
+        this.createtime = createtime;
+        return this;
+    }
+
+    public Timestamp getUpdatetime() {
+        return updatetime;
+    }
+
+    public LearnRecord setUpdatetime(Timestamp updatetime) {
+        this.updatetime = updatetime;
+        return this;
     }
 }

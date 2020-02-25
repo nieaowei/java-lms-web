@@ -11,9 +11,17 @@ public class UserService {
     @Autowired
     private UserDAO userDAO;
 
+    public UserEntity getByUiidAndPassword(Long uiid , String usernme){
+        return userDAO.findByUiidAndPassword(uiid,usernme);
+    }
+
     public boolean isExist(String username) {
         UserEntity user = getByName(username);
         return null!=user;
+    }
+
+    public UserEntity findByUiidAndPassword(Long uiid, String password){
+        return userDAO.findByUiidAndPassword(uiid, password);
     }
 
     public UserEntity getByName(String username) {

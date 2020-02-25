@@ -1,24 +1,3 @@
-
-server:
-  port: 8081
-
 spring:
-  datasource:
-    url: jdbc:mysql://47.240.54.3:3306/lms?characterEncoding=UTF-8
-    username: root
-    password: Nieaowei123...
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa:
-    hibernate.ddl-auto: none
-    show-sql: true
-    properties.hibernate.format_sql: true
-  redis:
-    host: 47.240.54.3
-    port: 6379
-    jedis:
-      pool:
-        max-active: 8
-        max-wait: -1
-        max-idle: 8
-        min-idle: 0
-    timeout: 30000
+  profiles:
+    active: naw
