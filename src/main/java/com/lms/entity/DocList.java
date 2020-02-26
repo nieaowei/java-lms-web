@@ -100,4 +100,9 @@ public class DocList  {
         this.updatetime = updatetime;
         return this;
     }
+
+    public DocList setUiid(Long uiid){
+        this.userEntity.setUiid(uiid);
+        return this;
+    }
 }

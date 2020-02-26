@@ -95,4 +95,14 @@ public class LearnRecord  {
         this.updatetime = updatetime;
         return this;
     }
+
+    public LearnRecord setUiid(Long uiid){
+        this.userEntity.setUiid(uiid);
+        return this;
+    }
+
+    public LearnRecord setDlid(Integer dlid){
+        this.docList.setDlid(dlid);
+        return this;
+    }
 }

@@ -32,6 +32,14 @@ public class DocListService {
         return docListDao.findAll();
     }
 
+    /**
+     * 查找所有文档并通过创建时间降序排序
+     * @return
+     */
+    public List<DocList> findAllOrder(){
+        return docListDao.findAllByOrderByCreatetimeDesc();
+    }
+
     public List<DocList> findByUserEntity(UserEntity user) {
         return docListDao.findByUserEntity(user);
     }

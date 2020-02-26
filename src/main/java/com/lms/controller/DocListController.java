@@ -28,34 +28,11 @@ public class DocListController {
     @Autowired
     private DocListService docListService;
 
-    @Autowired
-    private UserService userService;
-
     @CrossOrigin
-    @GetMapping(value = "/user/doclist")
+    @GetMapping(value = "/doc/all")
     @RequiredToken
-    public Result<List<DocList>> findDocList(HttpServletRequest request) throws IOException {
-        Long uiid = (long)request.getAttribute(AuthInterceptor.RESULT_KEY);
-        List<DocList> docListList = docListService.findByUserEntity(userService.findByUiid(uiid));
-        return new Result<List<DocList>>().setStatus(200).setMsg("获取成功").setData(docListList);
-    }
-
-    @CrossOrigin
-    @PostMapping(value = "/user/addDoclist")
-    @RequiredToken
-    public void addDoclist(HttpServletRequest request){
-        List<DocList> docListList = docListService.findByUserEntity(userService.findByUiid((Long) request.getAttribute(AuthInterceptor.RESULT_KEY)));
-        for (DocList docList: docListList){
-            docListService.save(docList);
-        }
-    }
-
-    @CrossOrigin
-    @PostMapping(value = "/user/listDoclist")
-    @RequiredToken
-    public Result list(@PageableDefault(size = 5, sort = {"dlid"}, direction = Sort.Direction.DESC)
-                               Pageable pageable){
-        Page<DocList> pageableList = docListService.findAll(pageable);
-        return new Result<Page<DocList>>().setData(pageableList).setStatus(500).setMsg("成功");
+    public Result<List<DocList>> all(){
+        List<DocList> docListList = docListService.findAllOrder();
+        return new Result<List<DocList>>().setData(docListList).setStatus(200).setMsg("获取文档课程成功");
     }
 }

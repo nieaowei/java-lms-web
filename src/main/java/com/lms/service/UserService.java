@@ -38,8 +38,8 @@ public class UserService {
      * 增加，更新可在一起，建议直接更名为save
      * @param user
      */
-    public void save(UserEntity user) {
-        userDAO.save(user);
+    public UserEntity save(UserEntity user) {
+        return userDAO.save(user);
     }
 
     public void delete(UserEntity user){userDAO.delete(user);}

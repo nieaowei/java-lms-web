@@ -28,15 +28,19 @@ public class PasswordController {
         UserEntity user = userService.getByUiidAndPassword(uiid,oldpassword);
         if (null != user){
             //验证失败
-            return new Result<String>().setStatus(400).setMsg("旧密码错误");
+            return new Result<String>().setStatus(500).setMsg("旧密码错误");
         }
         //验证新密码强度要求
         if(!userService.isPassWordCompliance(user.setPassword(newpassword))){
             //验证失败
-            return new Result<String>().setStatus(202).setMsg("新密码不符合要求");
+            return new Result<String>().setStatus(500).setMsg("新密码不符合要求");
         }
         //符合要求 存储数据
-        userService.save(user);
-        return new Result<String>().setStatus(200).setMsg("修改成功");
+        try {
+            userService.save(user);
+        }catch (Exception e){
+            return new Result<String>().setStatus(500).setMsg("修改密码失败");
+        }
+        return new Result<String>().setStatus(200).setMsg("修改密码成功");
     }
 }

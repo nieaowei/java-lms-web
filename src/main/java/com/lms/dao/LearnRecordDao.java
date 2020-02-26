@@ -14,5 +14,6 @@ import java.util.List;
 public interface LearnRecordDao extends JpaRepository<LearnRecord, Integer> {
     List<LearnRecord> findByUserEntity(UserEntity uuid);
     Page<LearnRecord> findAll(Pageable pageable);
-
+    LearnRecord findByLrid(Integer lrid);
+    LearnRecord findByLridAndUserEntity(Integer lrid, UserEntity userEntity);
 }

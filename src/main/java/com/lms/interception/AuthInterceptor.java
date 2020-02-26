@@ -18,6 +18,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         System.out.println("拦截处理");
         //不是处理方法，放行
         if (!(handler instanceof HandlerMethod)){
+            System.out.println("非方法放行");
             return true;
         }
         /**
@@ -28,6 +29,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         HandlerMethod method = (HandlerMethod)handler;
         RequiredToken requiredToken = method.getMethod().getAnnotation(RequiredToken.class);
         if (null == requiredToken){//没有注解放行
+            System.out.println("无注解放行");
             return true;
         }
         //有注解，进行拦截
@@ -39,6 +41,8 @@ public class AuthInterceptor implements HandlerInterceptor {
                             Long uiid = TokenUtil.validateToken(cookie.getValue());
                             if (uiid.equals(TokenUtil.EXPIRE_CODE)||uiid.equals(TokenUtil.OTHER_CODE)){
                                 //todo 登录
+                                System.out.println("登录凭证过期或无效");
+                                response.setStatus(302);
                                 return false;
                             }
                             request.setAttribute(RESULT_KEY,uiid);

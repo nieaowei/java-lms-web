@@ -54,9 +54,9 @@ select  * from doc_list;
 insert into doc_list (name, path, uiid,duration) values('语文','/dsad/ad/asd',111,1000);
 insert into doc_list (name, path, uiid,duration) values('语文1','/dsad/ad/asd',111,1000);
 
-insert into learn_record (dlid, uiid,duration) values(101,103,0);
-insert into learn_record (dlid, uiid,duration) values(103,103,0);
-insert into learn_record (dlid, uiid,duration) values(104,101,0);
+insert into learn_record (dlid, uiid,duration) values(101,133,0);
+insert into learn_record (dlid, uiid,duration) values(102,133,0);
+insert into learn_record (dlid, uiid,duration) values(104,133,0);
 
 insert into learn_record (dlid, uiid,duration) values(103,111,0);
 insert into learn_record (dlid, uiid,duration) values(101,113,0);
@@ -66,3 +66,5 @@ insert into learn_record (dlid, uiid,duration) values(101,113,0);
 insert into learn_record (dlid, uiid,duration) values(101,null,0);
 
 select * from learn_record;
+
+update learn_record set duration=1000 where lrid=115;

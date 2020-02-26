@@ -21,12 +21,22 @@ public class RegisterController {
         user.setPassword(requestUser.getPassword());
         user.setPhonenum(requestUser.getPhonenum());
         if(!userService.isPassWordCompliance(user)){
-            return new Result<String>().setStatus(201).setMsg("密码不符合要求。");
+            return new Result<String>().setStatus(500).setMsg("密码不符合要求。");
         }
         if(!userService.isPhoneNumCompliance(user)){
-            return new Result<String>().setStatus(202).setMsg("手机号码格式错误");
+            return new Result<String>().setStatus(500).setMsg("手机号码格式错误");
         }
-        userService.save(user);
+        try{
+            UserEntity userEntity=userService.save(user);
+        }catch (Exception e){
+            if(e.getMessage().contains("username")){
+                return new Result<String>().setStatus(500).setMsg("用户已存在，注册失败");
+            }
+            if (e.getMessage().contains("phonenum")){
+                return new Result<String>().setStatus(500).setMsg("手机号已存在，注册失败");
+            }
+            return new Result<String>().setStatus(500).setMsg("注册失败");
+        }
         return new Result<String>().setStatus(200).setMsg("注册成功");
     }
 }

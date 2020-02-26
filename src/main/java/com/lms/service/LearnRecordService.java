@@ -19,6 +19,14 @@ public class LearnRecordService {
     @Autowired
     private LearnRecordDao learnRecordDao;
 
+    public LearnRecord findByLrid(Integer lrid){
+        return learnRecordDao.findByLrid(lrid);
+    }
+    public LearnRecord findByLridAndUiid(Integer lrid, Long uiid){
+        return learnRecordDao.findByLridAndUserEntity(lrid,new UserEntity().setUiid(uiid));
+    }
+
+
     public List<LearnRecord> findByUserEntity(UserEntity user){
         return learnRecordDao.findByUserEntity(user);
     }
