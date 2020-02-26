@@ -49,30 +49,21 @@
                 );
                 if (flag1) {
                     this.$store.dispatch('Login/login', this.loginForm)
-                        .then((value) => {
-                                if (value === constant.LOGIN_OK) {
+                        .then(
+                            (value) => {
                                     this.$notify({
-                                        title: constant.LOGIN_OK,
+                                        title: value,
                                         type: "success",
-                                        position: 'top-left'
+                                        position:constant.NOTIFY_POS,
                                     });
                                     this.$router.push({name: 'AppIndex'})
-                                }
                             },
                             (err) => {
-                                if (err === constant.LOGIN_FAIL) {
-                                    this.$notify({
-                                        title: constant.LOGIN_FAIL,
-                                        type: "error",
-                                        position: 'top-left'
-                                    });
-                                } else if (err === constant.SERVER_FAIL) {
-                                    this.$notify({
-                                        title: constant.SERVER_FAIL,
-                                        type: "error",
-                                        position: 'top-left'
-                                    });
-                                }
+                                this.$notify({
+                                    title: err,
+                                    type: "error",
+                                    position:constant.NOTIFY_POS,
+                                });
                             }
                         )
 

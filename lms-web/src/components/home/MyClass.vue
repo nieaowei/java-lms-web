@@ -4,17 +4,20 @@
             <el-tab-pane>
                 <span slot="label"><i class="el-icon-date"></i> 学习文档</span>
                 <el-row :gutter="10" >
-                    <el-col :xs="12" :sm="10" :md="8" :lg="6" :xl="4"  :offset="1" v-for="data in datas" :key="data" >
+                    <el-col :xs="12" :sm="10" :md="8" :lg="6" :xl="4"  :offset="1" v-for="classe in this.$store.state.AppIndex.classes" :key="classe.id" >
                         <el-card :body-style="{ padding: '0px' }">
                             <el-image
                                     :src="url"
                                     fit="fill"></el-image>
                             <div style="padding: 14px;">
-                                <span>语文课</span>
-                                <el-progress :percentage="50"></el-progress>
+                                <span>{{classe['name']}}</span>
+                                <el-progress v-if="classe['duration']*100/classe['doc_duration']===100" :percentage="100" status="success"></el-progress>
+                                <el-progress v-else :percentage="classe['duration']*100/classe['doc_duration']"></el-progress>
+<!--                                <el-progress :text-inside="true" :stroke-width="10" :percentage="classe['duration']*100/classe['doc_duration']"></el-progress>-->
                                 <div class="bottom clearfix">
                                     <time class="time"></time>
-                                    <el-button type="primary" class="button">开始学习</el-button>
+                                    <el-button v-if="classe['duration']*100/classe['doc_duration']===100" icon="el-icon-check" type="success" class="button">已完成</el-button>
+                                    <el-button v-else type="primary" class="button">继续学习</el-button>
                                 </div>
                             </div>
                         </el-card>
@@ -24,7 +27,7 @@
 
             <el-tab-pane label="学习视频">
                 <el-row :gutter="10" >
-                    <el-col :xs="12" :sm="10" :md="8" :lg="6" :xl="4"  :offset="1" v-for="fit in fits" :key="fit" >
+                    <el-col :xs="12" :sm="10" :md="8" :lg="6" :xl="4"  :offset="1" v-for="fit in fits" :key="fit.id" >
                         <el-card :body-style="{ padding: '0px' }">
                             <el-image
                                     :src="url"
@@ -55,7 +58,8 @@
         data() {
             return {
                 fits: 'fill',
-                url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'
+                url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+                classes:[],
             }
         }
     }

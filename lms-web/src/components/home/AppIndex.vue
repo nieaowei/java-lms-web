@@ -63,6 +63,7 @@
 <script>
     import MyClass from "./MyClass";
     import MyProfile from "./MyProfile";
+    import constant from "../../constant";
 
     export default {
         name: "AppIndex",
@@ -74,7 +75,51 @@
             // eslint-disable-next-line no-unused-vars
             handleSelect(key, keyPath) {
                 this.$store.dispatch('AppIndex/changeView', this.$store.state.AppIndex.menuViews[parseInt(key, 10) - 1])
+                    .then(
+                        (resolve) => {
+                            this.$notify({
+                                type:"success",
+                                message:resolve,
+                                position:constant.NOTIFY_POS,
+                            })
+                        },
+                        (reject) => {
+                            if (reject === constant.REDIRECT_LOGIN){
+                                this.$router.push('login')
+                            }
+                            this.$notify({
+                                type:"error",
+                                message:reject,
+                                position:constant.NOTIFY_POS,
+                            })
+                        }
+                    )
             },
+        },
+        created() {
+            this.$store.dispatch('AppIndex/changeView', this.$store.state.AppIndex.menuViews[0])
+                .then(
+                    (resolve) => {
+                        this.$notify({
+                            type:"success",
+                            message:resolve,
+                            position:constant.NOTIFY_POS,
+
+                        })
+                    },
+                    (reject) => {
+                        if (reject === constant.REDIRECT_LOGIN){
+                            this.$router.push('login')
+                        }
+                        this.$notify({
+                            type:"error",
+                            message:reject,
+                            position:constant.NOTIFY_POS,
+
+                        })
+                    }
+                )
+
         }
 
     }

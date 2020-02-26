@@ -16,8 +16,30 @@ const store = new Vuex.Store(
             Register: module_Reigster,
             MyProfile: module_MyProfile,
             AppIndex: module_AppIndex,
+        },
+        state:{
+
+        },
+        mutations:{
+
+        },
+        actions:{
+            // eslint-disable-next-line no-unused-vars
+            successNotify({commit},vue,msg){
+                vue.$notify({
+                    type:"success",
+                    message:msg
+                })
+            },
+            // eslint-disable-next-line no-unused-vars
+            failNotify({commit},vue,msg){
+                vue.$notify({
+                    type:"error",
+                    message:msg
+                })
+            }
         }
-    }
+    },
 )
 
 export default store;
