@@ -1,6 +1,7 @@
 package com.lms.service;
 
 import com.lms.dao.LearnRecordDao;
+import com.lms.entity.DocList;
 import com.lms.entity.LearnRecord;
 import com.lms.entity.UserEntity;
 import com.lms.vo.LearnVO;
@@ -9,7 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,9 +26,12 @@ public class LearnRecordService {
         return learnRecordDao.findByLridAndUserEntity(lrid,new UserEntity().setUiid(uiid));
     }
 
+    public LearnRecord findByDlidAndUiid(Integer dlid,Long uiid){
+        return learnRecordDao.findByDocListAndUserEntity(new DocList().setDlid(dlid),new UserEntity().setUiid(uiid));
+    }
 
-    public List<LearnRecord> findByUserEntity(UserEntity user){
-        return learnRecordDao.findByUserEntity(user);
+    public List<LearnRecord> findByUiid(Long uiid){
+        return learnRecordDao.findByUserEntity(new UserEntity().setUiid(uiid));
     }
 
     public Page<LearnRecord> findAll(Pageable pageable){
@@ -46,7 +49,9 @@ public class LearnRecordService {
             LearnVO learnVO = new LearnVO().setName(learnrecord.getDocList().getName())
                     .setDlid(learnrecord.getDocList().getDlid())
                     .setDoc_duration(learnrecord.getDocList().getDuration())
-                    .setDuration(learnrecord.getDuration());
+                    .setDuration(learnrecord.getDuration())
+                    .isFinished()
+                    .computedPercent();
             learnVOList.add(learnVO);
         }
         return learnVOList;
@@ -59,4 +64,5 @@ public class LearnRecordService {
 //    public LearnVO findLearnVoByName(String name){
 //        return learnRecordDao.findLearnVoByName(name);
 //    }
+
 }

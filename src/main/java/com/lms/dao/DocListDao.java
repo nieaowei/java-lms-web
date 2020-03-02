@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface DocListDao extends JpaRepository<DocList, Integer> {
     DocList findByName(String name);
-    DocList findByDlid(Long dlid);
+    DocList findByDlid(Integer dlid);
     Page<DocList> findAll(Pageable pageable);
     List<DocList> findByUserEntity(UserEntity uiid);
     List<DocList> findAllByOrderByCreatetimeDesc();

@@ -1,11 +1,9 @@
 package com.lms.entity;
 
-import lombok.Data;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.sql.Timestamp;
+
 @Entity
 @Table(name = "doc_list")
 @DynamicUpdate
@@ -39,11 +37,11 @@ public class DocList  {
     /**
      * 创建时间
      */
-    private Timestamp createtime;
+    private String createtime;
     /**
      * 更新时间
      */
-    private Timestamp updatetime;
+    private String updatetime;
 
     public Integer getDlid() {
         return dlid;
@@ -65,6 +63,14 @@ public class DocList  {
 
     }
 
+    public UserEntity getUserEntity() {
+        return userEntity;
+    }
+
+    public void setUserEntity(UserEntity userEntity) {
+        this.userEntity = userEntity;
+    }
+
     public String getPath() {
         return path;
     }
@@ -83,20 +89,20 @@ public class DocList  {
         return this;
     }
 
-    public Timestamp getCreatetime() {
+    public String getCreatetime() {
         return createtime;
     }
 
-    public DocList setCreatetime(Timestamp createtime) {
+    public DocList setCreatetime(String createtime) {
         this.createtime = createtime;
         return this;
     }
 
-    public Timestamp getUpdatetime() {
+    public String getUpdatetime() {
         return updatetime;
     }
 
-    public DocList setUpdatetime(Timestamp updatetime) {
+    public DocList setUpdatetime(String updatetime) {
         this.updatetime = updatetime;
         return this;
     }

@@ -1,6 +1,8 @@
 package com.lms.controller;
 
 import com.lms.entity.UserEntity;
+import com.lms.interception.AuthInterceptor;
+import com.lms.interception.RequiredToken;
 import com.lms.utils.Result;
 import com.lms.service.UserService;
 import com.lms.utils.TokenUtil;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
@@ -21,11 +24,13 @@ public class LoginController {
     public Result<String> login(@RequestBody UserEntity requestUser, HttpServletResponse response){
         UserEntity user = userService.get(requestUser.getUsername(),requestUser.getPassword());
         if (null != user){
+            //登录成功--- 签发token
             Cookie cookie= new Cookie("token",TokenUtil.getToken(user.getUiid()));
             cookie.setDomain("localhost");
             cookie.setPath("/");
             cookie.setMaxAge((int)TokenUtil.EXPIRE_TIME);
             response.addCookie(cookie);
+            //有注解 不需要特别设定
 //            response.setHeader("Access-Control-Allow-Origin", "*");
 //            response.setHeader("Access-Control-Allow-Credentials", "true");
             return new Result<String>().setStatus(200).setMsg("登录成功");
