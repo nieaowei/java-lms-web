@@ -52,7 +52,7 @@
                         .then(
                             (value) => {
                                     this.$notify({
-                                        title: value,
+                                        message: value,
                                         type: "success",
                                         position:constant.NOTIFY_POS,
                                     });
@@ -60,7 +60,7 @@
                             },
                             (err) => {
                                 this.$notify({
-                                    title: err,
+                                    message: err,
                                     type: "error",
                                     position:constant.NOTIFY_POS,
                                 });

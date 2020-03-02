@@ -2,6 +2,7 @@ import MyClass from "../../components/home/MyClass";
 import MyProfile from "../../components/home/MyProfile";
 import axios from 'axios'
 import constant from "../../constant";
+import DocClass from "../../components/home/DocClass";
 
 const module_AppIndex = {
     namespaced: true,
@@ -9,7 +10,7 @@ const module_AppIndex = {
     state: {
         loading: false,
         currentView: MyClass,
-        menuViews: [MyClass, MyProfile],
+        menuViews: [MyClass, MyProfile,DocClass],
         classes: [],
     },
     getters: {},
@@ -25,39 +26,11 @@ const module_AppIndex = {
         }
     },
     actions: {
-        getMyClass({commit}) {
-            return new Promise((resolve, reject) => {
-                axios.get(
-                    'api/user/doc/record',
-                    {
-                        timeout: 3000
-                    }
-                ).then(
-                    (success) => {
-                        if (success.data['status'] === 200) {
-                            commit('saveClasses', success.data['data']);
-                            resolve(success.data['msg'])
-                        }
-                        reject(success.data['msg'])
-                    }
-                ).catch(
-                    (fail) => {
-                        if (fail.response.status === 302) {
-                            reject(constant.REDIRECT_LOGIN)
-                        }
-                        reject(constant.SERVER_FAIL)
-                    }
-                );
-            }).finally(
-                () => {
-                    commit('changeLoading', false);
-                }
-            );
-        },
         getMyProfile({commit}) {
             return new Promise(
                 (resolve, reject) => {
-                    axios.get('/user/getMyProfile',
+                    axios.get(
+                        '/user/getMyProfile',
                         {timeout: 3000}
                     ).then(
                         (success) => {
@@ -82,13 +55,28 @@ const module_AppIndex = {
                 }
             );
         },
-        changeView({dispatch, commit}, view) {
+        // eslint-disable-next-line no-unused-vars
+        changeView({commit, dispatch, state, rootState}, view) {
             commit('changeCurrentView', view);
             commit('changeLoading', true);
             if (view === MyClass) {
-                return dispatch('getMyClass');
+                return dispatch("MyClass/getMyDocs",{},{root:true}).finally(
+                    ()=>{
+                        commit('changeLoading', false);
+                    }
+                );
             } else if (view === MyProfile) {
-                return dispatch('getMyProfile');
+                return dispatch('MyProfile/getProfile',{},{root:true}).finally(
+                    ()=>{
+                        commit('changeLoading', false);
+                    }
+                );
+            } else if (view === DocClass){
+                return dispatch('DocClass/getDocList',{},{root:true}).finally(
+                    ()=>{
+                        commit('changeLoading', false);
+                    }
+                );
             }
         }
     },

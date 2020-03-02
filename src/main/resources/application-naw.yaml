@@ -1,9 +1,15 @@
+web:
+  upload-path: /Users/nieaowei/Desktop/upload
 
 
 server:
   port: 8081
 
 spring:
+  mvc:
+    static-path-pattern: /**
+  resources:
+    static-locations: classpath:file:${web.upload-path}
   datasource:
     url: jdbc:mysql://localhost:3306/lms?characterEncoding=UTF-8
     username: root

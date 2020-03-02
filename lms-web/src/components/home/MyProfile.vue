@@ -1,38 +1,63 @@
 <template>
-    <el-card>
-            <el-form label-width="100px">
-                <el-form-item label="账号ID："  prop="username" :rules="[
-                            { required: true, message: '账号不能为空'}]">
-                    <el-input type="text" disabled="true" v-model="registerForm.username" placeholder="请输入用户名"></el-input>
-                </el-form-item>
-                <el-form-item label="用户名：" prop="password" :rules="[
-                            { required: true, message: '密码不能为空'}]">
-                    <el-input type="text" :disabled="true" v-model="registerForm.password" placeholder="请输入密码"></el-input>
-                </el-form-item>
-                <el-form-item label="手机号码：" prop="phonenum" :rules="[
-                            { required: true, message: '手机号码不能为空'},
-                            {type:'number', message: '手机号码格式不正确'}]">
-                    <el-input type="text" :disabled="true" v-model.number="registerForm.phonenum" placeholder="请输入手机号码"></el-input>
-                </el-form-item>
-            </el-form>
-    </el-card>
+    <el-tabs tab-position="right" :stretch="true" type="border-card">
+        <el-tab-pane label="基本信息">
+            <el-divider></el-divider>
+            <span>用户ID：{{this.$store.state.MyProfile.profile['uiid']}}</span>
+            <el-divider></el-divider>
+
+            <span>用户名：{{this.$store.state.MyProfile.profile['username']}}</span>
+            <el-divider></el-divider>
+
+            <span>手机号码：{{this.$store.state.MyProfile.profile['phonenum']}}</span>
+            <el-divider></el-divider>
+
+            <span>注册时间：{{this.$store.state.MyProfile.profile['createtime']}}</span>
+            <el-divider></el-divider>
+
+            <span>上一次修改信息时间：{{this.$store.state.MyProfile.profile['updatetime']}}</span>
+            <el-divider></el-divider>
+        </el-tab-pane>
+        <el-tab-pane label="修改密码">
+            <!--            <el-card>-->
+            <el-steps :active="active" finish-status="success" align-center style="margin-top: 100px">
+                    <el-step title="验证旧密码">
+                    </el-step>
+                    <el-step title="输入新密码">
+                    </el-step>
+                    <el-step title="修改成功">
+                    </el-step>
+            </el-steps>
+            <!--            </el-card>-->
+            <div>
+                <el-input v-if="active===0" type="text" label="旧密码：" placeholder="请输入旧密码"
+                style="padding: 10%"></el-input>
+                <el-input v-else-if="active===1" type="text" label="新密码：" placeholder="请输入新密码"
+                          style="padding: 10%"></el-input>
+                <span v-else >修改成功</span>
+            </div>
+            <el-button v-if="active<2" style="margin-bottom: 12px;" @click="nextStep">下一步</el-button>
+            <el-button v-else style="margin-bottom: 12px;" @click="nextStep">完成</el-button>
+        </el-tab-pane>
+
+    </el-tabs>
 
 </template>
 
 <script>
     export default {
         name: "MyProfile",
-        data(){
+        data() {
             var checkTwoPass = (rule, value, callback) => {
-                if (!value){
+                if (!value) {
                     callback(new Error('请再次输入密码'))
-                }else if (value !== this.registerForm.password) {
+                } else if (value !== this.registerForm.password) {
                     callback(new Error('两次输入密码不一致!'));
                 } else {
                     callback();
                 }
             };
             return {
+                active: 0,
                 registerForm: {
                     username: '',
                     password: '',
@@ -40,40 +65,35 @@
                     phonenum: ''
                 },
                 rules: {
-                    checkPass:[
-                        { validator:checkTwoPass,trigger:'blur',required:true}
+                    checkPass: [
+                        {validator: checkTwoPass, trigger: 'blur', required: true}
                     ],
                 },
                 responseResult: []
             }
         },
+        methods: {
+            nextStep() {
+                if (this.active++ > 2) {
+                    this.active = 0;
+                }
+            }
+        }
     }
 </script>
 
 <style scoped>
-    .el-card{
-        box-shadow: 0 0 5px #cac6c6;
-        /*padding: 10%;*/
-        /*margin: 20px;*/
-    }
-    .el-input{
+    .el-input {
         min-width: 200px;
         width: 20%;
     }
-    .el-card:hover{
-        box-shadow: 0 0 30px #cac6c6;
-    }
-    .profile{
+
+    .profile {
         width: 400px;
         margin: 25%;
     }
-    .clearfix:before,
-    .clearfix:after {
-        display: table;
-        content: "";
-    }
 
-    .clearfix:after {
-        clear: both
+    .el-tab-pane{
+        min-height: 520px;
     }
 </style>

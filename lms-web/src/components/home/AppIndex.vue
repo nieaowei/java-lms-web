@@ -1,10 +1,12 @@
 <template>
     <div class="main-container">
         <el-container style="height: 100%" class="outside-container">
-            <el-header height="80px">xxxx</el-header>
-            <el-container>
-                <el-aside>
-                    <el-card class="outside-card">
+            <el-header height="80px">刘军民是傻逼</el-header>
+            <!--            <div class="midille-container">-->
+            <el-container class="midille-container">
+                <el-container>
+                    <el-aside>
+                        <!--                        <el-card class="outside-card">-->
                         <el-card class="inside-card">
                             <el-avatar :size="100"
                                        fit="fill"
@@ -19,7 +21,7 @@
                         <el-menu
                                 default-active="1"
                                 @select="handleSelect">
-                            <el-menu-item index="1">
+                            <el-menu-item index="1" @click="test=false">
                                 <!--                                    <template slot="title">-->
                                 <i class="el-icon-menu"></i>
                                 <span>我的课程</span>
@@ -42,20 +44,22 @@
                                 <span>在线考核</span>
                             </el-menu-item>
                             <el-menu-item index="6">
-                                <i class="el-icon-document"></i>
+                                <i class="el-icon-back"></i>
                                 <span>退出</span>
                             </el-menu-item>
                         </el-menu>
-                    </el-card>
-                </el-aside>
-                <el-main v-loading=this.$store.state.AppIndex.loading>
-                    <keep-alive>
-                        <component v-bind:is="this.$store.state.AppIndex.currentView"></component>
-                    </keep-alive>
-                </el-main>
+                        <!--                        </el-card>-->
+                    </el-aside>
+                    <el-main v-loading=this.$store.state.AppIndex.loading>
+                        <keep-alive>
+                            <component v-bind:is="this.$store.state.AppIndex.currentView"></component>
+                        </keep-alive>
+                    </el-main>
+                </el-container>
+                <el-footer>
+                </el-footer>
             </el-container>
-            <el-footer>
-            </el-footer>
+
         </el-container>
     </div>
 </template>
@@ -64,33 +68,49 @@
     import MyClass from "./MyClass";
     import MyProfile from "./MyProfile";
     import constant from "../../constant";
+    import DocClass from "./DocClass";
 
     export default {
         name: "AppIndex",
-        components: {MyProfile, MyClass},
+        components: {MyProfile, MyClass, DocClass},
         data() {
-            return {}
+            return {
+            }
         },
         methods: {
             // eslint-disable-next-line no-unused-vars
             handleSelect(key, keyPath) {
+                if (key === '6') {
+                    // eslint-disable-next-line no-useless-escape
+                    var keys = document.cookie.match(/[^ =;]+(?=\=)/g);
+                    if (keys) {
+                        for (var i = keys.length; i--;) {
+                            document.cookie = keys[i] + '=0;path=/;expires=' + new Date(0).toUTCString();//清除当前域名下的,例如：m.kevis.com
+                            document.cookie = keys[i] + '=0;path=/;domain=' + document.domain + ';expires=' + new Date(0).toUTCString();//清除当前域名下的，例如 .m.kevis.com
+                            document.cookie = keys[i] + '=0;path=/;domain=kevis.com;expires=' + new Date(0).toUTCString();//清除一级域名下的或指定的，例如 .kevis.com
+                        }
+                    }
+                    alert('已清除');
+                    this.$router.push("login")
+                    return
+                }
                 this.$store.dispatch('AppIndex/changeView', this.$store.state.AppIndex.menuViews[parseInt(key, 10) - 1])
                     .then(
                         (resolve) => {
                             this.$notify({
-                                type:"success",
-                                message:resolve,
-                                position:constant.NOTIFY_POS,
+                                type: "success",
+                                message: resolve,
+                                position: constant.NOTIFY_POS,
                             })
                         },
                         (reject) => {
-                            if (reject === constant.REDIRECT_LOGIN){
+                            if (reject === constant.REDIRECT_LOGIN) {
                                 this.$router.push('login')
                             }
                             this.$notify({
-                                type:"error",
-                                message:reject,
-                                position:constant.NOTIFY_POS,
+                                type: "error",
+                                message: reject,
+                                position: constant.NOTIFY_POS,
                             })
                         }
                     )
@@ -101,21 +121,20 @@
                 .then(
                     (resolve) => {
                         this.$notify({
-                            type:"success",
-                            message:resolve,
-                            position:constant.NOTIFY_POS,
+                            type: "success",
+                            message: resolve,
+                            position: constant.NOTIFY_POS,
 
                         })
                     },
                     (reject) => {
-                        if (reject === constant.REDIRECT_LOGIN){
+                        if (reject === constant.REDIRECT_LOGIN) {
                             this.$router.push('login')
                         }
                         this.$notify({
-                            type:"error",
-                            message:reject,
-                            position:constant.NOTIFY_POS,
-
+                            type: "error",
+                            message: reject,
+                            position: constant.NOTIFY_POS,
                         })
                     }
                 )
@@ -144,18 +163,18 @@
     }
 
     .el-aside {
-        background-color: #D3DCE6;
+        /*background-color: #D3DCE6;*/
         color: #333;
         text-align: center;
-        /*line-height: 200px;*/
-        /*min-width: 100px;*/
-        /*width: 20%;*/
+        margin-top: 10px;
+        border: #dcdfe6 solid 1px;
     }
 
     .el-main {
         /*background-color: #E9EEF3;*/
         /*color: #333;*/
         text-align: center;
+        padding: 10px;
         /*line-height: 160px;*/
     }
 
@@ -175,16 +194,12 @@
         margin: 10px;
     }
 
-    .inside-card {
 
+    .midille-container {
+        /*margin: 50px;*/
+        padding-left: 5%;
+        padding-right: 5%;
     }
 
-    .el-card {
-        box-shadow: 0 0 5px #cac6c6;
-    }
-
-    .el-card:hover {
-        box-shadow: 0 0 30px #cac6c6;
-    }
 
 </style>

@@ -35,7 +35,7 @@ const module_Login = {
                             password: loginForm.password
                         },
                         {
-                            timeout: 3000
+                            timeout: 10000
                         }
                     ).then(
                         (successResponse) => {

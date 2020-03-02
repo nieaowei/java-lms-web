@@ -5,17 +5,19 @@ import module_Login from "./modules/Login";
 import module_Reigster from "./modules/Register";
 import module_MyProfile from "./modules/MyProfile";
 import module_AppIndex from "./modules/AppIndex";
+import module_DocClass from "./modules/DocClass";
 
 Vue.use(Vuex);
 
 const store = new Vuex.Store(
     {
         modules: {
-            Myclass: module_MyClass,
+            MyClass: module_MyClass,
             Login: module_Login,
             Register: module_Reigster,
             MyProfile: module_MyProfile,
             AppIndex: module_AppIndex,
+            DocClass: module_DocClass
         },
         state:{
 

@@ -51,20 +51,26 @@ create table learn_record(
 drop table learn_record;
 
 select  * from doc_list;
-insert into doc_list (name, path, uiid,duration) values('语文','/dsad/ad/asd',111,1000);
+update doc_list set duration=6666 where dlid=106;
+insert into doc_list (name, path, uiid,duration) values('你试试','/dsad/ad/asd',103,1000);
 insert into doc_list (name, path, uiid,duration) values('语文1','/dsad/ad/asd',111,1000);
+insert into doc_list (name, path, uiid,duration) values('数学','/dsad/ad/asd',103,1000);
+
 
 insert into learn_record (dlid, uiid,duration) values(101,133,0);
 insert into learn_record (dlid, uiid,duration) values(102,133,0);
 insert into learn_record (dlid, uiid,duration) values(104,133,0);
 
-insert into learn_record (dlid, uiid,duration) values(103,111,0);
+insert into learn_record (dlid, uiid,duration) values(106,103,500);
 insert into learn_record (dlid, uiid,duration) values(101,113,0);
 
+insert into learn_record (dlid, uiid) values(104,103);
 
 
 insert into learn_record (dlid, uiid,duration) values(101,null,0);
 
 select * from learn_record;
 
-update learn_record set duration=1000 where lrid=115;
+update learn_record set duration=1000 where lrid=102;
+
+delete from learn_record where lrid > 100;
