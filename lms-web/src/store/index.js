@@ -7,6 +7,7 @@ import module_MyProfile from "./modules/MyProfile";
 import module_AppIndex from "./modules/AppIndex";
 import module_DocClass from "./modules/DocClass";
 import module_studyDoc from "./modules/studyDoc";
+import module_VideoClass from "./modules/VideoClass";
 
 Vue.use(Vuex);
 
@@ -19,7 +20,8 @@ const store = new Vuex.Store(
             MyProfile: module_MyProfile,
             AppIndex: module_AppIndex,
             DocClass: module_DocClass,
-            studyDoc: module_studyDoc
+            studyDoc: module_studyDoc,
+            VideoClass: module_VideoClass
         },
         state:{
 

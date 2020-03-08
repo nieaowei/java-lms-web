@@ -4,7 +4,7 @@
             <span slot="label"><i class="el-icon-date"></i>文档课程</span>
             <el-row :gutter="10">
                 <el-col :xs="12" :sm="10" :md="8" :lg="6" :xl="4" :offset="1"
-                        v-for="classe in this.$store.state.DocClass.docList" :key="classe.id">
+                        v-for="classe in this.$store.state.VideoClass.videoList" :key="classe.id">
                     <el-card :body-style="{ padding: '0px' }">
                         <el-image
                                 style="width: 100%; height: 150px"
@@ -23,7 +23,7 @@
                                        icon="el-icon-circle-check"
                                        type="success" class="button">已添加
                             </el-button>
-                            <el-button v-else icon="el-icon-circle-plus-outline" type="primary" class="button" v-on:click="addDocLearn(classe.vlid)">添加学习</el-button>
+                            <el-button v-else icon="el-icon-circle-plus-outline" type="primary" class="button" v-on:click="addVideoRecord(classe.vlid)">添加学习</el-button>
                         </div>
                     </el-card>
                 </el-col>
@@ -34,8 +34,43 @@
 </template>
 
 <script>
+    import constant from "../../constant";
+
     export default {
-        name: "VideoClass"
+        name: "VideoClass",
+        computed: {
+
+        },
+        methods:{
+            addVideoRecord(vlid){
+                console.log(this.$store.state.DocClass.docList)
+                this.$store.dispatch("VideoClass/addVideoLearn",vlid).then(
+                    (resolve) => {
+                        this.$notify({
+                            type: "success",
+                            message: resolve,
+                            position: constant.NOTIFY_POS,
+                        })
+                        console.log(this.$store.state.DocClass.docList)
+
+                    },
+                    (reject) => {
+                        if (reject === constant.REDIRECT_LOGIN) {
+                            this.$router.push('login')
+                        }
+                        this.$notify({
+                            type: "error",
+                            message: reject,
+                            position: constant.NOTIFY_POS,
+                        })
+                    }
+                ).finally(
+                    ()=>{
+                        console.log(this.$store.state.DocClass.docList)
+                    }
+                )
+            }
+        },
     }
 </script>
 

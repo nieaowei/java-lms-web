@@ -3,6 +3,7 @@ import MyProfile from "../../components/home/MyProfile";
 import axios from 'axios'
 import constant from "../../constant";
 import DocClass from "../../components/home/DocClass";
+import VideoClass from "../../components/home/VideoClass";
 
 const module_AppIndex = {
     namespaced: true,
@@ -10,7 +11,7 @@ const module_AppIndex = {
     state: {
         loading: false,
         currentView: MyClass,
-        menuViews: [MyClass, MyProfile, DocClass],
+        menuViews: [MyClass, MyProfile, DocClass,VideoClass],
         classes: [],
         bottom: {
             enable: false,
@@ -89,6 +90,12 @@ const module_AppIndex = {
                 );
             } else if (view === DocClass) {
                 return dispatch('DocClass/getDocList', {}, {root: true}).finally(
+                    () => {
+                        commit('changeLoading', false);
+                    }
+                );
+            } else if (view === VideoClass){
+                return dispatch('VideoClass/getVideoList', {}, {root: true}).finally(
                     () => {
                         commit('changeLoading', false);
                     }

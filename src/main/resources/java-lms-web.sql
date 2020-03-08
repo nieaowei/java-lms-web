@@ -94,6 +94,9 @@ create table video_list(
                          FOREIGN KEY (uiid) REFERENCES user_info(uiid) ON DELETE CASCADE
 )engine=innodb auto_increment=100 charset = utf8;
 
+insert into video_list (name, path, cover, uiid) VALUES ('java入门','/dds','/asdasd',103);
+select * from video_list;
+
 create table video_record(
                              lrid bigint auto_increment primary key ,
                              vlid bigint not null ,
@@ -106,17 +109,22 @@ create table video_record(
                              constraint unique (vlid,uiid)
 )engine=innodb auto_increment=100 charset = utf8;
 
+select * from video_record;
+
 drop table video_record;
 
 create table test_info(
     tiid bigint auto_increment primary key ,
     title varchar(50) not null comment '试题名',
     uiid bigint not null comment '上传人',
+    num int not null comment '题目数量',
     createtime timestamp default current_timestamp comment '创建时间',
     updatetime timestamp default current_timestamp on update current_timestamp comment '更新时间',
     foreign key (uiid) references user_info(uiid) on delete cascade
 
 )engine=innodb auto_increment=100 charset = utf8;
+
+drop table test_info;
 
 create table test_content(
     tcid bigint auto_increment primary key ,
@@ -132,3 +140,4 @@ create table test_content(
     updatetime timestamp default current_timestamp on update current_timestamp comment '更新时间'
 )engine=innodb auto_increment=100 charset = utf8;
 
+drop table test_content;
