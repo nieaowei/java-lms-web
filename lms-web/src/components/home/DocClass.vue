@@ -11,7 +11,7 @@
                                     :src="classe.cover"
                                     fit="cover"></el-image>
                             <div style="padding: 14px;">
-                                <span>{{classe.name}}({{classe.dlid}})</span>
+                                <span>{{classe.name}}({{classe.vlid}})</span>
                                 <!--                                <el-progress :text-inside="true" :stroke-width="10" :percentage="classe['duration']*100/classe['doc_duration']"></el-progress>-->
                                 <div class="bottom clearfix">
                                     <span class="time">上传人: {{classe.username}}</span><br/>
@@ -23,7 +23,7 @@
                                            icon="el-icon-circle-check"
                                            type="success" class="button">已添加
                                 </el-button>
-                                <el-button v-else icon="el-icon-circle-plus-outline" type="primary" class="button" v-on:click="addDocLearn(classe.dlid)">添加学习</el-button>
+                                <el-button v-else icon="el-icon-circle-plus-outline" type="primary" class="button" v-on:click="addDocLearn(classe.vlid)">添加学习</el-button>
                             </div>
                         </el-card>
                     </el-col>
@@ -43,9 +43,9 @@
 
         },
         methods:{
-            addDocLearn(dlid){
+            addDocLearn(vlid){
                 console.log(this.$store.state.DocClass.docList)
-                this.$store.dispatch("DocClass/addDocLearn",dlid).then(
+                this.$store.dispatch("DocClass/addDocLearn",vlid).then(
                     (resolve) => {
                         this.$notify({
                             type: "success",

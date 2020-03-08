@@ -12,7 +12,7 @@
                                     :src="classe.cover"
                                     fit="cover"></el-image>
                             <div style="padding: 14px;">
-                                <span>{{classe.name}}({{classe.dlid}})</span>
+                                <span>{{classe.name}}({{classe.vlid}})</span>
                                 <el-progress v-if="classe.finished" :percentage="100" status="success"></el-progress>
                                 <el-progress v-else :percentage="Number(classe.percent.toFixed(1))"></el-progress>
                                 <!--                                <el-progress :text-inside="true" :stroke-width="10" :percentage="classe['duration']*100/classe['doc_duration']"></el-progress>-->
@@ -138,8 +138,8 @@
                 this.studyWindowEnable=true
                 this.studyWindow["title"]=title;
                 this.loading=true;
-                this.studyWindow.currentClass=classe.dlid
-                this.$store.dispatch("studyDoc/loadPdfData",classe.dlid).then(
+                this.studyWindow.currentClass=classe.vlid
+                this.$store.dispatch("studyDoc/loadPdfData",classe.vlid).then(
                     (resolve) => {
                         this.$notify({
                             type: "success",
