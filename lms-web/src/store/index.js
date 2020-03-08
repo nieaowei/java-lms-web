@@ -6,6 +6,7 @@ import module_Reigster from "./modules/Register";
 import module_MyProfile from "./modules/MyProfile";
 import module_AppIndex from "./modules/AppIndex";
 import module_DocClass from "./modules/DocClass";
+import module_studyDoc from "./modules/studyDoc";
 
 Vue.use(Vuex);
 
@@ -17,7 +18,8 @@ const store = new Vuex.Store(
             Register: module_Reigster,
             MyProfile: module_MyProfile,
             AppIndex: module_AppIndex,
-            DocClass: module_DocClass
+            DocClass: module_DocClass,
+            studyDoc: module_studyDoc
         },
         state:{
 

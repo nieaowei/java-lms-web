@@ -7,8 +7,9 @@
                             v-for="classe in this.$store.state.DocClass.docList" :key="classe.id">
                         <el-card :body-style="{ padding: '0px' }">
                             <el-image
-                                    src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
-                                    fit="fill"></el-image>
+                                    style="width: 100%; height: 150px"
+                                    :src="classe.cover"
+                                    fit="cover"></el-image>
                             <div style="padding: 14px;">
                                 <span>{{classe.name}}({{classe.dlid}})</span>
                                 <!--                                <el-progress :text-inside="true" :stroke-width="10" :percentage="classe['duration']*100/classe['doc_duration']"></el-progress>-->
@@ -87,6 +88,7 @@
     /*}*/
     .el-card {
         box-shadow: 0 0 5px #cac6c6;
+        height: 350px;
     }
 
     .el-card:hover {

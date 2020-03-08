@@ -5,21 +5,21 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "doc_list")
+@Table(name = "video_list")
 @DynamicUpdate
-public class DocList  {
+public class VideoList {
     /**
      * 学习文档ID
      */
     @Id
-    @Column(name = "dlid")
+    @Column(name = "vlid")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer dlid;
+    private Integer vlid;
     /**
      * 文档上传人ID，用户表外键
      */
-    @ManyToOne(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
-    @JoinColumn(name = "uiid",referencedColumnName = "uiid")
+    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "uiid", referencedColumnName = "uiid")
     private UserEntity userEntity;
 //    private Integer uiid;
     /**
@@ -51,17 +51,17 @@ public class DocList  {
         return cover;
     }
 
-    public DocList setCover(String cover) {
+    public VideoList setCover(String cover) {
         this.cover = cover;
         return this;
     }
 
-    public Integer getDlid() {
-        return dlid;
+    public Integer getVlid() {
+        return vlid;
     }
 
-    public DocList setDlid(Integer dlid) {
-        this.dlid = dlid;
+    public VideoList setVlid(Integer vlid) {
+        this.vlid = vlid;
         return this;
     }
 
@@ -70,7 +70,7 @@ public class DocList  {
         return name;
     }
 
-    public DocList setName(String name) {
+    public VideoList setName(String name) {
         this.name = name;
         return this;
 
@@ -88,7 +88,7 @@ public class DocList  {
         return path;
     }
 
-    public DocList setPath(String path) {
+    public VideoList setPath(String path) {
         this.path = path;
         return this;
     }
@@ -97,7 +97,7 @@ public class DocList  {
         return duration;
     }
 
-    public DocList setDuration(Integer duration) {
+    public VideoList setDuration(Integer duration) {
         this.duration = duration;
         return this;
     }
@@ -106,7 +106,7 @@ public class DocList  {
         return createtime;
     }
 
-    public DocList setCreatetime(String createtime) {
+    public VideoList setCreatetime(String createtime) {
         this.createtime = createtime;
         return this;
     }
@@ -115,13 +115,14 @@ public class DocList  {
         return updatetime;
     }
 
-    public DocList setUpdatetime(String updatetime) {
+    public VideoList setUpdatetime(String updatetime) {
         this.updatetime = updatetime;
         return this;
     }
 
-    public DocList setUiid(Long uiid){
+    public VideoList setUiid(Long uiid) {
         this.userEntity.setUiid(uiid);
         return this;
     }
+
 }

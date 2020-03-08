@@ -62,7 +62,8 @@ public class DocListService {
                     .setUpdatetime(docList.getUpdatetime())
                     .setDlid(docList.getDlid())
                     .setDuration(docList.getDuration())
-                    .setFlag(false);
+                    .setFlag(false)
+                    .setCover(docList.getCover());
             for (LearnRecord learnRecord:learnRecords) {
 
                 if (docList.getDlid().equals(learnRecord.getDocList().getDlid())){

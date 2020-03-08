@@ -51,7 +51,9 @@ public class LearnRecordService {
                     .setDoc_duration(learnrecord.getDocList().getDuration())
                     .setDuration(learnrecord.getDuration())
                     .isFinished()
-                    .computedPercent();
+                    .computedPercent()
+                    .setPath(learnrecord.getDocList().getPath())
+                    .setCover(learnrecord.getDocList().getCover());
             learnVOList.add(learnVO);
         }
         return learnVOList;

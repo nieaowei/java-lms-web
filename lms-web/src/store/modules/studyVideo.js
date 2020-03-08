@@ -2,15 +2,15 @@ import pdf from 'vue-pdf'
 import axios from 'axios'
 import constant from "../../constant";
 
-const module_studyDoc = {
+const module_studyVideo = {
     namespaced: true,
     state: {
-        PdfData: '',
+        VideoData: '',
         PdfPageNum: 0,
     },
     mutations: {
-        savePdfData(state, data) {
-            state.PdfData = data;
+        saveVideoData(state, data) {
+            state.VideoData = data;
         },
         savePdfPageNum(state, data) {
             state.PdfPageNum = data;
@@ -18,7 +18,7 @@ const module_studyDoc = {
 
     },
     actions: {
-        loadPdfData({commit}, dlid) {
+        loadVideoData({commit}, dlid) {
             return new Promise(
                 (resolve1, reject1) => {
                     // var flag =false;
@@ -35,21 +35,21 @@ const module_studyDoc = {
                                     (pdf1) => {
                                         commit('savePdfData', task);
                                         commit('savePdfPageNum', pdf1.numPages)
-                                        resolve1("文档获取成功")
+                                        resolve1("视频地址获取成功")
                                     }
                                 ).catch(
                                     (fail) => {
                                         console.log(fail)
                                         commit('savePdfData', '');
                                         commit('savePdfPageNum', 0)
-                                        reject1("文档获取失败")
+                                        reject1("视频地址获取失败")
 
                                     }
                                 )
                             }else{
                                 commit('savePdfData', '');
                                 commit('savePdfPageNum', 0)
-                                reject1("文档获取失败")
+                                reject1("视频地址获取失败")
                             }
                         }
                     ).catch(
@@ -67,4 +67,4 @@ const module_studyDoc = {
     }
 }
 
-export default module_studyDoc;
+export default module_studyVideo;

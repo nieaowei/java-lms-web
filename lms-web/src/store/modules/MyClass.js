@@ -22,11 +22,11 @@ const module_MyClass = {
                     }
                 ).then(
                     (success) => {
-                        if (success.data['status'] === 200) {
-                            commit('saveMyDocs', success.data['data']);
-                            resolve(success.data['msg'])
+                        if (success.data.status === 200) {
+                            commit('saveMyDocs', success.data.data);
+                            resolve(success.data.msg)
                         }
-                        reject(success.data['msg'])
+                        reject(success.data.msg)
                     }
                 ).catch(
                     (fail) => {
@@ -38,6 +38,31 @@ const module_MyClass = {
                 );
             });
         },
+        // eslint-disable-next-line no-unused-vars
+        updateDuration({commit},_dlid){
+            return new Promise((resolve, reject) => {
+                axios.post(
+                    "api/user/doc/update",
+                    {
+                        dlid: _dlid
+                    }
+                ).then(
+                    (success) => {
+                        if (success.data.status === 200) {
+                            resolve(success.data.data)
+                        }
+                        reject(success.data.msg)
+                    }
+                ).catch(
+                    (fail) => {
+                        if (fail.response.status === 302) {
+                            reject(constant.REDIRECT_LOGIN)
+                        }
+                        reject(constant.SERVER_FAIL)
+                    }
+                );
+            })
+        }
     },
 }
 export default module_MyClass;

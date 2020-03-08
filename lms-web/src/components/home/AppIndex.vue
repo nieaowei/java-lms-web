@@ -61,6 +61,10 @@
             </el-container>
 
         </el-container>
+        <div id="entire-bottom" v-show="this.$store.state.AppIndex.bottom.enable">
+            <el-progress v-if="this.$store.state.AppIndex.bottom.percent===100" status="success" :text-inside="true" :stroke-width="20" :percentage="100"></el-progress>
+            <el-progress v-else="" :text-inside="true" :stroke-width="20" :percentage="this.$store.state.AppIndex.bottom.percent"></el-progress>
+        </div>
     </div>
 </template>
 
@@ -75,6 +79,7 @@
         components: {MyProfile, MyClass, DocClass},
         data() {
             return {
+                bottom_status:this.$store.state.AppIndex.bottom.status,
             }
         },
         methods: {
@@ -199,6 +204,14 @@
         /*margin: 50px;*/
         padding-left: 5%;
         padding-right: 5%;
+    }
+
+    #entire-bottom{
+        left: 0;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        z-index: 9999;
     }
 
 

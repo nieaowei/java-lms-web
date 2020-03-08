@@ -5,6 +5,7 @@ import AppIndex from "@/components/home/AppIndex";
 import Login from "@/components/Login";
 import Register from "@/components/Register";
 import studyDoc from "../components/study/studyDoc";
+import studyVidoe from "../components/study/studyVidoe";
 
 Vue.use(Router)
 
@@ -34,6 +35,11 @@ export default new Router(
             },
             {
                 path:'/src/assets'
+            },
+            {
+                name:'studyVideo',
+                path:'/studyVideo',
+                component:studyVidoe
             }
         ]
     }

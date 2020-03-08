@@ -4,7 +4,7 @@
                  label-width="65px" label-position="left">
             <h3>用户登录</h3>
             <el-form-item label="账号：" prop="username">
-                <el-input type="text" v-model="loginForm.username" placeholder="请输入用户名"></el-input>
+                <el-input type="text" autofocus v-model="loginForm.username" placeholder="请输入用户名"></el-input>
             </el-form-item>
             <el-form-item label="密码：" prop="password">
                 <el-input type="password" v-model="loginForm.password" placeholder="请输入密码" show-password></el-input>

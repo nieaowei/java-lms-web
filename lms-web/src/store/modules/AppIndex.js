@@ -10,11 +10,27 @@ const module_AppIndex = {
     state: {
         loading: false,
         currentView: MyClass,
-        menuViews: [MyClass, MyProfile,DocClass],
+        menuViews: [MyClass, MyProfile, DocClass],
         classes: [],
+        bottom: {
+            enable: false,
+            percent: 0.0,
+            status: "success",
+        }
     },
     getters: {},
     mutations: {
+        setBottomEnable(state, data) {
+            state.bottom.enable = data;
+        },
+        setBottomPercent(state, data) {
+            state.bottom.percent = data;
+            if (state.bottom.percent === 100){
+                state.status = "success";
+            }else {
+                state.status = 'success';
+            }
+        },
         saveClasses(state, data) {
             state.classes = data;
         },
@@ -60,20 +76,20 @@ const module_AppIndex = {
             commit('changeCurrentView', view);
             commit('changeLoading', true);
             if (view === MyClass) {
-                return dispatch("MyClass/getMyDocs",{},{root:true}).finally(
-                    ()=>{
+                return dispatch("MyClass/getMyDocs", {}, {root: true}).finally(
+                    () => {
                         commit('changeLoading', false);
                     }
                 );
             } else if (view === MyProfile) {
-                return dispatch('MyProfile/getProfile',{},{root:true}).finally(
-                    ()=>{
+                return dispatch('MyProfile/getProfile', {}, {root: true}).finally(
+                    () => {
                         commit('changeLoading', false);
                     }
                 );
-            } else if (view === DocClass){
-                return dispatch('DocClass/getDocList',{},{root:true}).finally(
-                    ()=>{
+            } else if (view === DocClass) {
+                return dispatch('DocClass/getDocList', {}, {root: true}).finally(
+                    () => {
                         commit('changeLoading', false);
                     }
                 );

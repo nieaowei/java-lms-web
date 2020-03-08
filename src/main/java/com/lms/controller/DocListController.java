@@ -42,4 +42,22 @@ public class DocListController {
         List<DocListVO> docListList = docListService.findAllOrderAddFlag((long)request.getAttribute("uiid"));
         return new Result<List<DocListVO>>().setData(docListList).setStatus(200).setMsg("获取文档课程成功");
     }
+
+    @CrossOrigin
+    @GetMapping(value = "/doc/getpath")
+    @RequiredToken
+    public Result<String> getPath(HttpServletRequest request){
+        DocList docList;
+        try{
+            Integer dlid = Integer.parseInt(request.getParameter("dlid"));
+            docList = docListService.findByDlid(dlid);
+        }catch (Exception e){
+            return new Result<String>().setMsg("获取文档路径失败").setStatus(500);
+        }
+        if (docList!=null){
+            return new Result<String>().setStatus(200).setData(docList.getPath()).setMsg("获取文档路径成功");
+        }
+        return new Result<String>().setMsg("获取文档路径失败").setStatus(500);
+
+    }
 }

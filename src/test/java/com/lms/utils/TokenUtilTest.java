@@ -1,7 +1,13 @@
 package com.lms.utils;
 
 import com.lms.entity.UserEntity;
+import javafx.scene.input.DataFormat;
 import org.junit.Test;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class TokenUtilTest {
 
@@ -18,7 +24,12 @@ public class TokenUtilTest {
     }
 
     @Test
-    public void testGetToken() {
+    public void testGetToken() throws ParseException {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = df.parse("2020-03-03 16:43:19");
+        Date date2 = new Date();
+        Date date1 = new Date();
+        double timeout = (date1.getTime()-date.getTime())/1000.0/60/60;
     }
 
     @Test

@@ -23,9 +23,32 @@ public class LearnVO implements Serializable {
     private Integer dlid;//课程id
     private String name;//课程名称
     private Integer doc_duration;//课程时间
+    private String path;
     private Integer duration;//已学习时间
     private Boolean finished;//完成标志
     private Double percent;//百分比
+
+    /**
+     * 封面图片
+     */
+    private String cover;
+
+    public String getCover() {
+        return cover;
+    }
+
+    public LearnVO setCover(String cover) {
+        this.cover = cover;
+        return this;
+    }
+    public String getPath() {
+        return path;
+    }
+
+    public LearnVO setPath(String path) {
+        this.path = path;
+        return this;
+    }
 
     public LearnVO computedPercent() {
         if (this.duration == null) {

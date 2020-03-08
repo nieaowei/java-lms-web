@@ -1,5 +1,7 @@
 package com.lms.vo;
 
+import com.lms.entity.DocList;
+
 /***
  *
  * 文档列表业务数据模型
@@ -33,6 +35,19 @@ public class DocListVO {
      * 用于前端已学课程辨识
      */
     private Boolean flag;
+    /**
+     * 封面图片
+     */
+    private String cover;
+
+    public String getCover() {
+        return cover;
+    }
+
+    public DocListVO setCover(String cover) {
+        this.cover = cover;
+        return this;
+    }
 
     public Boolean getFlag() {
         return flag;
