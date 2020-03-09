@@ -130,6 +130,7 @@ create table test_content(
     tcid bigint auto_increment primary key ,
     tiid bigint not null comment '所属试题',
     question varchar(100) not null comment '题目',
+    score int not null comment '分数',
     opa varchar(30) not null ,
     opb varchar(30) not null ,
     opc varchar(30) not null ,
@@ -141,3 +142,13 @@ create table test_content(
 )engine=innodb auto_increment=100 charset = utf8;
 
 drop table test_content;
+
+create table test_record(
+    trid bigint auto_increment primary key ,
+    tiid bigint not null comment '试卷号',
+    uiid bigint not null comment '用户号',
+    grade int not null default 0 comment '成绩',
+    foreign key (tiid) references test_info(tiid) on delete cascade,
+    foreign key (uiid) references user_info(uiid) on delete cascade
+
+)engine = innodb auto_increment=100 charset = utf8;
