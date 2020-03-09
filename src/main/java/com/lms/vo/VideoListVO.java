@@ -1,14 +1,16 @@
 package com.lms.vo;
 
-public class VideoListVO {
+import java.io.Serializable;
+
+public class VideoListVO implements Serializable {
     private Integer vlid;
     /**
-     * 文档上传人ID，用户表外键
+     * 视频上传人ID，用户表外键
      */
     private String username;
 //    private Integer uiid;
     /**
-     * w文档名称
+     * 视频名称
      */
     private String name;
     /**
@@ -24,7 +26,7 @@ public class VideoListVO {
      */
     private String updatetime;
     /**
-     * 用于前端已学课程辨识
+     * 用于前端已学视频辨识
      */
     private Boolean flag;
     /**

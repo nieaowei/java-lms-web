@@ -2,13 +2,15 @@ package com.lms.vo;
 
 import com.lms.entity.DocList;
 
+import java.io.Serializable;
+
 /***
  *
  * 文档列表业务数据模型
  *
  */
 
-public class DocListVO {
+public class DocListVO implements Serializable {
     private Integer dlid;
     /**
      * 文档上传人ID，用户表外键

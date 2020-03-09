@@ -25,7 +25,7 @@ public class LoginController {
         UserEntity user = userService.get(requestUser.getUsername(),requestUser.getPassword());
         if (null != user){
             //登录成功--- 签发token
-            Cookie cookie= new Cookie("token",TokenUtil.getToken(user.getUiid()));
+            Cookie cookie= new Cookie("token", TokenUtil.getToken(user.getUiid()));
             cookie.setDomain("localhost");
             cookie.setPath("/");
             cookie.setMaxAge((int)TokenUtil.EXPIRE_TIME);

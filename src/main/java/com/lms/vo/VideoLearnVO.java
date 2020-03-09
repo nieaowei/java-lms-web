@@ -3,10 +3,12 @@ package com.lms.vo;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
 //@AllArgsConstructor
 @JsonSerialize
-public class VideoLearnVO {
+public class VideoLearnVO implements Serializable {
     private Integer vlid;//视频id
     private String name;//视频名称
     private Integer doc_duration;//视频时间

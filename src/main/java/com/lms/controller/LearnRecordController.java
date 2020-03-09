@@ -61,7 +61,8 @@ public class LearnRecordController {
     @CrossOrigin
     @PostMapping(value = "/user/doc/addRecord")
     @RequiredToken
-    public Result<List<DocListVO>> addRecord(@RequestBody JSONObject jsonParam,HttpServletRequest request) {
+    public Result<List<DocListVO>> addRecord(@RequestBody JSONObject jsonParam,
+                                             HttpServletRequest request) {
         List<DocListVO> docListList;
         try {
             Integer dlid = jsonParam.getInteger("dlid");
