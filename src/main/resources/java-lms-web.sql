@@ -146,6 +146,9 @@ drop table test_content;
 create table test_record(
     trid bigint auto_increment primary key ,
     tiid bigint not null comment '试卷号',
+    uiid bigint not null comment '用户号',
     grade int not null default 0 comment '成绩',
-    foreign key (tiid) references test_info(tiid) on delete cascade
+    foreign key (tiid) references test_info(tiid) on delete cascade,
+    foreign key (uiid) references user_info(uiid) on delete cascade
+
 )engine = innodb auto_increment=100 charset = utf8;
