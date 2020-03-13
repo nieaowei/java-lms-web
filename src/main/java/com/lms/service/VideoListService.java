@@ -1,12 +1,8 @@
 package com.lms.service;
 
-import com.lms.dao.DocListDao;
 import com.lms.dao.VideoListDao;
 import com.lms.entity.*;
-import com.lms.vo.DocListVO;
-import com.lms.vo.VideoLearnVO;
 import com.lms.vo.VideoListVO;
-import javafx.scene.shape.VLineTo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,7 +39,7 @@ public class VideoListService {
      * 查找所有文档并通过创建时间降序排序
      * @return
      */
-    public List<VideoList> findAllOrder(){
+    public List<VideoList> findAllOrderByCreatetimeDesc(){
         return videoListDao.findAllByOrderByCreatetimeDesc();
     }
 
@@ -54,8 +50,8 @@ public class VideoListService {
      */
     public List<VideoListVO> findAllOrderAddFlag(Long uiid){
         List<VideoLearnRecord> learnRecords = videoLearnRecordService.findByUiid(uiid);
-        List<VideoList> videoLists = findAllOrder();
-        List<VideoListVO> videoLearnVOList = new ArrayList<>();
+        List<VideoList> videoLists = findAllOrderByCreatetimeDesc();
+        List<VideoListVO> videoListVOMap = new ArrayList<>();
         for (VideoList videoList: videoLists) {
             VideoListVO videoListVO = new VideoListVO().setUsername(videoList.getUserEntity().getUsername())
                     .setName(videoList.getName())
@@ -71,9 +67,9 @@ public class VideoListService {
                     videoListVO.setFlag(true);
                 }
             }
-            videoLearnVOList.add(videoListVO);
+            videoListVOMap.add(videoListVO);
         }
-        return videoLearnVOList;
+        return videoListVOMap;
     }
 
     public List<VideoList> findByUserEntity(UserEntity user) {

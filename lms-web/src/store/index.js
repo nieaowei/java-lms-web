@@ -8,6 +8,8 @@ import module_AppIndex from "./modules/AppIndex";
 import module_DocClass from "./modules/DocClass";
 import module_studyDoc from "./modules/studyDoc";
 import module_VideoClass from "./modules/VideoClass";
+import module_studyVideo from "./modules/studyVideo";
+import module_adminDoc from "./modules/adminDoc";
 
 Vue.use(Vuex);
 
@@ -21,27 +23,25 @@ const store = new Vuex.Store(
             AppIndex: module_AppIndex,
             DocClass: module_DocClass,
             studyDoc: module_studyDoc,
-            VideoClass: module_VideoClass
+            studyVideo: module_studyVideo,
+            VideoClass: module_VideoClass,
+            adminDoc: module_adminDoc,
         },
-        state:{
-
-        },
-        mutations:{
-
-        },
-        actions:{
+        state: {},
+        mutations: {},
+        actions: {
             // eslint-disable-next-line no-unused-vars
-            successNotify({commit},vue,msg){
+            successNotify({commit}, vue, msg) {
                 vue.$notify({
-                    type:"success",
-                    message:msg
+                    type: "success",
+                    message: msg
                 })
             },
             // eslint-disable-next-line no-unused-vars
-            failNotify({commit},vue,msg){
+            failNotify({commit}, vue, msg) {
                 vue.$notify({
-                    type:"error",
-                    message:msg
+                    type: "error",
+                    message: msg
                 })
             }
         }

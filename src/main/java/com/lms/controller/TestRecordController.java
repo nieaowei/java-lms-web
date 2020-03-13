@@ -62,13 +62,13 @@ public class TestRecordController {
         long uiid = (long) request.getAttribute(AuthInterceptor.RESULT_KEY);
         TestInfo testInfo = testInfoService.findByTiid(tiid);
         List<TestContent> testContentList = testContentService.findAllByTestInfo(testInfo);
-        Integer size = testContentService.countAllByTcid();
+//        Integer size = testContentService.countAllByTcid();
         Integer grade = 0;
-        for (int i = 1; i <= size; i++){
-            if (jsonParam.getInteger(String.valueOf(i)).equals(testContentList.get(i).getAnswer())){
-                grade += testContentList.get(i).getScore();
-            }
-        }
+//        for (int i = 1; i <= size; i++){
+//            if (jsonParam.getInteger(String.valueOf(i)).equals(testContentList.get(i).getAnswer())){
+//                grade += testContentList.get(i).getScore();
+//            }
+//        }
         TestRecord testRecord = new TestRecord();
         testRecord.setUserEntity(userService.findByUiid(uiid));
         testRecord.setTestInfo(testInfoService.findByTiid(tiid));

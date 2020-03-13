@@ -6,6 +6,8 @@ import Login from "@/components/Login";
 import Register from "@/components/Register";
 import studyDoc from "../components/study/studyDoc";
 import studyVidoe from "../components/study/studyVidoe";
+import admin from "../components/admin/admin";
+import upload from "../components/admin/upload";
 
 Vue.use(Router)
 
@@ -40,6 +42,16 @@ export default new Router(
                 name:'studyVideo',
                 path:'/studyVideo',
                 component:studyVidoe
+            },
+            {
+                name:'admin',
+                path:'/admin',
+                component:admin,
+            },
+            {
+                name:'upload',
+                path:'/upload',
+                component:upload,
             }
         ]
     }

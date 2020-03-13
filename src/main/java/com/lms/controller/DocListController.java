@@ -6,13 +6,9 @@ import com.lms.service.DocListService;
 import com.lms.utils.Result;
 import com.lms.vo.DocListVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -42,8 +38,8 @@ public class DocListController {
     @RequiredToken
     public Result<List<DocListVO>> allPeron(HttpServletRequest request){
         //无论查询到与否  docList对象都会生成，如果未查询到，其size为0
-        List<DocListVO> docListList = docListService.findAllOrderAddFlag((long)request.getAttribute("uiid"));
-        return new Result<List<DocListVO>>().setData(docListList).setStatus(200).setMsg("获取文档课程成功");
+        List<DocListVO> docListVOMap = docListService.findAllOrderAddFlag((long)request.getAttribute("uiid"));
+        return new Result<List<DocListVO>>().setData(docListVOMap).setStatus(200).setMsg("获取文档课程成功");
     }
 
     @CrossOrigin
@@ -65,25 +61,30 @@ public class DocListController {
     }
 
     @CrossOrigin
-    @GetMapping("doc/search")
-    @RequiredToken
-    public Result<DocList> search(HttpServletRequest request){
-        String name = request.getParameter("name");
-        DocList docList = docListService.findByName(name);
-        return new Result<DocList>().setData(docList).setStatus(200).setMsg("查询文档");
+    @GetMapping(value = "/admin/doc/all")
+    public Result<List<DocListVO>> getAll(HttpServletRequest request){
+        List<DocListVO> docListVOList;
+        try{
+            docListVOList = docListService.findAllForAdmin();
+        }catch (Exception e){
+            return new Result<List<DocListVO>>().setStatus(200).setMsg("获取文档列表失败");
+        }
+        return new Result<List<DocListVO>>().setStatus(200).setMsg("获取文档列表成功").setData(docListVOList);
     }
 
     @CrossOrigin
-    @PostMapping("doc/add")
+    @PostMapping(value = "/admin/doc/add")
     @RequiredToken
-    public Result<DocList> add(HttpServletRequest request){
-        String cover = request.getParameter("cover");
-        String path = request.getParameter("path");
-        String name = request.getParameter("name");
-        Integer duration = Integer.valueOf(request.getParameter("duration"));
-        DocList docList = new DocList();
-        docList.setCover(cover).setPath(path).setName(name).setDuration(duration);
-        docList = docListService.save(docList);
-        return new Result<DocList>().setData(docList).setStatus(200).setMsg("新增文档");
+    public Result<DocListVO> addDoc(@RequestBody DocList docList,HttpServletRequest request){
+        DocListVO docListVO;
+       try{
+           Long uiid = (long)request.getAttribute("uiid");
+           docList = docListService.saveAndRefresh(docList.setUiid(uiid));
+           docListVO = new DocListVO(docList);
+       }catch (Exception e){
+           return new Result<DocListVO>().setStatus(500).setMsg("新建文档课程失败");
+       }
+        return new Result<DocListVO>().setStatus(200).setMsg("新建文档课程成功").setData(docListVO);
     }
+
 }

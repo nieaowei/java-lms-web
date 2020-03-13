@@ -1,5 +1,6 @@
 web:
-  upload-path: /Users/nieaowei/Desktop/upload
+  upload_path: /Users/nieaowei/Desktop/upload
+  domain: localhost:8081
 
 
 server:

@@ -1,9 +1,8 @@
 import MyClass from "../../components/home/MyClass";
 import MyProfile from "../../components/home/MyProfile";
-import axios from 'axios'
-import constant from "../../constant";
 import DocClass from "../../components/home/DocClass";
 import VideoClass from "../../components/home/VideoClass";
+import admin from "../../components/admin/admin";
 
 const module_AppIndex = {
     namespaced: true,
@@ -11,7 +10,7 @@ const module_AppIndex = {
     state: {
         loading: false,
         currentView: MyClass,
-        menuViews: [MyClass, MyProfile, DocClass,VideoClass],
+        menuViews: [MyClass, MyProfile, DocClass,VideoClass,null,admin],
         classes: [],
         bottom: {
             enable: false,
@@ -43,65 +42,7 @@ const module_AppIndex = {
         }
     },
     actions: {
-        getMyProfile({commit}) {
-            return new Promise(
-                (resolve, reject) => {
-                    axios.get(
-                        '/user/getMyProfile',
-                        {timeout: 3000}
-                    ).then(
-                        (success) => {
-                            // eslint-disable-next-line no-empty
-                            if (success.data['status'] === 200) {
-                                resolve()
-                            }
-                            // eslint-disable-next-line no-unused-vars
-                        }
-                    ).catch(
-                        (fail) => {
-                            if (fail.response.status === 302) {
-                                reject(constant.REDIRECT_LOGIN)
-                            }
-                            reject()
-                        }
-                    );
-                }
-            ).finally(
-                () => {
-                    commit('changeLoading', false);
-                }
-            );
-        },
-        // eslint-disable-next-line no-unused-vars
-        changeView({commit, dispatch, state, rootState}, view) {
-            commit('changeCurrentView', view);
-            commit('changeLoading', true);
-            if (view === MyClass) {
-                return dispatch("MyClass/getMyDocs", {}, {root: true}).finally(
-                    () => {
-                        commit('changeLoading', false);
-                    }
-                );
-            } else if (view === MyProfile) {
-                return dispatch('MyProfile/getProfile', {}, {root: true}).finally(
-                    () => {
-                        commit('changeLoading', false);
-                    }
-                );
-            } else if (view === DocClass) {
-                return dispatch('DocClass/getDocList', {}, {root: true}).finally(
-                    () => {
-                        commit('changeLoading', false);
-                    }
-                );
-            } else if (view === VideoClass){
-                return dispatch('VideoClass/getVideoList', {}, {root: true}).finally(
-                    () => {
-                        commit('changeLoading', false);
-                    }
-                );
-            }
-        }
+
     },
 }
 

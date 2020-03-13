@@ -14,13 +14,21 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
+@Transactional
 public class VideoLearnRecordService {
     @Autowired
     private VideoLearnRecordDao videoLearnRecordDao;
+
+    @Autowired
+    private EntityManager entityManager;
 
     public VideoLearnRecord findByLrid(Integer lrid){
         return videoLearnRecordDao.findByLrid(lrid);
@@ -58,9 +66,16 @@ public class VideoLearnRecordService {
                     .computedPercent()
                     .setPath(videoLearnRecord.getVideoList().getPath())
                     .setCover(videoLearnRecord.getVideoList().getCover());
+//            videoLearnVOMap.put(videoLearnVO.getVlid(),videoLearnVO);
             videoLearnVOList.add(videoLearnVO);
         }
         return videoLearnVOList;
+    }
+
+    public VideoLearnRecord saveAndRefresh(VideoLearnRecord learnRecord){
+        learnRecord = videoLearnRecordDao.save(learnRecord);
+        entityManager.refresh(learnRecord);
+        return learnRecord;
     }
 
 }

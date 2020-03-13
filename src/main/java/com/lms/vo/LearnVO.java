@@ -2,6 +2,7 @@ package com.lms.vo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.lms.entity.LearnRecord;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -32,6 +33,17 @@ public class LearnVO implements Serializable {
      * 封面图片
      */
     private String cover;
+
+    public LearnVO(LearnRecord learnRecord){
+        this.setName(learnRecord.getDocList().getName())
+                .setDlid(learnRecord.getDocList().getDlid())
+                .setDoc_duration(learnRecord.getDocList().getDuration())
+                .setDuration(learnRecord.getDuration())
+                .isFinished()
+                .computedPercent()
+                .setPath(learnRecord.getDocList().getPath())
+                .setCover(learnRecord.getDocList().getCover());
+    }
 
     public String getCover() {
         return cover;

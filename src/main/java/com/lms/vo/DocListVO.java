@@ -41,6 +41,17 @@ public class DocListVO implements Serializable {
      * 封面图片
      */
     private String cover;
+    public DocListVO(){}
+    public DocListVO(DocList docList){
+        this.setUsername(docList.getUserEntity().getUsername())
+                .setFlag(false)
+                .setCover(docList.getCover())
+                .setDuration(docList.getDuration())
+                .setDlid(docList.getDlid())
+                .setCreatetime(docList.getCreatetime())
+                .setUpdatetime(docList.getUpdatetime())
+                .setName(docList.getName());
+    }
 
     public String getCover() {
         return cover;

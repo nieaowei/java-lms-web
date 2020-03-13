@@ -18,12 +18,12 @@ public class DocList  {
     /**
      * 文档上传人ID，用户表外键
      */
-    @ManyToOne(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    @ManyToOne( fetch = FetchType.EAGER)
     @JoinColumn(name = "uiid",referencedColumnName = "uiid")
     private UserEntity userEntity;
 //    private Integer uiid;
     /**
-     * 文档名
+     * 用户名
      */
     private String name;
     /**
@@ -121,6 +121,9 @@ public class DocList  {
     }
 
     public DocList setUiid(Long uiid){
+        if (this.userEntity==null){
+            this.userEntity= new UserEntity();
+        }
         this.userEntity.setUiid(uiid);
         return this;
     }

@@ -44,6 +44,10 @@
                                 <span>在线考核</span>
                             </el-menu-item>
                             <el-menu-item index="6">
+                                <i class="el-icon-setting"></i>
+                                <span>网站管理</span>
+                            </el-menu-item>
+                            <el-menu-item index="7">
                                 <i class="el-icon-back"></i>
                                 <span>退出</span>
                             </el-menu-item>
@@ -70,80 +74,21 @@
 
 <script>
     import MyClass from "./MyClass";
-    import MyProfile from "./MyProfile";
-    import constant from "../../constant";
-    import DocClass from "./DocClass";
 
     export default {
         name: "AppIndex",
-        components: {MyProfile, MyClass, DocClass},
         data() {
             return {
-                bottom_status:this.$store.state.AppIndex.bottom.status,
             }
         },
         methods: {
             // eslint-disable-next-line no-unused-vars
             handleSelect(key, keyPath) {
-                if (key === '6') {
-                    // eslint-disable-next-line no-useless-escape
-                    var keys = document.cookie.match(/[^ =;]+(?=\=)/g);
-                    if (keys) {
-                        for (var i = keys.length; i--;) {
-                            document.cookie = keys[i] + '=0;path=/;expires=' + new Date(0).toUTCString();//清除当前域名下的,例如：m.kevis.com
-                            document.cookie = keys[i] + '=0;path=/;domain=' + document.domain + ';expires=' + new Date(0).toUTCString();//清除当前域名下的，例如 .m.kevis.com
-                            document.cookie = keys[i] + '=0;path=/;domain=kevis.com;expires=' + new Date(0).toUTCString();//清除一级域名下的或指定的，例如 .kevis.com
-                        }
-                    }
-                    alert('已清除');
-                    this.$router.push("login")
-                    return
-                }
-                this.$store.dispatch('AppIndex/changeView', this.$store.state.AppIndex.menuViews[parseInt(key, 10) - 1])
-                    .then(
-                        (resolve) => {
-                            this.$notify({
-                                type: "success",
-                                message: resolve,
-                                position: constant.NOTIFY_POS,
-                            })
-                        },
-                        (reject) => {
-                            if (reject === constant.REDIRECT_LOGIN) {
-                                this.$router.push('login')
-                            }
-                            this.$notify({
-                                type: "error",
-                                message: reject,
-                                position: constant.NOTIFY_POS,
-                            })
-                        }
-                    )
+                this.$store.commit('AppIndex/changeCurrentView',this.$store.state.AppIndex.menuViews[parseInt(key, 10) - 1])
             },
         },
         created() {
-            this.$store.dispatch('AppIndex/changeView', this.$store.state.AppIndex.menuViews[0])
-                .then(
-                    (resolve) => {
-                        this.$notify({
-                            type: "success",
-                            message: resolve,
-                            position: constant.NOTIFY_POS,
-
-                        })
-                    },
-                    (reject) => {
-                        if (reject === constant.REDIRECT_LOGIN) {
-                            this.$router.push('login')
-                        }
-                        this.$notify({
-                            type: "error",
-                            message: reject,
-                            position: constant.NOTIFY_POS,
-                        })
-                    }
-                )
-
+            this.$store.commit('AppIndex/changeCurrentView',MyClass)
         }
 
     }

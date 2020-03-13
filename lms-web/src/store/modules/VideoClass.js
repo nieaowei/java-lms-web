@@ -5,12 +5,15 @@ const module_VideoClass = {
     namespaced: true,
 
     state: {
-        videoList: [],
+        videoList: {},
     },
     getters: {},
     mutations: {
         saveVideoList(state, data) {
             state.videoList = data;
+        },
+        changeVideoFlag(state, {key, data}) {
+            state.videoList[key].flag = data;
         },
 
     },
@@ -24,7 +27,7 @@ const module_VideoClass = {
                     ).then(
                         (success) => {
                             if (success.data['status'] === 200) {
-                                commit('saveVideoList',success.data['data']);
+                                commit('saveVideoList', success.data['data']);
                                 resolve(success.data['msg']);
                             }
                             reject(success.data['msg']);
@@ -40,23 +43,24 @@ const module_VideoClass = {
                 }
             );
         },
-        addVideoLearn({commit},vlid_){
+        // eslint-disable-next-line no-unused-vars
+        addVideoLearn({commit, state}, key) {
             return new Promise(
                 (resolve, reject) => {
                     axios.post(
                         "api/user/video/addRecord",
                         {
-                            vlid:vlid_
+                            vlid: state.videoList[key].vlid
                         },
                         {
-                            timeout:3000,
+                            timeout: 3000,
                         }
-
                     ).then(
                         (success) => {
                             if (success.data.status === 200) {
-                                commit('saveDocList',success.data.data);
-                                resolve(success.data.msg);
+                                // commit('saveVideoList',success.data.data);
+                                commit('changeVideoFlag', {key: key, data: true})
+                                resolve(success.data);
                             }
                             reject(success.data.msg);
                         }

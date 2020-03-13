@@ -1,6 +1,8 @@
 package com.lms.vo;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.lms.entity.LearnRecord;
+import com.lms.entity.VideoLearnRecord;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -21,6 +23,17 @@ public class VideoLearnVO implements Serializable {
      * 封面图片
      */
     private String cover;
+
+    public VideoLearnVO(VideoLearnRecord learnRecord){
+        this.setName(learnRecord.getVideoList().getName())
+                .setVlid(learnRecord.getVideoList().getVlid())
+                .setDoc_duration(learnRecord.getVideoList().getDuration())
+                .setDuration(learnRecord.getDuration())
+                .isFinished()
+                .computedPercent()
+                .setPath(learnRecord.getVideoList().getPath())
+                .setCover(learnRecord.getVideoList().getCover());
+    }
 
     public String getCover() {
         return cover;

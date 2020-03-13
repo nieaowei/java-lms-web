@@ -22,7 +22,7 @@ public class TestContentService {
         return testContentDAO.save(testContent);
     }
 
-    public Integer countAllByTcid(){
-        return testContentDAO.countAllByTcid();
+    public Integer countAllByTcid(Integer tcid){
+        return testContentDAO.countAllByTcid(tcid);
     }
 }

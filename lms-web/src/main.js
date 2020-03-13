@@ -13,7 +13,7 @@ Vue.config.productionTip = false
 Vue.use(ElementUI)
 axios.defaults.withCredentials = true
 axios.defaults.headers['Content-Type'] = 'application/json'
-axios.defaults.headers['Access-Control-Allow-Origin'] = 'http://localhost:8081'
+axios.defaults.headers['Access-Control-Allow-Origin'] = 'https://jsonplaceholder.typicode.com'
 axios.defaults.headers['Access-Control-Allow-Credentials'] = 'true'
 
 

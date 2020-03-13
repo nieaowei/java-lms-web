@@ -1,8 +1,7 @@
 <template>
-    <div>
-        <video src="http://localhost:8081/videos/1.mp4" controls></video>
-        <h1>qwdqdq</h1>
-    </div>
+<!--    <div>-->
+        <video style="width: 100%;height: 100%;object-fit: fill" :src="$store.state.studyVideo.VideoData" controls></video>
+<!--    </div>-->
 
 </template>
 
@@ -13,5 +12,8 @@
 </script>
 
 <style scoped>
+    .video{
 
+        object-fit:fill;
+    }
 </style>

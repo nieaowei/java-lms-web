@@ -1,10 +1,10 @@
 <template>
-    <el-tabs  type="border-card"  :stretch="true">
+    <el-tabs type="border-card" :stretch="true">
         <el-tab-pane>
-            <span slot="label"><i class="el-icon-date"></i>文档课程</span>
+            <span slot="label"><i class="el-icon-video-camera"></i> 视频课程</span>
             <el-row :gutter="10">
                 <el-col :xs="12" :sm="10" :md="8" :lg="6" :xl="4" :offset="1"
-                        v-for="classe in this.$store.state.VideoClass.videoList" :key="classe.id">
+                        v-for="(classe,key) in this.$store.state.VideoClass.videoList" :key="key">
                     <el-card :body-style="{ padding: '0px' }">
                         <el-image
                                 style="width: 100%; height: 150px"
@@ -16,14 +16,17 @@
                             <div class="bottom clearfix">
                                 <span class="time">上传人: {{classe.username}}</span><br/>
                                 <span class="time">学习时长: {{(classe.duration/60).toFixed(2)}}分钟</span><br/>
-                                <time class="time">创建时间: {{classe.createtime}}</time><br/>
+                                <time class="time">创建时间: {{classe.createtime}}</time>
+                                <br/>
 
                             </div>
                             <el-button v-if="classe.flag"
                                        icon="el-icon-circle-check"
                                        type="success" class="button">已添加
                             </el-button>
-                            <el-button v-else icon="el-icon-circle-plus-outline" type="primary" class="button" v-on:click="addVideoRecord(classe.vlid)">添加学习</el-button>
+                            <el-button v-else icon="el-icon-circle-plus-outline" type="primary" class="button"
+                                       v-on:click="addVideoRecord(key)">添加学习
+                            </el-button>
                         </div>
                     </el-card>
                 </el-col>
@@ -38,21 +41,17 @@
 
     export default {
         name: "VideoClass",
-        computed: {
-
-        },
-        methods:{
-            addVideoRecord(vlid){
-                console.log(this.$store.state.DocClass.docList)
-                this.$store.dispatch("VideoClass/addVideoLearn",vlid).then(
+        computed: {},
+        methods: {
+            addVideoRecord(key) {
+                this.$store.dispatch("VideoClass/addVideoLearn", key).then(
                     (resolve) => {
                         this.$notify({
                             type: "success",
-                            message: resolve,
+                            message: resolve.msg,
                             position: constant.NOTIFY_POS,
                         })
-                        console.log(this.$store.state.DocClass.docList)
-
+                        this.$store.commit('MyClass/addMyVideo', resolve.data);
                     },
                     (reject) => {
                         if (reject === constant.REDIRECT_LOGIN) {
@@ -65,12 +64,37 @@
                         })
                     }
                 ).finally(
-                    ()=>{
-                        console.log(this.$store.state.DocClass.docList)
+                    () => {
                     }
                 )
             }
         },
+        created() {
+            this.$store.commit('AppIndex/changeLoading', true);
+            this.$store.dispatch('VideoClass/getVideoList').then(
+                (resolve) => {
+                    this.$notify({
+                        type: "success",
+                        message: resolve,
+                        position: constant.NOTIFY_POS,
+                    })
+                },
+                (reject) => {
+                    if (reject === constant.REDIRECT_LOGIN) {
+                        this.$router.push('login')
+                    }
+                    this.$notify({
+                        type: "error",
+                        message: reject,
+                        position: constant.NOTIFY_POS,
+                    })
+                }
+            ).finally(
+                () => {
+                    this.$store.commit('AppIndex/changeLoading', false);
+                }
+            );
+        }
     }
 </script>
 
@@ -107,9 +131,11 @@
         width: 100%;
         display: block;
     }
-    .clearfix{
+
+    .clearfix {
         text-align: left;
     }
+
     .clearfix:before,
     .clearfix:after {
         display: table;
@@ -118,5 +144,9 @@
 
     .clearfix:after {
         clear: both
+    }
+
+    .el-tab-pane{
+        min-height: 520px;
     }
 </style>

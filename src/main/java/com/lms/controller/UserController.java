@@ -2,15 +2,23 @@ package com.lms.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.lms.entity.UserEntity;
+import com.lms.entity.VideoList;
 import com.lms.interception.AuthInterceptor;
 import com.lms.interception.RequiredToken;
 import com.lms.service.UserService;
 import com.lms.utils.Result;
+import org.apache.tomcat.util.security.MD5Encoder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import sun.security.provider.MD5;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 
@@ -46,29 +54,56 @@ public class UserController {
     @CrossOrigin
     @PostMapping(value = "/user/changepd")
     @RequiredToken
-    public Result<String> changepd(@RequestBody JSONObject jsonParam, HttpServletRequest request){
-        Long uiid = (long)request.getAttribute(AuthInterceptor.RESULT_KEY);
+    public Result<String> changepd(@RequestBody JSONObject jsonParam, HttpServletRequest request) {
+        Long uiid = (long) request.getAttribute(AuthInterceptor.RESULT_KEY);
         // 因为数据库不可空，所以无需验资字符串是否为空
         String oldpassword = jsonParam.getString("oldpassword");
         String newpassword = jsonParam.getString("newpassword");
         //验明身份
-        UserEntity user = userService.getByUiidAndPassword(uiid,oldpassword);
-        if (null != user){
+        UserEntity user = userService.getByUiidAndPassword(uiid, oldpassword);
+        if (null != user) {
             //验证失败
             return new Result<String>().setStatus(500).setMsg("旧密码错误");
         }
         //验证新密码强度要求
-        if(!userService.isPassWordCompliance(user.setPassword(newpassword))){
+        if (!userService.isPassWordCompliance(user.setPassword(newpassword))) {
             //验证失败
             return new Result<String>().setStatus(500).setMsg("新密码不符合要求");
         }
         //符合要求 存储数据
         try {
             userService.save(user);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new Result<String>().setStatus(500).setMsg("修改密码失败");
         }
         return new Result<String>().setStatus(200).setMsg("修改密码成功");
+    }
+
+    @Value("${web.upload_path}")
+    private String uploadUrl;
+
+    @Value("${web.domain}")
+    private String domain;
+
+    @CrossOrigin
+    @PostMapping(value = "/admin/uploadimage")
+//    @RequiredToken
+    public Result<String> uploadImage(@RequestParam("file") MultipartFile file) {
+        try {
+
+            String fileName = file.getOriginalFilename();
+            String suffix = fileName.substring(fileName.lastIndexOf('.'));
+            fileName = DigestUtils.md5DigestAsHex(file.getInputStream());
+            String path = uploadUrl + "/images/" + fileName + suffix;
+            File dest = new File(path);
+            if (!dest.getParentFile().exists()) {
+                dest.getParentFile().mkdirs();
+            }
+            file.transferTo(dest);
+            return new Result<String>().setStatus(200).setMsg("上传成功").setData("http://" + domain + "/images/" + fileName + suffix);
+        } catch (Exception e) {
+            return new Result<String>().setMsg("上传失败").setStatus(500);
+        }
     }
 
 }

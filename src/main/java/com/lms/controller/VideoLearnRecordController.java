@@ -22,6 +22,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class VideoLearnRecordController {
@@ -46,8 +47,8 @@ public class VideoLearnRecordController {
     @RequiredToken
     public Result<List<VideoLearnVO>> getLearnRecord(HttpServletRequest request) {
         Long uiid = (long) request.getAttribute(AuthInterceptor.RESULT_KEY);
-        List<VideoLearnVO> learnVOList = videoLearnRecordService.findLearnRecordByUiid(uiid);//无论是否查询到都会生成对象，无需判错
-        return new Result<List<VideoLearnVO>>().setStatus(200).setMsg("获取学习记录成功").setData(learnVOList);
+        List<VideoLearnVO> learnVOMap = videoLearnRecordService.findLearnRecordByUiid(uiid);//无论是否查询到都会生成对象，无需判错
+        return new Result<List<VideoLearnVO>>().setStatus(200).setMsg("获取学习记录成功").setData(learnVOMap);
     }
 
     /**
@@ -58,22 +59,22 @@ public class VideoLearnRecordController {
     @CrossOrigin
     @PostMapping(value = "/user/video/addRecord")
     @RequiredToken
-    public Result<List<VideoListVO>> addRecord(@RequestBody JSONObject jsonParam,
+    public Result<VideoLearnVO> addRecord(@RequestBody JSONObject jsonParam,
                                                HttpServletRequest request) {
-        List<VideoListVO> videoListVOList;
+        VideoLearnVO videoLearnVO;
         try {
             Integer vlid = jsonParam.getInteger("vlid");
             VideoLearnRecord videoLearnRecord = new VideoLearnRecord().setVlid(vlid)
                     .setUiid((long) request.getAttribute(AuthInterceptor.RESULT_KEY)).setDuration(0);
-            videoLearnRecordService.save(videoLearnRecord);
-            videoListVOList = videoListService.findAllOrderAddFlag((long)request.getAttribute("uiid"));
+            videoLearnRecord = videoLearnRecordService.saveAndRefresh(videoLearnRecord);
+            videoLearnVO = new VideoLearnVO(videoLearnRecord);
         } catch (Exception e) {
             if (e.getMessage().contains("vlid")) {//捕获到重复键值
-                return new Result<List<VideoListVO>>().setStatus(500).setMsg("已经添加该视频");
+                return new Result<VideoLearnVO>().setStatus(500).setMsg("已经添加该视频");
             }
-            return new Result<List<VideoListVO>>().setStatus(500).setMsg("添加视频失败");
+            return new Result<VideoLearnVO>().setStatus(500).setMsg("添加视频失败");
         }
-        return new Result<List<VideoListVO>>().setStatus(200).setMsg("添加视频成功").setData(videoListVOList);
+        return new Result<VideoLearnVO>().setStatus(200).setMsg("添加视频成功").setData(videoLearnVO);
     }
 
     /**

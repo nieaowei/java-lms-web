@@ -1,4 +1,3 @@
-import pdf from 'vue-pdf'
 import axios from 'axios'
 import constant from "../../constant";
 
@@ -6,7 +5,6 @@ const module_studyVideo = {
     namespaced: true,
     state: {
         VideoData: '',
-        PdfPageNum: 0,
     },
     mutations: {
         saveVideoData(state, data) {
@@ -18,38 +16,24 @@ const module_studyVideo = {
 
     },
     actions: {
-        loadVideoData({commit}, dlid) {
+        loadVideoData({commit}, vlid) {
             return new Promise(
                 (resolve1, reject1) => {
                     // var flag =false;
                     axios.get(
-                        "api/doc/getpath?dlid=" + dlid,
+                        "api/video/getpath?vlid=" + vlid,
                         {
                             timeout: 3000,
                         }
                     ).then(
                         (success) => {
                             if (success.data.status === 200) {
-                                var task = pdf.createLoadingTask(success.data.data)
-                                task.then(
-                                    (pdf1) => {
-                                        commit('savePdfData', task);
-                                        commit('savePdfPageNum', pdf1.numPages)
-                                        resolve1("视频地址获取成功")
-                                    }
-                                ).catch(
-                                    (fail) => {
-                                        console.log(fail)
-                                        commit('savePdfData', '');
-                                        commit('savePdfPageNum', 0)
-                                        reject1("视频地址获取失败")
-
-                                    }
-                                )
+                                resolve1(success.data.msg)
+                                commit('saveVideoData', success.data.data);
                             }else{
-                                commit('savePdfData', '');
-                                commit('savePdfPageNum', 0)
-                                reject1("视频地址获取失败")
+                                commit('saveVideoData', '');
+                                // commit('savePdfPageNum', 0)
+                                reject1(success.data.msg)
                             }
                         }
                     ).catch(

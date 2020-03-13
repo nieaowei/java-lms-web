@@ -1,17 +1,27 @@
 import axios from 'axios'
 import constant from "../../constant";
+import Vue from 'vue'
+
 
 const module_DocClass = {
     namespaced: true,
 
     state: {
-        docList: [],
+        docList: {},
     },
     getters: {},
     mutations: {
         saveDocList(state, data) {
             state.docList = data;
         },
+        changeDocFlag(state, {key, data}) {
+            state.docList[key].flag = data;
+        },
+        changeDoc(state, {key, data}) {
+            // state.docList[key] = data
+            Vue.$set(state.docList, key, data)
+            console.log(state.docList)
+        }
 
     },
     actions: {
@@ -24,7 +34,7 @@ const module_DocClass = {
                     ).then(
                         (success) => {
                             if (success.data['status'] === 200) {
-                                commit('saveDocList',success.data['data']);
+                                commit('saveDocList', success.data['data']);
                                 resolve(success.data['msg']);
                             }
                             reject(success.data['msg']);
@@ -40,23 +50,23 @@ const module_DocClass = {
                 }
             );
         },
-        addDocLearn({commit},dlid_){
+        // eslint-disable-next-line no-unused-vars
+        addDocLearn({commit, state}, key) {
             return new Promise(
                 (resolve, reject) => {
                     axios.post(
                         "api/user/doc/addRecord",
                         {
-                            dlid:dlid_
+                            dlid: state.docList[key].dlid
                         },
                         {
-                            timeout:3000,
+                            timeout: 3000,
                         }
-
                     ).then(
                         (success) => {
                             if (success.data.status === 200) {
-                                commit('saveDocList',success.data.data);
-                                resolve(success.data.msg);
+                                commit('changeDocFlag', {key: key, data: true})
+                                resolve(success.data);
                             }
                             reject(success.data.msg);
                         }

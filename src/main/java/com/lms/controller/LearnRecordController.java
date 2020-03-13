@@ -1,34 +1,27 @@
 package com.lms.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.lms.entity.DocList;
 import com.lms.entity.LearnRecord;
-import com.lms.entity.UserEntity;
 import com.lms.interception.AuthInterceptor;
 import com.lms.interception.RequiredToken;
 import com.lms.service.DocListService;
 import com.lms.service.UserService;
 import com.lms.utils.Result;
-import com.lms.vo.DocListVO;
 import com.lms.vo.LearnVO;
 import com.lms.service.LearnRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class LearnRecordController {
+
     @Autowired
     private LearnRecordService learnRecordService;
 
@@ -49,8 +42,8 @@ public class LearnRecordController {
     @RequiredToken
     public Result<List<LearnVO>> getLearnRecord(HttpServletRequest request) {
         Long uiid = (long) request.getAttribute(AuthInterceptor.RESULT_KEY);
-        List<LearnVO> learnVOList = learnRecordService.findLearnRecordByUiid(uiid);//无论是否查询到都会生成对象，无需判错
-        return new Result<List<LearnVO>>().setStatus(200).setMsg("获取学习记录成功").setData(learnVOList);
+        List<LearnVO> learnVOList = learnRecordService.findLearnRecordVOByUiid(uiid);//无论是否查询到都会生成对象，无需判错
+        return new Result< List<LearnVO>>().setStatus(200).setMsg("获取学习记录成功").setData(learnVOList);
     }
 
     /**
@@ -61,22 +54,21 @@ public class LearnRecordController {
     @CrossOrigin
     @PostMapping(value = "/user/doc/addRecord")
     @RequiredToken
-    public Result<List<DocListVO>> addRecord(@RequestBody JSONObject jsonParam,
-                                             HttpServletRequest request) {
-        List<DocListVO> docListList;
+    public Result<LearnVO> addRecord(@RequestBody JSONObject jsonParam,HttpServletRequest request) {
+        LearnVO learnVO;
         try {
             Integer dlid = jsonParam.getInteger("dlid");
             LearnRecord learnRecord = new LearnRecord().setDlid(dlid)
                     .setUiid((long) request.getAttribute(AuthInterceptor.RESULT_KEY)).setDuration(0);
-            learnRecordService.save(learnRecord);
-            docListList = docListService.findAllOrderAddFlag((long)request.getAttribute("uiid"));
+            learnRecord = learnRecordService.saveAndRefresh(learnRecord);
+            learnVO = new LearnVO(learnRecord);
         } catch (Exception e) {
             if (e.getMessage().contains("dlid")) {//捕获到重复键值
-                return new Result<List<DocListVO>>().setStatus(500).setMsg("已经添加该课程");
+                return new Result<LearnVO>().setStatus(500).setMsg("已经添加该课程");
             }
-            return new Result<List<DocListVO>>().setStatus(500).setMsg("添加课程失败");
+            return new Result<LearnVO>().setStatus(500).setMsg("添加课程失败");
         }
-        return new Result<List<DocListVO>>().setStatus(200).setMsg("添加课程成功").setData(docListList);
+        return new Result<LearnVO>().setStatus(200).setMsg("添加课程成功").setData(learnVO);
     }
 
     /**

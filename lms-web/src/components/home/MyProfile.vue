@@ -44,6 +44,8 @@
 </template>
 
 <script>
+    import constant from "../../constant";
+
     export default {
         name: "MyProfile",
         data() {
@@ -78,6 +80,32 @@
                     this.active = 0;
                 }
             }
+        },
+        created() {
+            this.$store.commit('AppIndex/changeLoading', true);
+            this.$store.dispatch('MyProfile/getProfile').then(
+                (resolve) => {
+                    this.$notify({
+                        type: "success",
+                        message: resolve,
+                        position: constant.NOTIFY_POS,
+                    })
+                },
+                (reject) => {
+                    if (reject === constant.REDIRECT_LOGIN) {
+                        this.$router.push('login')
+                    }
+                    this.$notify({
+                        type: "error",
+                        message: reject,
+                        position: constant.NOTIFY_POS,
+                    })
+                }
+            ).finally(
+                () => {
+                    this.$store.commit('AppIndex/changeLoading', false);
+                }
+            );
         }
     }
 </script>

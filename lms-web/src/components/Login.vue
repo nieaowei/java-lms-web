@@ -1,20 +1,26 @@
 <template>
-    <el-card v-loading="this.$store.state.Login.loading" class="login-card" shadow="never">
-        <el-form :model="loginForm" class="login-container" ref="loginForm" :status-icon="true" :rules="rules"
-                 label-width="65px" label-position="left">
-            <h3>用户登录</h3>
-            <el-form-item label="账号：" prop="username">
-                <el-input type="text" autofocus v-model="loginForm.username" placeholder="请输入用户名"></el-input>
-            </el-form-item>
-            <el-form-item label="密码：" prop="password">
-                <el-input type="password" v-model="loginForm.password" placeholder="请输入密码" show-password></el-input>
-            </el-form-item>
-            <el-button v-on:click="login">登录</el-button>
-        </el-form>
-        <div class="some-bt">
-            <el-button v-on:click="jumpRegister" class="register-bt" type="text">立即注册</el-button>
-        </div>
-    </el-card>
+    <div>
+<!--        <div class="background">-->
+<!--            <img src="https://ae01.alicdn.com/kf/H6c1654253dc143d9b862a789d6d6a97dO.jpg" width="100%" height="100%" alt="" />-->
+<!--        </div>-->
+        <el-card v-loading="this.$store.state.Login.loading" class="login-card" shadow="never">
+            <el-form :model="loginForm" class="login-container" ref="loginForm" :status-icon="true" :rules="rules"
+                     label-width="65px" label-position="left">
+                <h3>用户登录</h3>
+                <el-form-item label="账号：" prop="username">
+                    <el-input type="text" autofocus v-model="loginForm.username" placeholder="请输入用户名"></el-input>
+                </el-form-item>
+                <el-form-item label="密码：" prop="password">
+                    <el-input type="password" v-model="loginForm.password" placeholder="请输入密码" show-password></el-input>
+                </el-form-item>
+                <el-button v-on:click="login">登录</el-button>
+            </el-form>
+            <div class="some-bt">
+                <el-button v-on:click="jumpRegister" class="register-bt" type="text">立即注册</el-button>
+            </div>
+        </el-card>
+    </div>
+
 </template>
 
 <script>
@@ -78,10 +84,20 @@
 </script>
 
 <style>
+    .background{
+        /*width:100%;*/
+        /*height:100%;  !**宽高100%是为了图片铺满屏幕 *!*/
+        z-index:-1;
+        position: absolute;
+        /*background: center top;*/
+    }
+
     .login-card {
         width: 350px;
-        position: center;
+        /*position: center;*/
         margin: 15% auto auto auto;
+        /*padding: 15% auto auto auto;*/
+        /*padding-top: 15%;*/
         box-shadow: 0 0 10px #cac6c6;
     }
 

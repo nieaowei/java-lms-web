@@ -9,5 +9,6 @@ import java.util.List;
 public interface TestContentDAO extends JpaRepository<TestContent, Integer> {
     List<TestContent> findAllByTestInfo(TestInfo testInfo);
     TestContent findByTcid(Integer tcid);
-    Integer countAllByTcid();
+    Integer countAllByTcid(Integer tcid);
+
 }
