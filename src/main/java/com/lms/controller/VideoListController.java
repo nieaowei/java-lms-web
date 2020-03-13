@@ -1,5 +1,6 @@
 package com.lms.controller;
 
+import com.baomidou.mybatisplus.extension.api.R;
 import com.lms.entity.DocList;
 import com.lms.entity.VideoList;
 import com.lms.interception.RequiredToken;
@@ -11,6 +12,7 @@ import com.lms.vo.VideoListVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -64,4 +66,29 @@ public class VideoListController {
         return new Result<String>().setMsg("获取视频路径失败").setStatus(500);
 
     }
+
+    @CrossOrigin
+    @GetMapping("video/search")
+    @RequiredToken
+    public Result<VideoList> search(HttpServletRequest request){
+        String name = request.getParameter("name");
+        VideoList videoList = videoListService.findByName(name);
+        return new Result<VideoList>().setData(videoList).setStatus(200).setMsg("查询视频");
+    }
+
+    @CrossOrigin
+    @PostMapping("doc/add")
+    @RequiredToken
+    public Result<VideoList> add(HttpServletRequest request){
+        String cover = request.getParameter("cover");
+        String path = request.getParameter("path");
+        String name = request.getParameter("name");
+        Integer duration = Integer.valueOf(request.getParameter("duration"));
+        VideoList videoList = new VideoList();
+        videoList.setCover(cover).setPath(path).setName(name).setDuration(duration);
+        videoList = videoListService.save(videoList);
+        return new Result<VideoList>().setData(videoList).setStatus(200).setMsg("新增视频");
+    }
+
+
 }

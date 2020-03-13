@@ -8,10 +8,13 @@ import com.lms.vo.DocListVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class DocListController {
@@ -59,5 +62,28 @@ public class DocListController {
         }
         return new Result<String>().setMsg("获取文档路径失败").setStatus(500);
 
+    }
+
+    @CrossOrigin
+    @GetMapping("doc/search")
+    @RequiredToken
+    public Result<DocList> search(HttpServletRequest request){
+        String name = request.getParameter("name");
+        DocList docList = docListService.findByName(name);
+        return new Result<DocList>().setData(docList).setStatus(200).setMsg("查询文档");
+    }
+
+    @CrossOrigin
+    @PostMapping("doc/add")
+    @RequiredToken
+    public Result<DocList> add(HttpServletRequest request){
+        String cover = request.getParameter("cover");
+        String path = request.getParameter("path");
+        String name = request.getParameter("name");
+        Integer duration = Integer.valueOf(request.getParameter("duration"));
+        DocList docList = new DocList();
+        docList.setCover(cover).setPath(path).setName(name).setDuration(duration);
+        docList = docListService.save(docList);
+        return new Result<DocList>().setData(docList).setStatus(200).setMsg("新增文档");
     }
 }

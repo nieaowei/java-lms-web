@@ -3,6 +3,7 @@ package com.lms.controller;
 import com.lms.entity.DocList;
 import com.lms.entity.TestInfo;
 import com.lms.interception.AuthInterceptor;
+import com.lms.interception.RequiredToken;
 import com.lms.service.TestInfoService;
 import com.lms.service.UserService;
 import com.lms.utils.Result;
@@ -31,6 +32,7 @@ public class TestInfoController {
      */
     @CrossOrigin
     @GetMapping(value = "/testinfo/all")
+    @RequiredToken
     public Result<List<TestInfo>> all(){
         List<TestInfo> testInfoList = testInfoService.findOrder();
         return new Result<List<TestInfo>>().setData(testInfoList).setStatus(200).setMsg("获取试卷成功");
@@ -43,6 +45,7 @@ public class TestInfoController {
      */
     @CrossOrigin
     @PostMapping(value = "testinfo/create")
+    @RequiredToken
     public Result<TestInfo> create(HttpServletRequest request){
         long uiid = (long) request.getAttribute(AuthInterceptor.RESULT_KEY);
         String title = (String) request.getAttribute("title");
@@ -50,5 +53,14 @@ public class TestInfoController {
         testInfo.setUserEntity(userService.findByUiid(uiid));
         testInfo.setTitle(title);
         return new Result<TestInfo>().setData(testInfo).setStatus(200).setMsg("创建试题");
+    }
+
+    @CrossOrigin
+    @GetMapping("testinfo/search")
+    @RequiredToken
+    public Result<TestInfo> search(HttpServletRequest request){
+        String title = request.getParameter("title");
+        TestInfo testInfo = testInfoService.findByTitle(title);
+        return new Result<TestInfo>().setData(testInfo).setMsg("查询试卷").setStatus(200);
     }
 }

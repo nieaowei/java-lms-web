@@ -9,7 +9,7 @@ import javax.persistence.*;
 @DynamicUpdate
 public class VideoList {
     /**
-     * 学习文档ID
+     * 视频ID
      */
     @Id
     @Column(name = "vlid")
@@ -23,7 +23,7 @@ public class VideoList {
     private UserEntity userEntity;
 //    private Integer uiid;
     /**
-     * 用户名
+     * 视频名
      */
     private String name;
     /**

@@ -23,7 +23,7 @@ public class DocList  {
     private UserEntity userEntity;
 //    private Integer uiid;
     /**
-     * 用户名
+     * 文档名
      */
     private String name;
     /**
