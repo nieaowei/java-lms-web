@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,8 +39,8 @@ public class DocListController {
     @RequiredToken
     public Result<List<DocListVO>> allPeron(HttpServletRequest request){
         //无论查询到与否  docList对象都会生成，如果未查询到，其size为0
-        List<DocListVO> docListVOMap = docListService.findAllOrderAddFlag((long)request.getAttribute("uiid"));
-        return new Result<List<DocListVO>>().setData(docListVOMap).setStatus(200).setMsg("获取文档课程成功");
+        List<DocListVO> docListList = docListService.findAllOrderAddFlag((long)request.getAttribute("uiid"));
+        return new Result<List<DocListVO>>().setData(docListList).setStatus(200).setMsg("获取文档课程成功");
     }
 
     @CrossOrigin
@@ -75,7 +76,7 @@ public class DocListController {
     @CrossOrigin
     @PostMapping(value = "/admin/doc/add")
     @RequiredToken
-    public Result<DocListVO> addDoc(@RequestBody DocList docList,HttpServletRequest request){
+    public Result<DocListVO> addDoc(@RequestBody DocList docList, HttpServletRequest request){
         DocListVO docListVO;
        try{
            Long uiid = (long)request.getAttribute("uiid");
@@ -85,6 +86,15 @@ public class DocListController {
            return new Result<DocListVO>().setStatus(500).setMsg("新建文档课程失败");
        }
         return new Result<DocListVO>().setStatus(200).setMsg("新建文档课程成功").setData(docListVO);
+    }
+
+    @CrossOrigin
+    @GetMapping("doc/search")
+    @RequiredToken
+    public Result<DocList> search(HttpServletRequest request){
+        String name = request.getParameter("name");
+        DocList docList = docListService.findByName(name);
+        return new Result<DocList>().setData(docList).setStatus(200).setMsg("查询文档");
     }
 
 }
