@@ -1,5 +1,6 @@
 package com.lms.entity;
 
+import com.lms.vo.UserDTO;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
@@ -126,5 +127,18 @@ public class DocList  {
         }
         this.userEntity.setUiid(uiid);
         return this;
+    }
+
+    public String getUsername(){
+        return this.userEntity.getUsername();
+    }
+
+    public DocList setUsername(String username){
+        this.userEntity.setUsername(username);
+        return this;
+    }
+
+    public UserDTO getUserDTO(){
+        return (UserDTO) this.userEntity;
     }
 }

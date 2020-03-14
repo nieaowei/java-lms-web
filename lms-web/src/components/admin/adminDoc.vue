@@ -3,8 +3,15 @@
         <!--        <div>-->
         <div style="z-index:3;float: right;position: relative">
             <el-button style="margin-left: 5px" @click="addNewTab">新增文档</el-button>
-            <el-input style="margin-left:5px;width: 200px">搜索</el-input>
-            <el-button style="margin-left: 5px">搜索</el-button>
+            <el-input style="margin-left:5px;margin-bottom: 1px;width: 300px" placeholder="请输入内容"
+                      v-model="searchContext" class="input-with-select">
+                <!--                <el-select v-model="select" slot="prepend" placeholder="请选择" >-->
+                <!--                    <el-option label="餐厅名" value="1"></el-option>-->
+                <!--                    <el-option label="订单号" value="2"></el-option>-->
+                <!--                    <el-option label="用户电话" value="3"></el-option>-->
+                <!--                </el-select>-->
+                <el-button slot="append" icon="el-icon-search"></el-button>
+            </el-input>
         </div>
         <!--        </div>-->
         <el-tabs v-model="editableTabsValue" type="card" @tab-remove="removeTab" @tab-click="clickTab">
@@ -49,20 +56,26 @@
                             label="操作"
                     >
                         <template slot-scope="scope">
-                            <el-button @click="handleClick(scope.row)" type="text" size="small">详情</el-button>
-                            <el-button type="text" size="small">编辑</el-button>
-                            <el-button type="text" size="small">删除</el-button>
+                            <el-button @click="getDetail(scope)" type="text" size="small">详情</el-button>
+                            <el-button type="text" size="small" @click="addEdit(scope)">编辑</el-button>
+                            <!--                            <el-button type="text" size="small">删除</el-button>-->
+                            <el-popconfirm
+                                    @onConfirm="deleteDoc(scope)"
+                                    title="确定删除该课程吗？"
+                            >
+                                <el-button slot="reference" type="text" size="small"> 删除</el-button>
+                            </el-popconfirm>
                         </template>
                     </el-table-column>
                 </el-table>
-<!--                <el-pagination-->
-<!--                        @size-change="handleSizeChange"-->
-<!--                        @current-change="handleCurrentChange"-->
-<!--                        :current-page.sync="currentPage3"-->
-<!--                        :page-size="100"-->
-<!--                        layout="prev, pager, next, jumper"-->
-<!--                        :total="1000">-->
-<!--                </el-pagination>-->
+                <!--                <el-pagination-->
+                <!--                        @size-change="handleSizeChange"-->
+                <!--                        @current-change="handleCurrentChange"-->
+                <!--                        :current-page.sync="currentPage3"-->
+                <!--                        :page-size="100"-->
+                <!--                        layout="prev, pager, next, jumper"-->
+                <!--                        :total="1000">-->
+                <!--                </el-pagination>-->
             </el-tab-pane>
             <el-tab-pane
                     :key="item.name"
@@ -72,7 +85,7 @@
                     closable
 
             >
-                <div style="margin-left: 30%;width: 400px;text-align: center">
+                <div v-if="item.type==='newDoc'" style="margin-left: 30%;width: 400px;text-align: center">
                     <el-upload
                             class="upload-demo"
                             drag
@@ -109,8 +122,63 @@
                         <el-form-item label="学习时长：">
                             <el-input v-model="item.form.duration"></el-input>
                         </el-form-item>
-                        <el-button v-on:click="commit(item)">提交</el-button>
+                        <el-button v-if="item.action==='new'" v-on:click="commit(item)">提交</el-button>
+                        <el-button v-if="item.action==='edit'" v-on:click="updateDoc(item)">提交</el-button>
                     </el-form>
+                </div>
+                <div v-else-if="item.type==='newDetail'">
+                    <div style="float: left;width: 50%;text-align: center">
+                        <div style="width: 70%;margin-left: 10%">
+                            <el-image
+                                    v-if="item.data.cover" :src="item.data.cover"
+                                    style="width: 100%; height: 200px;border: #409EFF dashed 1px"
+                                    fit="fit">
+                            </el-image>
+                            <el-form label-width="100px" disabled>
+                                <el-form-item label="封面地址：">
+                                    <span>{{item.data.cover}}</span>
+
+                                </el-form-item>
+                                <el-form-item label="文件地址：">
+                                    <span>{{item.data.path}}</span>
+                                </el-form-item>
+                                <el-form-item label="课程号：">
+                                    <span>{{item.data.dlid}}</span>
+                                </el-form-item>
+                                <el-form-item label="课程名：">
+                                    <span>{{item.data.name}}</span>
+                                </el-form-item>
+                                <el-form-item label="学习时长：">
+                                    <span>{{item.data.duration}}</span>
+                                </el-form-item>
+                                <el-form-item label="上传人：">
+                                    <span>{{item.data.username}}</span>
+                                </el-form-item>
+                                <el-form-item label="修改时间：">
+                                    <span>{{item.data.updatetime}}</span>
+                                </el-form-item>
+                                <el-form-item label="创建时间：">
+                                    <span>{{item.data.createtime}}</span>
+                                </el-form-item>
+                            </el-form>
+                        </div>
+
+                    </div>
+                    <div style="float:right;width: 50%;text-align: left">
+                        <span>已添加学习用户：</span>
+                        <el-table :data="item.data.users">
+                            <el-table-column
+                                    prop="uiid"
+                                    label="用户ID"
+                            ></el-table-column>
+                            <el-table-column
+                                    prop="username"
+                                    label="用户名"
+                            ></el-table-column>
+                        </el-table>
+                    </div>
+
+
                 </div>
 
             </el-tab-pane>
@@ -127,30 +195,105 @@
         name: "adminDoc",
         data() {
             return {
+                searchContext: '',
                 editableTabsValue: '0',
                 editableTabs: [],
                 tabIndex: 0,
-                curTab:0,
+                curTab: 0,
                 imageUrl: ''
             }
         },
         methods: {
-            clickTab(tab){
+            addEdit(data){
+                let newTabName = ++this.tabIndex + '';
+                this.editableTabs.push({
+                    title: '编辑文档',
+                    name: newTabName,
+                    type: 'newDoc',
+                    action:'edit',
+                    form: {
+                        dlid: data.row.dlid,
+                        name: data.row.name,
+                        cover: data.row.cover,
+                        path: data.row.path,
+                        duration: data.row.duration,
+                    }
+                });
+                // this.curTab++;
+                this.curTab = this.editableTabs.length;
+                this.editableTabsValue = newTabName;
+            },
+
+            updateDoc(item) {
+                console.log(item)
+                this.$store.dispatch('adminDoc/updateDoc', item.form).then(
+                    (resolve) => {
+                        console.log('yes')
+                        this.$notify({
+                            type: "success",
+                            message: resolve.msg,
+                            position: constant.NOTIFY_POS,
+                        })
+                        //@todo 增加到本地文档列表
+                        // this.$store.commit('DocClass')
+                        this.removeTab(item.name)
+                        this.$store.commit('adminDoc/changeDoc', {dlid: item.form.dlid, item: resolve.data})
+                    },
+                    (reject) => {
+                        console.log(reject)
+
+                        if (reject === constant.REDIRECT_LOGIN) {
+                            this.$router.push('login')
+                        }
+                        this.$notify({
+                            type: "error",
+                            message: reject,
+                            position: constant.NOTIFY_POS,
+                        })
+                    }
+                )
+            },
+            deleteDoc(data) {
+                this.$store.dispatch('adminDoc/deleteDoc', data.row).then(
+                    (resolve) => {
+                        console.log('yes')
+                        this.$notify({
+                            type: "success",
+                            message: resolve.msg,
+                            position: constant.NOTIFY_POS,
+                        })
+                        this.$store.commit('adminDoc/removeDoc', data.$index)
+                    },
+                    (reject) => {
+                        console.log(reject)
+
+                        if (reject === constant.REDIRECT_LOGIN) {
+                            this.$router.push('login')
+                        }
+                        this.$notify({
+                            type: "error",
+                            message: reject,
+                            position: constant.NOTIFY_POS,
+                        })
+                    }
+                )
+            },
+            clickTab(tab) {
                 console.log('click')
                 console.log(tab.index)
                 console.log(this.editableTabsValue)
                 this.curTab = tab.index
             },
             // eslint-disable-next-line no-unused-vars
-            commit(item){
-                this.$store.dispatch("adminDoc/addDoc",item.form).then(
+            commit(item) {
+                this.$store.dispatch("adminDoc/addDoc", item.form).then(
                     (resolve) => {
                         this.$notify({
                             type: "success",
                             message: resolve.msg,
                             position: constant.NOTIFY_POS,
                         })
-                        this.$store.commit('adminDoc/addDoc',resolve.data)
+                        this.$store.commit('adminDoc/addDoc', resolve.data)
                         //@todo 增加到本地文档列表
                         // this.$store.commit('DocClass')
                         this.removeTab(item.name)
@@ -167,52 +310,121 @@
                     }
                 )
             },
-            removeTab(name){
+            removeTab(name) {
                 let tabs = this.editableTabs;
                 let activeName = this.editableTabsValue;
-                console.log('remove qian :' ,this.editableTabsValue)
+                console.log('remove qian :', this.curTab)
 
-                if (activeName === name) {
-                    tabs.forEach((tab, index) => {
-                        if (tab.name === name) {
+                tabs.forEach((tab, index) => {
+                    if (tab.name === name) {
+                        if (activeName === name) {
                             let nextTab = tabs[index + 1] || tabs[index - 1];
                             if (nextTab) {
                                 activeName = nextTab.name;
+                                if (nextTab === tabs[index + 1]) {
+                                    this.curTab = index + 1;
+                                } else {
+                                    this.curTab = index;
+                                }
+                            }
+                        } else {
+                            if (this.curTab > index + 1) {
+                                this.curTab--
                             }
                         }
-                    });
-                }
+                    }
+
+                });
+
+                // if (activeName === name) {
+                //     tabs.forEach((tab, index) => {
+                //         if (tab.name === name) {
+                //             let nextTab = tabs[index + 1] || tabs[index - 1];
+                //             if (nextTab) {
+                //                 activeName = nextTab.name;
+                //                 if (nextTab === tabs[index+1]){
+                //                     this.curTab = index + 1;
+                //                 }else{
+                //                     this.curTab = index;
+                //                 }
+                //             }
+                //         }
+                //     });
+                // } else {
+                //     this.curTab--;
+                // }
 
                 this.editableTabsValue = activeName;
                 this.editableTabs = tabs.filter(tab => tab.name !== name);
-                if (this.editableTabs.length === 0){
+                if (this.editableTabs.length === 0) {
                     this.editableTabsValue = '0'
+                    this.curTab = 0;
                 }
-                console.log('remove hou :' ,this.editableTabsValue)
+                console.log('remove hou :', this.curTab)
             },
             addNewTab() {
                 let newTabName = ++this.tabIndex + '';
                 this.editableTabs.push({
                     title: '新建文档',
                     name: newTabName,
+                    type: 'newDoc',
+                    action:'new',
                     form: {
                         name: '',
                         cover: '',
                         path: '',
-                        duration:0,
+                        duration: 0,
                     }
                 });
-                this.curTab++;
+                // this.curTab++;
+                this.curTab = this.editableTabs.length;
                 this.editableTabsValue = newTabName;
-                console.log(this.curTab)
+                console.log("new tab :", this.curTab)
+                console.log(this.tabIndex)
+                console.log(this.editableTabsValue)
+                console.log(this.editableTabs)
+            },
+            getDetail(data) {
+                this.$store.dispatch('adminDoc/getDetail', data.row).then(
+                    (resolve) => {
+                        this.$notify({
+                            type: "success",
+                            message: resolve.msg,
+                            position: constant.NOTIFY_POS,
+                        })
+                        this.addNewDetail(resolve.data)
+                    },
+                    (reject) => {
+                        if (reject === constant.REDIRECT_LOGIN) {
+                            this.$router.push('login')
+                        }
+                        this.$notify({
+                            type: "error",
+                            message: reject,
+                            position: constant.NOTIFY_POS,
+                        })
+                    }
+                )
+            },
+            addNewDetail(data) {
+                let newTabName = ++this.tabIndex + '';
+                this.editableTabs.push({
+                    title: '文档详情',
+                    name: newTabName,
+                    type: 'newDetail',
+                    data: data,
+                });
+                this.curTab = this.editableTabs.length;
+                this.editableTabsValue = newTabName;
+                console.log("new detail :", this.curTab)
                 console.log(this.tabIndex)
                 console.log(this.editableTabsValue)
                 console.log(this.editableTabs)
             },
             // eslint-disable-next-line no-unused-vars
             handleAvatarSuccess(res, file) {
-                console.log(res)
-                this.editableTabs[this.curTab-1].form.cover =res.data;
+                console.log(this.curTab)
+                this.editableTabs[this.curTab - 1].form.cover = res.data;
             },
         }
     }

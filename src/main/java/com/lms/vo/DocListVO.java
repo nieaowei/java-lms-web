@@ -1,8 +1,11 @@
 package com.lms.vo;
 
 import com.lms.entity.DocList;
+import com.lms.entity.UserEntity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /***
  *
@@ -41,8 +44,38 @@ public class DocListVO implements Serializable {
      * 封面图片
      */
     private String cover;
-    public DocListVO(){}
+
+    private List<UserVO> users;
+
+    private String path;
+
+    public String getPath() {
+        return path;
+    }
+
+    public DocListVO setPath(String path) {
+        this.path = path;
+        return this;
+    }
+
+    public List<UserVO> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<UserVO> users) {
+        this.users = users;
+    }
+
+    public DocListVO(){
+        this.users=new ArrayList<>();
+    }
+
+    public void initUsers(){
+        this.users=new ArrayList<>();
+    }
+
     public DocListVO(DocList docList){
+        this.initUsers();
         this.setUsername(docList.getUserEntity().getUsername())
                 .setFlag(false)
                 .setCover(docList.getCover())
@@ -50,7 +83,8 @@ public class DocListVO implements Serializable {
                 .setDlid(docList.getDlid())
                 .setCreatetime(docList.getCreatetime())
                 .setUpdatetime(docList.getUpdatetime())
-                .setName(docList.getName());
+                .setName(docList.getName())
+                .setPath(docList.getPath());
     }
 
     public String getCover() {

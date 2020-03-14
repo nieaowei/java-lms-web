@@ -1,7 +1,6 @@
 package com.lms.service;
 
 import com.lms.dao.LearnRecordDao;
-import com.lms.entity.DocList;
 import com.lms.entity.LearnRecord;
 import com.lms.entity.UserEntity;
 import com.lms.vo.LearnVO;
@@ -13,9 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Transactional
@@ -30,17 +27,19 @@ public class LearnRecordService {
         return learnRecordDao.findByLrid(lrid);
     }
 
-    public LearnRecord findByLridAndUiid(Integer lrid, Long uiid) {
-        return learnRecordDao.findByLridAndUserEntity(lrid, new UserEntity().setUiid(uiid));
+    public List<LearnRecord> findAllByDocList_Dlid(Integer dlid){
+        return learnRecordDao.findAllByDocList_Dlid(dlid);
     }
 
+
     public LearnRecord findByDlidAndUiid(Integer dlid, Long uiid) {
-        return learnRecordDao.findByDocListAndUserEntity(new DocList().setDlid(dlid), new UserEntity().setUiid(uiid));
+        return learnRecordDao.findByDocList_DlidAndUserEntity_Uiid(dlid, uiid);
     }
 
     public List<LearnRecord> findByUiid(Long uiid) {
-        return learnRecordDao.findByUserEntityOrderByCreatetimeDesc(new UserEntity().setUiid(uiid));
+        return learnRecordDao.findByUserEntity_UiidOrderByCreatetimeDesc(uiid);
     }
+
 
     public Page<LearnRecord> findAll(Pageable pageable) {
         return learnRecordDao.findAll(pageable);
@@ -59,7 +58,7 @@ public class LearnRecordService {
     public  List<LearnVO> findLearnRecordVOByUiid(Long uiid) {
 //        Map<Integer, LearnVO> maps= new HashMap<>();
         List<LearnVO> learnVOList = new ArrayList<>();
-        List<LearnRecord> learnRecords = learnRecordDao.findByUserEntityOrderByCreatetimeDesc(new UserEntity().setUiid(uiid));
+        List<LearnRecord> learnRecords = learnRecordDao.findByUserEntity_UiidOrderByCreatetimeDesc(uiid);
         for (LearnRecord learnrecord : learnRecords) {
             LearnVO learnVO = new LearnVO().setName(learnrecord.getDocList().getName())
                     .setDlid(learnrecord.getDocList().getDlid())
@@ -79,12 +78,5 @@ public class LearnRecordService {
         return learnRecordDao.insert(uiid,dlid);
     }
 
-////    public List<LearnVO> findAllLearnVO(Long uiid){
-////        return learnRecordDao.findAllLearnVO(uiid);
-////    }
-//
-//    public LearnVO findLearnVoByName(String name){
-//        return learnRecordDao.findLearnVoByName(name);
-//    }
 
 }

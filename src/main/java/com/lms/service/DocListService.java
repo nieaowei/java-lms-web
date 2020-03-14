@@ -5,6 +5,7 @@ import com.lms.entity.DocList;
 import com.lms.entity.LearnRecord;
 import com.lms.entity.UserEntity;
 import com.lms.vo.DocListVO;
+import com.lms.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,9 +15,7 @@ import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Transactional
@@ -26,6 +25,7 @@ public class DocListService {
 
     @Resource
     private DocListDao docListDao;
+
     @Autowired
     private LearnRecordService learnRecordService;
 
@@ -70,7 +70,6 @@ public class DocListService {
         List<LearnRecord> learnRecords = learnRecordService.findByUiid(uiid);
         List<DocList> docListList = findAllOrder();
         List<DocListVO> docListVOList = new ArrayList<>();
-//        Map<Integer, DocListVO> docListVOMap = new HashMap<>();
         for (DocList docList : docListList) {
             DocListVO docListVO = new DocListVO().setUsername(docList.getUserEntity().getUsername())
                     .setName(docList.getName())
@@ -86,14 +85,13 @@ public class DocListService {
                     docListVO.setFlag(true);
                 }
             }
-//            docListVOMap.put(docListVO.getDlid(), docListVO);
             docListVOList.add(docListVO);
         }
         return docListVOList;
     }
 
-    public List<DocList> findByUserEntity(UserEntity user) {
-        return docListDao.findByUserEntity(user);
+    public List<DocList> findByUiid(Long uiid) {
+        return docListDao.findByUserEntity_Uiid(uiid);
     }
 
     public DocList findByDlid(Integer dlid) {
@@ -110,9 +108,31 @@ public class DocListService {
                     .setUpdatetime(docList.getUpdatetime())
                     .setDlid(docList.getDlid())
                     .setDuration(docList.getDuration())
-                    .setCover(docList.getCover());
+                    .setCover(docList.getCover())
+                    .setPath(docList.getPath());
             docListVOList.add(docListVO);
         }
         return docListVOList;
     }
+
+    public DocListVO findOneForAdmin(Integer dlid) {
+        //查找学习用户
+        List<LearnRecord> learnRecords = learnRecordService.findAllByDocList_Dlid(dlid);
+        if (learnRecords.size() == 0) {
+            DocList docList = docListDao.findByDlid(dlid);
+            return new DocListVO(docList);
+        }
+        DocListVO docListVO = new DocListVO(learnRecords.get(0).getDocList());
+        for (LearnRecord learnRecord : learnRecords) {
+            UserVO userVO = new UserVO(learnRecord.getUserEntity());
+            docListVO.getUsers().add(userVO);
+        }
+        return docListVO;
+    }
+
+    public Boolean deleteOneForAdmin(Integer dlid){
+        Integer res = docListDao.deleteDocListByDlid(dlid);
+        return res != 0;
+    }
+
 }

@@ -13,13 +13,9 @@ import java.util.List;
 
 public interface VideoLearnRecordDao extends JpaRepository<VideoLearnRecord,Integer> {
 
-    List<VideoLearnRecord> findByUserEntity(UserEntity userEntity);
+    List<VideoLearnRecord> findByUserEntity_Uiid(Long userEntity_uiid);
     Page<VideoLearnRecord> findAll(Pageable pageable);
     VideoLearnRecord findByLrid(Integer lrid);
     VideoLearnRecord findByLridAndUserEntity(Integer lrid, UserEntity userEntity);
     VideoLearnRecord findByVideoListAndUserEntity(VideoList videoList, UserEntity userEntity);
-    @Query(value="insert into video_record(uiid, vlid) values(?1,?2)",nativeQuery = true)
-    VideoLearnRecord insert(Integer uiid, Integer vlid);
-    @Query(value = "update video_record set duration=?3 where uiid=?1 and vlid=?2",nativeQuery=true)
-    VideoLearnRecord update(Long uiid, Integer vlid, Integer duration);
 }

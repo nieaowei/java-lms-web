@@ -43,7 +43,7 @@ public class VideoLearnRecordService {
     }
 
     public List<VideoLearnRecord> findByUiid(Long uiid){
-        return videoLearnRecordDao.findByUserEntity(new UserEntity().setUiid(uiid));
+        return videoLearnRecordDao.findByUserEntity_Uiid(uiid);
     }
 
     public Page<VideoLearnRecord> findAll(Pageable pageable){
@@ -55,7 +55,7 @@ public class VideoLearnRecordService {
     }
 
     public List<VideoLearnVO> findLearnRecordByUiid(Long uiid){
-        List<VideoLearnRecord> videoLearnRecords = videoLearnRecordDao.findByUserEntity(new UserEntity().setUiid(uiid));
+        List<VideoLearnRecord> videoLearnRecords = videoLearnRecordDao.findByUserEntity_Uiid(uiid);
         List<VideoLearnVO> videoLearnVOList = new ArrayList<>();
         for (VideoLearnRecord videoLearnRecord : videoLearnRecords) {
             VideoLearnVO videoLearnVO = new VideoLearnVO().setName(videoLearnRecord.getVideoList().getName())
