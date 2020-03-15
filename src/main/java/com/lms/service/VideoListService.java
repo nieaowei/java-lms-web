@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,10 @@ import java.util.List;
 public class VideoListService {
     @Resource
     private VideoListDao videoListDao;
+
+    @Autowired
+    public EntityManager entityManager;
+
     @Autowired
     private VideoLearnRecordService videoLearnRecordService;
 
@@ -81,4 +86,11 @@ public class VideoListService {
     }
 
     public void delete(Integer vlid){ videoListDao.deleteById(vlid);}
+
+    public VideoList saveAndRefresh(VideoList videoList){
+        videoList = videoListDao.save(videoList);
+        entityManager.refresh(videoList);
+        return videoList;
+    }
+
 }

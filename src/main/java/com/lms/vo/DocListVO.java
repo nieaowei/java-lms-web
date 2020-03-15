@@ -71,7 +71,7 @@ public class DocListVO implements Serializable {
     }
 
     public void initUsers(){
-        this.users=new ArrayList<>();
+        this.users = new ArrayList<>();
     }
 
     public DocListVO(DocList docList){

@@ -1,11 +1,14 @@
 package com.lms.controller;
 
+import com.lms.entity.DocList;
 import com.lms.entity.VideoList;
 import com.lms.interception.RequiredToken;
 import com.lms.service.VideoListService;
 import com.lms.utils.Result;
+import com.lms.vo.DocListVO;
 import com.lms.vo.VideoLearnVO;
 import com.lms.vo.VideoListVO;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -68,5 +71,20 @@ public class VideoListController {
     public void delete(HttpServletRequest request){
         Integer vlid = Integer.valueOf(request.getParameter("vlid"));
         videoListService.delete(vlid);
+    }
+
+    @CrossOrigin
+    @PostMapping(value = "/admin/videolist/add")
+    @RequiredToken
+    public Result<VideoListVO> addDoc(@RequestBody VideoList videoList, HttpServletRequest request) {
+        VideoListVO videoListVO = new VideoListVO();
+        try {
+            Long uiid = (long) request.getAttribute("uiid");
+            videoList = videoListService.saveAndRefresh(videoList.setUiid(uiid));
+            BeanUtils.copyProperties(videoList, videoListVO);
+        } catch (Exception e) {
+            return new Result<VideoListVO>().setStatus(500).setMsg("新建视频失败");
+        }
+        return new Result<VideoListVO>().setStatus(200).setMsg("新建视频成功").setData(videoListVO);
     }
 }
