@@ -78,5 +78,7 @@ public class LearnRecordService {
         return learnRecordDao.insert(uiid,dlid);
     }
 
-
+    public void delete(Integer lrid){
+        learnRecordDao.deleteById(lrid);
+    }
 }

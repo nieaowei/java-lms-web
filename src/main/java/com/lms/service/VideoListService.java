@@ -79,4 +79,6 @@ public class VideoListService {
     public VideoList findByVlid(Integer vlid) {
         return videoListDao.findByVlid(vlid);
     }
+
+    public void delete(Integer vlid){ videoListDao.deleteById(vlid);}
 }

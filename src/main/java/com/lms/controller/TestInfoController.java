@@ -3,15 +3,13 @@ package com.lms.controller;
 import com.lms.entity.DocList;
 import com.lms.entity.TestInfo;
 import com.lms.interception.AuthInterceptor;
+import com.lms.interception.RequiredToken;
 import com.lms.service.TestInfoService;
 import com.lms.service.UserService;
 import com.lms.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -49,6 +47,15 @@ public class TestInfoController {
         TestInfo testInfo = new TestInfo();
         testInfo.setUserEntity(userService.findByUiid(uiid));
         testInfo.setTitle(title);
+        testInfoService.save(testInfo);
         return new Result<TestInfo>().setData(testInfo).setStatus(200).setMsg("创建试题");
+    }
+
+    @CrossOrigin
+    @PostMapping("testinfo/delete")
+    @RequiredToken
+    public void delete(HttpServletRequest request){
+        Integer tiid = Integer.valueOf(request.getParameter("tiid"));
+        testInfoService.delete(tiid);
     }
 }

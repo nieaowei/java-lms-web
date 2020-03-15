@@ -7,10 +7,7 @@ import com.lms.utils.Result;
 import com.lms.vo.VideoLearnVO;
 import com.lms.vo.VideoListVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -65,5 +62,11 @@ public class VideoListController {
 
     }
 
-
+    @CrossOrigin
+    @PostMapping("video/delete")
+    @RequiredToken
+    public void delete(HttpServletRequest request){
+        Integer vlid = Integer.valueOf(request.getParameter("vlid"));
+        videoListService.delete(vlid);
+    }
 }

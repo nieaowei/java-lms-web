@@ -28,5 +28,5 @@ public class TestInfoService {
 
     public TestInfo save(TestInfo testInfo){return testInfoDAO.save(testInfo);}
 
-
+    public void delete(Integer tiid){ testInfoDAO.deleteById(tiid);}
 }
