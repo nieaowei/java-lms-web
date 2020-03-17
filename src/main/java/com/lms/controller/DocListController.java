@@ -74,17 +74,6 @@ public class DocListController {
         return new Result<List<DocListVO>>().setStatus(200).setMsg("获取文档列表成功").setData(docListVOList);
     }
 
-//    @CrossOrigin
-//    @GetMapping(value = "/admin/doc/all")
-//    public Result<List<DocListVO>> getAllPage(HttpServletRequest request) {
-//        List<DocListVO> docListVOList;
-//        try {
-//            docListVOList = docListService.findAllForAdmin();
-//        } catch (Exception e) {
-//            return new Result<List<DocListVO>>().setStatus(200).setMsg("获取文档列表失败");
-//        }
-//        return new Result<List<DocListVO>>().setStatus(200).setMsg("获取文档列表成功").setData(docListVOList);
-//    }
 
     @CrossOrigin
     @PostMapping(value = "/admin/doc/add")
@@ -126,7 +115,6 @@ public class DocListController {
     @CrossOrigin
     @GetMapping(value = "/admin/doc/deleteone")
     public Result<String> deleteOne(HttpServletRequest request) {
-        DocListVO docListVO;
         try {
             Integer dlid = Integer.parseInt(request.getParameter("dlid"));
             if (docListService.deleteOneForAdmin(dlid)){

@@ -2,18 +2,24 @@ package com.lms.service;
 
 import com.lms.dao.VideoListDao;
 import com.lms.entity.*;
+import com.lms.vo.DocListVO;
+import com.lms.vo.UserVO;
 import com.lms.vo.VideoListVO;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class VideoListService {
     @Resource
     private VideoListDao videoListDao;
@@ -30,6 +36,12 @@ public class VideoListService {
 
     public VideoList save(VideoList videoList) {
         return videoListDao.save(videoList);
+    }
+    @Modifying(clearAutomatically = true)
+    public VideoList saveAndFlush(VideoList videoList) {
+        videoListDao.saveAndFlush(videoList);
+        videoListDao.flush();
+        return videoList;
     }
 
     public Page<VideoList> findAll(Pageable pageable) {
@@ -93,4 +105,47 @@ public class VideoListService {
         return videoList;
     }
 
+    public boolean deleteOneForAdmin(Integer vlid) {
+        Integer res = videoListDao.deleteVideoListByVlid(vlid);
+        return res != 0;
+    }
+
+    public List<VideoListVO> findAllForAdmin() {
+        List<VideoList> videoLists = findAllOrder();
+        List<VideoListVO> videoListVOS = new ArrayList<>();
+        for (VideoList videoList : videoLists) {
+            VideoListVO videoListVO = new VideoListVO().setUsername(videoList.getUserEntity().getUsername())
+                    .setName(videoList.getName())
+                    .setCreatetime(videoList.getCreatetime())
+                    .setUpdatetime(videoList.getUpdatetime())
+                    .setVlid(videoList.getVlid())
+                    .setDuration(videoList.getDuration())
+                    .setCover(videoList.getCover())
+                    .setPath(videoList.getPath());
+            videoListVOS.add(videoListVO);
+        }
+        return videoListVOS;
+    }
+
+    private List<VideoList> findAllOrder() {
+        return videoListDao.findAllByOrderByCreatetimeDesc();
+    }
+
+    public VideoListVO findOneForAdmin(Integer vlid) {
+        List<VideoLearnRecord> learnRecords = videoLearnRecordService.findAllByVideoList_Vlid(vlid);
+        if (learnRecords.size() == 0) {
+            VideoList videoList = videoListDao.findByVlid(vlid);
+            VideoListVO videoListVO = new VideoListVO();
+            BeanUtils.copyProperties(videoList,videoListVO);
+            return videoListVO;
+        }
+        VideoListVO videoListVO = new VideoListVO();
+        BeanUtils.copyProperties(learnRecords.get(0).getVideoList(),videoListVO);
+        videoListVO.setUsername(learnRecords.get(0).getVideoList().getUserEntity().getUsername());
+        for (VideoLearnRecord learnRecord : learnRecords) {
+            UserVO userVO = new UserVO(learnRecord.getUserEntity());
+            videoListVO.getUsers().add(userVO);
+        }
+        return videoListVO;
+    }
 }

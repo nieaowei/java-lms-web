@@ -20,20 +20,20 @@
         <el-tab-pane label="修改密码">
             <!--            <el-card>-->
             <el-steps :active="active" finish-status="success" align-center style="margin-top: 100px">
-                    <el-step title="验证旧密码">
-                    </el-step>
-                    <el-step title="输入新密码">
-                    </el-step>
-                    <el-step title="修改成功">
-                    </el-step>
+                <el-step title="验证旧密码">
+                </el-step>
+                <el-step title="输入新密码">
+                </el-step>
+                <el-step title="修改成功">
+                </el-step>
             </el-steps>
             <!--            </el-card>-->
             <div>
-                <el-input v-if="active===0" type="text" label="旧密码：" placeholder="请输入旧密码"
-                style="padding: 10%"></el-input>
-                <el-input v-else-if="active===1" type="text" label="新密码：" placeholder="请输入新密码"
+                <el-input v-if="active===0" type="text" label="旧密码："  placeholder="请输入旧密码" v-model="oldPd"
                           style="padding: 10%"></el-input>
-                <span v-else >修改成功</span>
+                <el-input v-else-if="active===1" type="text" label="新密码：" placeholder="请输入新密码" v-model="newPd"
+                          style="padding: 10%"></el-input>
+                <span v-else>修改成功</span>
             </div>
             <el-button v-if="active<2" style="margin-bottom: 12px;" @click="nextStep">下一步</el-button>
             <el-button v-else style="margin-bottom: 12px;" @click="nextStep">完成</el-button>
@@ -60,6 +60,8 @@
             };
             return {
                 active: 0,
+                newPd: '',
+                oldPd: '',
                 registerForm: {
                     username: '',
                     password: '',
@@ -78,6 +80,34 @@
             nextStep() {
                 if (this.active++ > 2) {
                     this.active = 0;
+                }
+                if (this.active === 2) {
+                    this.$store.dispatch('MyProfile/changeMyPd', {newVal: this.newPd, oldVal: this.oldPd}).then(
+                        (resolve) => {
+                            this.$notify({
+                                type: "success",
+                                message: resolve.msg,
+                                position: constant.NOTIFY_POS,
+                            })
+                            this.active = 3
+                        },
+                        (reject) => {
+                            if (reject === constant.REDIRECT_LOGIN) {
+                                this.$router.push('login')
+                            }
+                            this.$notify({
+                                type: "error",
+                                message: reject,
+                                position: constant.NOTIFY_POS,
+                            })
+                            this.active = 0
+                        }
+                    ).finally(
+                        ()=>{
+                            this.newPd=''
+                            this.oldPd=''
+                        }
+                    )
                 }
             }
         },
@@ -121,7 +151,7 @@
         margin: 25%;
     }
 
-    .el-tab-pane{
+    .el-tab-pane {
         min-height: 520px;
     }
 </style>

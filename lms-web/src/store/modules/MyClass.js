@@ -7,6 +7,7 @@ const module_MyClass = {
     state: {
         myDocs: {},
         myVideos: {},
+        myTests: {}
     },
     getters: {},
     mutations: {
@@ -16,18 +17,30 @@ const module_MyClass = {
         saveMyVideos(state, data) {
             state.myVideos = data
         },
-        addMyDoc(state,  data) {
+        addMyDoc(state, data) {
             state.myDocs.unshift(data)
         },
         addMyVideo(state, data) {
             state.myVideos.unshift(data)
         },
         changeMyDocPercent(state, {key, data}) {
-            state.myDocs[key].percent = data
+            state.myDocs.forEach((item)=>{
+                if (item.dlid === key){
+                    item.percent = data
+                    return
+                }
+            })
+            // state.myDocs[key].percent = data
         },
         changeMyVideoPercent(state, {key, data}) {
             state.myVideos[key].percent = data
         },
+        saveMyTests(state, data) {
+            state.myTests = data;
+        },
+        addMyTest(state,item){
+            state.myTests.unshift(item)
+        }
     },
     actions: {
         // eslint-disable-next-line no-unused-vars
@@ -68,6 +81,8 @@ const module_MyClass = {
                     }
                 ).then(
                     (success) => {
+                        console.log('suc',success)
+
                         if (success.data.status === 200) {
                             //更新本地数据
                             commit('changeMyDocPercent', {key: _dlid, data: success.data.data.percent})
@@ -78,6 +93,8 @@ const module_MyClass = {
                 ).catch(
                     // eslint-disable-next-line no-unused-vars
                     (fail) => {
+                        console.log('fail ',fail)
+
                         if (fail.response.status === 302) {
                             reject(constant.REDIRECT_LOGIN)
                         }
@@ -136,6 +153,31 @@ const module_MyClass = {
                     }
                 );
             })
+        },
+        getMyTests({commit}){
+            return new Promise((resolve, reject) => {
+                axios.get(
+                    'api/user/test/record',
+                    {
+                        timeout: 3000
+                    }
+                ).then(
+                    (success) => {
+                        if (success.data.status === 200) {
+                            commit('saveMyTests', success.data.data);
+                            resolve(success.data.msg)
+                        }
+                        reject(success.data.msg)
+                    }
+                ).catch(
+                    (fail) => {
+                        if (fail.response.status === 302) {
+                            reject(constant.REDIRECT_LOGIN)
+                        }
+                        reject(constant.SERVER_FAIL)
+                    }
+                );
+            });
         }
     },
 }

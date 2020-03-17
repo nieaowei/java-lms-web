@@ -2,23 +2,19 @@ package com.lms.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.lms.entity.UserEntity;
-import com.lms.entity.VideoList;
 import com.lms.interception.AuthInterceptor;
 import com.lms.interception.RequiredToken;
 import com.lms.service.UserService;
 import com.lms.utils.Result;
-import org.apache.tomcat.util.security.MD5Encoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import sun.security.provider.MD5;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.util.List;
-import java.util.UUID;
+
 
 @RestController
 
@@ -61,7 +57,7 @@ public class UserController {
         String newpassword = jsonParam.getString("newpassword");
         //验明身份
         UserEntity user = userService.getByUiidAndPassword(uiid, oldpassword);
-        if (null != user) {
+        if (null == user) {
             //验证失败
             return new Result<String>().setStatus(500).setMsg("旧密码错误");
         }
@@ -101,6 +97,48 @@ public class UserController {
             }
             file.transferTo(dest);
             return new Result<String>().setStatus(200).setMsg("上传成功").setData("http://" + domain + "/images/" + fileName + suffix);
+        } catch (Exception e) {
+            return new Result<String>().setMsg("上传失败").setStatus(500);
+        }
+    }
+
+    @CrossOrigin
+    @PostMapping(value = "/admin/uploadpdf")
+//    @RequiredToken
+    public Result<String> uploadPdf(@RequestParam("file") MultipartFile file) {
+        try {
+
+            String fileName = file.getOriginalFilename();
+            String suffix = fileName.substring(fileName.lastIndexOf('.'));
+            fileName = DigestUtils.md5DigestAsHex(file.getInputStream());
+            String path = uploadUrl + "/pdfs/" + fileName + suffix;
+            File dest = new File(path);
+            if (!dest.getParentFile().exists()) {
+                dest.getParentFile().mkdirs();
+            }
+            file.transferTo(dest);
+            return new Result<String>().setStatus(200).setMsg("上传成功").setData("http://" + domain + "/pdfs/" + fileName + suffix);
+        } catch (Exception e) {
+            return new Result<String>().setMsg("上传失败").setStatus(500);
+        }
+    }
+
+    @CrossOrigin
+    @PostMapping(value = "/admin/uploadvideo")
+//    @RequiredToken
+    public Result<String> uploadVideo(@RequestParam("file") MultipartFile file) {
+        try {
+
+            String fileName = file.getOriginalFilename();
+            String suffix = fileName.substring(fileName.lastIndexOf('.'));
+            fileName = DigestUtils.md5DigestAsHex(file.getInputStream());
+            String path = uploadUrl + "/videos/" + fileName + suffix;
+            File dest = new File(path);
+            if (!dest.getParentFile().exists()) {
+                dest.getParentFile().mkdirs();
+            }
+            file.transferTo(dest);
+            return new Result<String>().setStatus(200).setMsg("上传成功").setData("http://" + domain + "/videos/" + fileName + suffix);
         } catch (Exception e) {
             return new Result<String>().setMsg("上传失败").setStatus(500);
         }

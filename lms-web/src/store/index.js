@@ -10,6 +10,10 @@ import module_studyDoc from "./modules/studyDoc";
 import module_VideoClass from "./modules/VideoClass";
 import module_studyVideo from "./modules/studyVideo";
 import module_adminDoc from "./modules/adminDoc";
+import module_adminVideo from "./modules/adminVideo";
+import module_Test from "./modules/Test";
+import module_doTest from "./modules/doTest";
+import module_adminTest from "./modules/adminTest";
 
 Vue.use(Vuex);
 
@@ -26,6 +30,10 @@ const store = new Vuex.Store(
             studyVideo: module_studyVideo,
             VideoClass: module_VideoClass,
             adminDoc: module_adminDoc,
+            adminVideo: module_adminVideo,
+            adminTest: module_adminTest,
+            Test: module_Test,
+            doTest: module_doTest,
         },
         state: {},
         mutations: {},

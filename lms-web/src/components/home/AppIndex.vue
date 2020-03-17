@@ -1,7 +1,7 @@
 <template>
     <div class="main-container">
         <el-container style="height: 100%" class="outside-container">
-            <el-header height="80px">刘军民是傻逼</el-header>
+            <el-header height="80px">学习管理系统</el-header>
             <!--            <div class="midille-container">-->
             <el-container class="midille-container">
                 <el-container>
@@ -13,7 +13,7 @@
                                        src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"></el-avatar>
                             <div style="padding: 0px;">
                                 <div class="bottom clearfix">
-                                    刘军民
+                                    {{this.$store.state.MyProfile.profile['username']}}
                                 </div>
                             </div>
                         </el-card>
@@ -89,6 +89,7 @@
         },
         created() {
             this.$store.commit('AppIndex/changeCurrentView',MyClass)
+            this.$store.dispatch('MyProfile/getProfile')
         }
 
     }

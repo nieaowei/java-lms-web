@@ -18,7 +18,7 @@ public class VideoList {
     /**
      * 文档上传人ID，用户表外键
      */
-    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @ManyToOne( fetch = FetchType.LAZY)
     @JoinColumn(name = "uiid", referencedColumnName = "uiid")
     private UserEntity userEntity;
 //    private Integer uiid;
@@ -121,6 +121,9 @@ public class VideoList {
     }
 
     public VideoList setUiid(Long uiid) {
+        if (this.userEntity==null){
+            this.userEntity= new UserEntity();
+        }
         this.userEntity.setUiid(uiid);
         return this;
     }

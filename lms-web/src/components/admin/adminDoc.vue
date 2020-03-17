@@ -92,6 +92,7 @@
                             action="api/admin/uploadimage/"
                             :on-success="handleAvatarSuccess"
                             :show-file-list="false"
+                            with-credentials
                     >
                         <el-image
                                 v-if="item.form.cover" :src="item.form.cover"
@@ -111,7 +112,10 @@
                         <el-form-item label="PDF文件：">
                             <el-input style="" v-model="item.form.path"></el-input>
                             <el-upload
-                                    action="https://jsonplaceholder.typicode.com/posts/"
+                                    with-credentials
+                                    :limit="1"
+                                    :on-success="handlePdfSuccess"
+                                    action="api/admin/uploadpdf/"
                                     :show-file-list="false">
                                 <el-button size="small" type="primary">点击上传</el-button>
                             </el-upload>
@@ -136,11 +140,22 @@
                             </el-image>
                             <el-form label-width="100px" disabled>
                                 <el-form-item label="封面地址：">
-                                    <span>{{item.data.cover}}</span>
-
+                                    <!--                                    <span >{{item.data.cover}}</span>-->
+                                    <el-input
+                                            style=""
+                                            type="textarea"
+                                            autosize
+                                            v-model="item.data.cover">
+                                    </el-input>
                                 </el-form-item>
                                 <el-form-item label="文件地址：">
-                                    <span>{{item.data.path}}</span>
+                                    <el-input
+                                            style=""
+                                            type="textarea"
+                                            autosize
+                                            v-model="item.data.path">
+                                    </el-input>
+                                    <!--                                    <span>{{item.data.path}}</span>-->
                                 </el-form-item>
                                 <el-form-item label="课程号：">
                                     <span>{{item.data.dlid}}</span>
@@ -217,6 +232,8 @@
                         cover: data.row.cover,
                         path: data.row.path,
                         duration: data.row.duration,
+                        createtime:data.row.createtime,
+                        updatetime:data.row.updatetime,
                     }
                 });
                 // this.curTab++;
@@ -237,7 +254,7 @@
                         //@todo 增加到本地文档列表
                         // this.$store.commit('DocClass')
                         this.removeTab(item.name)
-                        this.$store.commit('adminDoc/changeDoc', {dlid: item.form.dlid, item: resolve.data})
+                        this.$store.commit('adminDoc/changeDoc', {dlid: item.form.dlid, newitem: resolve.data})
                     },
                     (reject) => {
                         console.log(reject)
@@ -426,6 +443,32 @@
                 console.log(this.curTab)
                 this.editableTabs[this.curTab - 1].form.cover = res.data;
             },
+            // eslint-disable-next-line no-unused-vars
+            handlePdfSuccess(res, file) {
+                console.log(this.curTab)
+                this.editableTabs[this.curTab - 1].form.path = res.data;
+            },
+        },
+        created() {
+            this.$store.dispatch('adminDoc/getDocList').then(
+                (resolve) => {
+                    this.$notify({
+                        type: "success",
+                        message: resolve,
+                        position: constant.NOTIFY_POS,
+                    })
+                },
+                (reject) => {
+                    if (reject === constant.REDIRECT_LOGIN) {
+                        this.$router.push('login')
+                    }
+                    this.$notify({
+                        type: "error",
+                        message: reject,
+                        position: constant.NOTIFY_POS,
+                    })
+                }
+            )
         }
     }
 </script>

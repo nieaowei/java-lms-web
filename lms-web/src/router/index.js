@@ -8,6 +8,7 @@ import studyDoc from "../components/study/studyDoc";
 import studyVidoe from "../components/study/studyVidoe";
 import admin from "../components/admin/admin";
 import upload from "../components/admin/upload";
+import doTest from "../components/study/doTest";
 
 Vue.use(Router)
 
@@ -52,6 +53,11 @@ export default new Router(
                 name:'upload',
                 path:'/upload',
                 component:upload,
+            },
+            {
+                name:'dotest',
+                path:'/dotest',
+                component: doTest
             }
         ]
     }

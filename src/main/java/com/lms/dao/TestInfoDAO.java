@@ -14,4 +14,5 @@ public interface TestInfoDAO extends JpaRepository<TestInfo, Integer> {
     Page<TestInfo> findAll(Pageable pageable);
     List<TestInfo> findByUserEntity(UserEntity userEntity);
     List<TestInfo> findAllByOrderByCreatetimeDesc();
+    Integer deleteByTiid(Integer tiid);
 }

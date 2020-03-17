@@ -6,11 +6,17 @@ import com.lms.entity.TestInfo;
 import com.lms.entity.TestRecord;
 import com.lms.entity.UserEntity;
 import com.lms.interception.AuthInterceptor;
+import com.lms.interception.RequiredToken;
 import com.lms.service.TestContentService;
 import com.lms.service.TestInfoService;
 import com.lms.service.TestRecordService;
 import com.lms.service.UserService;
 import com.lms.utils.Result;
+import com.lms.utils.TokenUtil;
+import com.lms.vo.LearnVO;
+import com.lms.vo.TestInfoVO;
+import com.lms.vo.TestRecordVO;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.w3c.dom.html.HTMLScriptElement;
@@ -33,6 +39,38 @@ public class TestRecordController {
 
     @Autowired
     private TestContentService testContentService;
+
+    @CrossOrigin
+    @GetMapping(value = "/user/test/record")
+    @RequiredToken
+    public Result<List<TestRecordVO>> getLearnRecord(HttpServletRequest request) {
+        Long uiid = (long) request.getAttribute(AuthInterceptor.RESULT_KEY);
+        List<TestRecordVO> learnVOList = testRecordService.findVOByUiid(uiid);//无论是否查询到都会生成对象，无需判错
+        return new Result< List<TestRecordVO>>().setStatus(200).setMsg("获取学习记录成功").setData(learnVOList);
+    }
+
+    @CrossOrigin
+    @PostMapping(value = "/user/test/postone")
+    @RequiredToken
+    public Result<TestRecordVO> postOne(@RequestBody TestInfoVO testInfoVO ,HttpServletRequest request) {
+        //无论查询到与否  docList对象都会生成，如果未查询到，其size为0
+//        List<TestInfoVO> testInfoVOS = testInfoService.findAllOrderAddFlag((long) request.getAttribute("uiid"));
+        TestRecordVO testRecordVO;
+        try {
+            Long uiid = (long) request.getAttribute(AuthInterceptor.RESULT_KEY);
+            TestRecord testRecord = testContentService.answer(testInfoVO.getTopics());
+            testRecord.setUserEntity(new UserEntity().setUiid(uiid));
+            testRecord.setTestInfo(new TestInfo().setTiid(testInfoVO.getTiid()));
+            testRecord = testRecordService.saveAndRefresh(testRecord);
+            testRecordVO=new TestRecordVO();
+            BeanUtils.copyProperties(testRecord,testRecordVO);
+            BeanUtils.copyProperties(testRecord.getTestInfo(),testRecordVO);
+            testRecordVO.setCreatetime(testRecord.getCreatetime());
+        }catch (Exception e){
+            return new Result<TestRecordVO>().setStatus(200).setMsg("提交试卷失败");
+        }
+        return new Result<TestRecordVO>().setData(testRecordVO).setStatus(200).setMsg("提交试卷成功");
+    }
 
     @CrossOrigin
     @GetMapping(value = "testrecord/all")
@@ -74,4 +112,6 @@ public class TestRecordController {
         testRecord.setTestInfo(testInfoService.findByTiid(tiid));
         testRecord.setGrade(grade);
     }
+
+
 }

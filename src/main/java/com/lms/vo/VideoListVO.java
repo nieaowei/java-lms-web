@@ -1,6 +1,8 @@
 package com.lms.vo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class VideoListVO implements Serializable {
     private Integer vlid;
@@ -33,6 +35,17 @@ public class VideoListVO implements Serializable {
      * 封面图片
      */
     private String cover;
+
+    private String path;
+
+    private List<UserVO> users;
+
+    public List<UserVO> getUsers() {
+        return users;
+    }
+    public VideoListVO(){
+        this.users=new ArrayList<>();
+    }
 
     public String getCover() {
         return cover;
@@ -105,5 +118,14 @@ public class VideoListVO implements Serializable {
 
     public String getUsername() {
         return username;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public VideoListVO setPath(String path) {
+        this.path=path;
+        return this;
     }
 }

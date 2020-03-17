@@ -33,7 +33,7 @@ public class LoginController {
             //有注解 不需要特别设定
 //            response.setHeader("Access-Control-Allow-Origin", "*");
 //            response.setHeader("Access-Control-Allow-Credentials", "true");
-            return new Result<String>().setStatus(200).setMsg("登录成功");
+            return new Result<String>().setStatus(200).setMsg("登录成功").setData(user.getUsername());
         }
         return new Result<String>().setStatus(400).setMsg("登录失败");
     }

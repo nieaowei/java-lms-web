@@ -58,10 +58,11 @@
                         .then(
                             (value) => {
                                     this.$notify({
-                                        message: value,
+                                        message: value.msg,
                                         type: "success",
                                         position:constant.NOTIFY_POS,
                                     });
+                                    this.$store.commit("AppIndex/saveCurUserName",value.data)
                                     this.$router.push({name: 'AppIndex'})
                             },
                             (err) => {

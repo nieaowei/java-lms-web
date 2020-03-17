@@ -5,6 +5,7 @@ import com.lms.entity.VideoList;
 import com.lms.interception.RequiredToken;
 import com.lms.service.VideoListService;
 import com.lms.utils.Result;
+import com.lms.utils.UpdateUtil;
 import com.lms.vo.DocListVO;
 import com.lms.vo.VideoLearnVO;
 import com.lms.vo.VideoListVO;
@@ -66,15 +67,22 @@ public class VideoListController {
     }
 
     @CrossOrigin
-    @PostMapping("video/delete")
+    @GetMapping(value = "/admin/video/deleteone")
     @RequiredToken
-    public void delete(HttpServletRequest request){
-        Integer vlid = Integer.valueOf(request.getParameter("vlid"));
-        videoListService.delete(vlid);
+    public Result<String> deleteOne(HttpServletRequest request) {
+        try {
+            Integer vlid = Integer.parseInt(request.getParameter("vlid"));
+            if (videoListService.deleteOneForAdmin(vlid)){
+                return new Result<String>().setStatus(200).setMsg("删除课程成功");
+            }
+        } catch (Exception e) {
+            return new Result<String>().setStatus(500).setMsg("删除课程失败");
+        }
+        return new Result<String>().setStatus(500).setMsg("删除课程失败");
     }
 
     @CrossOrigin
-    @PostMapping(value = "/admin/videolist/add")
+    @PostMapping(value = "/admin/video/add")
     @RequiredToken
     public Result<VideoListVO> addDoc(@RequestBody VideoList videoList, HttpServletRequest request) {
         VideoListVO videoListVO = new VideoListVO();
@@ -82,9 +90,64 @@ public class VideoListController {
             Long uiid = (long) request.getAttribute("uiid");
             videoList = videoListService.saveAndRefresh(videoList.setUiid(uiid));
             BeanUtils.copyProperties(videoList, videoListVO);
+            videoListVO.setUsername(videoList.getUserEntity().getUsername());
         } catch (Exception e) {
             return new Result<VideoListVO>().setStatus(500).setMsg("新建视频失败");
         }
         return new Result<VideoListVO>().setStatus(200).setMsg("新建视频成功").setData(videoListVO);
     }
+
+    @CrossOrigin
+    @PostMapping(value = "/admin/video/updateone")
+    @RequiredToken
+    public Result<VideoListVO> updateOne(@RequestBody VideoList videoList,HttpServletRequest request) {
+        VideoListVO videoListVO;
+        try {
+            VideoList temp = videoListService.findByVlid(videoList.getVlid());
+//            videoList.setUserEntity(temp.getUserEntity());
+            temp.setName(videoList.getName()).setCover(videoList.getCover())
+                    .setDuration(videoList.getDuration())
+                    .setPath(videoList.getPath());
+//            temp.setName("dasdqd");
+//            UpdateUtil.copyNullProperties(temp,videoList);
+//            videoList.setUiid(temp.getUserEntity().getUiid());
+//            BeanUtils.copyProperties(videoList,temp);
+            videoList = videoListService.save(temp);
+            videoList = videoListService.findByVlid(videoList.getVlid());
+//            temp = videoListService.findByVlid(videoList.getVlid());
+//            videoList = videoListService.findByVlid(videoList.getVlid());
+            videoListVO = new VideoListVO();
+            BeanUtils.copyProperties(videoList,videoListVO);
+            videoListVO.setUsername(videoList.getUserEntity().getUsername());
+        } catch (Exception e) {
+            return new Result<VideoListVO>().setStatus(500).setMsg("更新课程失败");
+        }
+        return new Result<VideoListVO>().setStatus(200).setMsg("更新课程成功").setData(videoListVO);
+    }
+
+    @CrossOrigin
+    @GetMapping(value = "/admin/video/getone")
+    public Result<VideoListVO> getOne(HttpServletRequest request) {
+        VideoListVO videoListVO;
+        try {
+            Integer vlid = Integer.parseInt(request.getParameter("vlid"));
+            videoListVO = videoListService.findOneForAdmin(vlid);
+        } catch (Exception e) {
+            return new Result<VideoListVO>().setStatus(500).setMsg("获取文档信息失败");
+        }
+        return new Result<VideoListVO>().setStatus(200).setMsg("获取文档信息成功").setData(videoListVO);
+    }
+
+    @CrossOrigin
+    @GetMapping(value = "/admin/video/all")
+    public Result<List<VideoListVO>> getAll(HttpServletRequest request) {
+        List<VideoListVO> docListVOList;
+        try {
+            docListVOList = videoListService.findAllForAdmin();
+        } catch (Exception e) {
+            return new Result<List<VideoListVO>>().setStatus(200).setMsg("获取文档列表失败");
+        }
+        return new Result<List<VideoListVO>>().setStatus(200).setMsg("获取文档列表成功").setData(docListVOList);
+    }
+
 }

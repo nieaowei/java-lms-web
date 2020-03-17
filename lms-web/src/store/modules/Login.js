@@ -40,7 +40,7 @@ const module_Login = {
                     ).then(
                         (successResponse) => {
                             if (successResponse.data['status'] === 200) {
-                                resolve(successResponse.data['msg'])
+                                resolve(successResponse.data)
                             }
                             reject(successResponse.data['msg'])
                         }

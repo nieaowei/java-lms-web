@@ -62,7 +62,31 @@
             </el-row>
         </el-tab-pane>
         <el-tab-pane label="已完成考核">
-            <!--            <login></login>-->
+            <el-row :gutter="10">
+                <el-col :xs="12" :sm="10" :md="8" :lg="6" :xl="4" :offset="1"
+                        v-for="classe in this.$store.state.MyClass.myTests" :key="classe.id">
+                    <el-card class="data-card" :body-style="{ padding: '0px' }">
+                        <el-image
+                                style="width: 100%; height: 150px"
+                                :src="classe.cover"
+                                fit="cover"></el-image>
+                        <div style="padding: 14px;">
+                            <span>{{classe.title}}({{classe.tiid}})</span>
+                            <!--                                <el-progress :text-inside="true" :stroke-width="10" :percentage="classe['duration']*100/classe['doc_duration']"></el-progress>-->
+                            <div class="bottom clearfix">
+                                <el-tag class="time">完成时间：{{classe.createtime.split(' ')[0]}}</el-tag><br/>
+<!--                                <el-button icon="el-icon-circle-check" type="success"-->
+<!--                                           class="button">{{classe.grade}}-->
+<!--                                </el-button>-->
+                                <el-tag>总 分：{{classe.sum}}</el-tag><br/>
+                                <el-tag type="success">得 分：{{classe.grade}}</el-tag><br/>
+
+                            </div>
+                        </div>
+                    </el-card>
+
+                </el-col>
+            </el-row>
         </el-tab-pane>
 
         <el-dialog v-loading="loading"
@@ -120,15 +144,16 @@
 
                             if (this.studyWindow.instance===studyDoc){
                                 this.studyWindow.timer = setInterval(() => {
-                                    console.log("exec timer")
+                                    console.log("doc exec timer")
                                     this.$store.dispatch("MyClass/updateDuration", this.studyWindow.currentClass.dlid).then(
                                         // eslint-disable-next-line no-unused-vars
                                         (resolve) => {
-                                            console.log(resolve)
+                                            console.log("update",resolve)
                                             this.$store.commit("AppIndex/setBottomPercent", resolve.percent)
                                         },
                                         // eslint-disable-next-line no-unused-vars
                                         (reject) => {
+                                            console.log("update",reject)
 
                                         }
                                     )
@@ -162,6 +187,7 @@
                     if (newVal === false) {
                         console.log("clear timer")
                         clearInterval(this.studyWindow.timer)
+                        this.studyWindow.instance=null;
                     }
                 },
                 deep: true,
@@ -290,6 +316,23 @@
                 }
             );
             this.$store.dispatch('MyClass/getMyVideos')
+                .then(
+                    (value) => {
+                        this.$notify({
+                            message: value,
+                            type: "success",
+                            position: constant.NOTIFY_POS,
+                        });
+                    },
+                    (err) => {
+                        this.$notify({
+                            message: err,
+                            type: "error",
+                            position: constant.NOTIFY_POS,
+                        });
+                    }
+                )
+            this.$store.dispatch('MyClass/getMyTests')
                 .then(
                     (value) => {
                         this.$notify({

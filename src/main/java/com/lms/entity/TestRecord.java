@@ -31,6 +31,10 @@ public class TestRecord {
 
     private Integer grade;
 
+    private String createtime;
+
+    private String updatetime;
+
     public Integer getTrid() {
         return trid;
     }
@@ -59,7 +63,24 @@ public class TestRecord {
         return grade;
     }
 
-    public void setGrade(Integer grade) {
+    public TestRecord setGrade(Integer grade) {
         this.grade = grade;
+        return this;
+    }
+
+    public void setCreatetime(String createtime) {
+        this.createtime = createtime;
+    }
+
+    public String getUpdatetime() {
+        return updatetime;
+    }
+
+    public void setUpdatetime(String updatetime) {
+        this.updatetime = updatetime;
+    }
+
+    public String getCreatetime() {
+        return createtime;
     }
 }

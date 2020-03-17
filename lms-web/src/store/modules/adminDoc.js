@@ -17,7 +17,7 @@ const module_adminDoc = {
         removeDoc(state, index) {
             state.docList.splice(index, 1)
         },
-        changeDoc(state, dlid, newitem) {
+        changeDoc(state, {dlid, newitem}) {
             state.docList.forEach((item,index)=>{
                 if (item.dlid===dlid){
                     state.docList.splice(index, 1, newitem)
@@ -62,6 +62,7 @@ const module_adminDoc = {
                             path: item.path,
                             name: item.name,
                             duration: item.duration,
+
                         },
                         {
                             timeout: 3000,
@@ -153,6 +154,8 @@ const module_adminDoc = {
                             cover: data.cover,
                             name: data.name,
                             duration: data.duration,
+                            createtime:data.createtime,
+                            updatetime:data.updatetime,
                         },
                         {
                             timeout: 3000,

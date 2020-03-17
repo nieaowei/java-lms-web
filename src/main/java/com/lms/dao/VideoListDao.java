@@ -16,4 +16,6 @@ public interface VideoListDao extends JpaRepository<VideoList,Integer> {
     Page<VideoList> findAll(Pageable pageable);
     List<VideoList> findByUserEntity(UserEntity uiid);
     List<VideoList> findAllByOrderByCreatetimeDesc();
+
+    Integer deleteVideoListByVlid(Integer vlid);
 }

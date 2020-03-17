@@ -78,4 +78,7 @@ public class VideoLearnRecordService {
         return learnRecord;
     }
 
+    public List<VideoLearnRecord> findAllByVideoList_Vlid(Integer vlid) {
+        return videoLearnRecordDao.findAllByVideoList_Vlid(vlid);
+    }
 }

@@ -18,7 +18,7 @@ public class TestContent {
     /**
      * 文档上传人ID，用户表外键
      */
-    @ManyToOne(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "tiid",referencedColumnName = "tiid")
     private TestInfo testInfo;
     /**
@@ -103,8 +103,9 @@ public class TestContent {
         return answer;
     }
 
-    public void setAnswer(Integer answer) {
+    public TestContent setAnswer(Integer answer) {
         this.answer = answer;
+        return this;
     }
 
     public String getCreatetime() {
