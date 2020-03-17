@@ -4,6 +4,7 @@ import com.lms.dao.DocListDao;
 import com.lms.entity.DocList;
 import com.lms.entity.LearnRecord;
 import com.lms.entity.UserEntity;
+import com.lms.entity.VideoList;
 import com.lms.vo.DocListVO;
 import com.lms.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -133,6 +134,15 @@ public class DocListService {
     public Boolean deleteOneForAdmin(Integer dlid){
         Integer res = docListDao.deleteDocListByDlid(dlid);
         return res != 0;
+    }
+
+    public DocList updateOne(DocList docList){
+        DocList temp = docListDao.findByDlid(docList.getDlid());
+        temp.setPath(docList.getPath()).setDuration(docList.getDuration())
+                .setCover(docList.getCover()).setName(docList.getName());
+        temp = docListDao.saveAndFlush(temp);
+        entityManager.refresh(temp);
+        return temp;
     }
 
 }

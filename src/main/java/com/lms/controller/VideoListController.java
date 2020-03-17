@@ -103,19 +103,23 @@ public class VideoListController {
     public Result<VideoListVO> updateOne(@RequestBody VideoList videoList,HttpServletRequest request) {
         VideoListVO videoListVO;
         try {
-            VideoList temp = videoListService.findByVlid(videoList.getVlid());
+//            VideoList temp = videoListService.findByVlid(videoList.getVlid());
 //            videoList.setUserEntity(temp.getUserEntity());
-            temp.setName(videoList.getName()).setCover(videoList.getCover())
-                    .setDuration(videoList.getDuration())
-                    .setPath(videoList.getPath());
+//            videoList = videoListService.saveAndRefresh(videoList);
+//            videoList.setUserEntity(temp.getUserEntity());
+//            temp.setName(videoList.getName()).setCover(videoList.getCover())
+//                    .setDuration(videoList.getDuration())
+//                    .setPath(videoList.getPath());
 //            temp.setName("dasdqd");
 //            UpdateUtil.copyNullProperties(temp,videoList);
 //            videoList.setUiid(temp.getUserEntity().getUiid());
 //            BeanUtils.copyProperties(videoList,temp);
-            videoList = videoListService.save(temp);
-            videoList = videoListService.findByVlid(videoList.getVlid());
+            videoList = videoListService.updateOne(videoList);
+//            videoList = videoListService.saveAndFlush(temp);
+//            videoList = videoListService.findByVlid(videoList.getVlid());
 //            temp = videoListService.findByVlid(videoList.getVlid());
 //            videoList = videoListService.findByVlid(videoList.getVlid());
+
             videoListVO = new VideoListVO();
             BeanUtils.copyProperties(videoList,videoListVO);
             videoListVO.setUsername(videoList.getUserEntity().getUsername());
@@ -149,5 +153,7 @@ public class VideoListController {
         }
         return new Result<List<VideoListVO>>().setStatus(200).setMsg("获取文档列表成功").setData(docListVOList);
     }
+
+
 
 }

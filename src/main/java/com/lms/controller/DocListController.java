@@ -132,8 +132,7 @@ public class DocListController {
     public Result<DocListVO> updateOne(@RequestBody DocList docList,HttpServletRequest request) {
         DocListVO docListVO;
         try {
-            docList.setUiid(docListService.findByDlid(docList.getDlid()).getUserEntity().getUiid());
-            docList = docListService.save(docList);
+            docList = docListService.updateOne(docList);
             docListVO = new DocListVO(docList);
         } catch (Exception e) {
             return new Result<DocListVO>().setStatus(500).setMsg("更新课程失败");

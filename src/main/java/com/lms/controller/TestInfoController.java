@@ -176,7 +176,7 @@ public class TestInfoController {
                 sum+=testContent.getScore();
             }
             testInfo.setSum(sum);
-            testInfo = testInfoService.save(testInfo);
+            testInfo = testInfoService.saveAndRefresh(testInfo);
             for (TestContent testContent:testInfoVO.getTopics()){
                 testContent.setTestInfo(testInfo);
             }
@@ -188,5 +188,7 @@ public class TestInfoController {
         }
         return new Result<TestInfoVO>().setStatus(200).setMsg("修改试卷成功").setData(testInfoVO);
     }
+
+
 
 }

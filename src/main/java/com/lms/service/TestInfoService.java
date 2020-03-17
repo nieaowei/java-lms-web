@@ -126,7 +126,7 @@ public class TestInfoService {
 //        TestInfo testInfo1 = testInfoDAO.findByTiid(testInfo.getTiid());
 //        testInfo.setCreatetime(testInfo1.getCreatetime());
 //        testInfo.setUpdatetime(testInfo1.getUpdatetime());
-        testInfo = testInfoDAO.save(testInfo);
+        testInfo = testInfoDAO.saveAndFlush(testInfo);
         entityManager.refresh(testInfo);
         return testInfo;
     }

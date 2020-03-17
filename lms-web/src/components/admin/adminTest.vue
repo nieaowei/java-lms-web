@@ -116,8 +116,7 @@
                             <el-input placeholder="选项D" v-model="topic.opd"></el-input>
                             <el-input placeholder="答案" v-model="topic.answer"></el-input>
                             <el-input placeholder="分数" v-model="topic.score"></el-input>
-
-                            <el-button @click.prevent="removeDomain(domain)">删除</el-button>
+                                <el-button @click.prevent="removeTopic(item.form.topics,topic)">删除</el-button>
                         </el-form-item>
                         <el-button @click="addTopic(item.form.topics)">新增题目</el-button>
                         <el-button v-if="item.action==='new'" v-on:click="commit(item)">提交</el-button>
@@ -246,6 +245,12 @@
             }
         },
         methods: {
+            removeTopic(topics,topic){
+                var index = topics.indexOf(topic)
+                if (index!==-1){
+                    topics.splice(index,1)
+                }
+            },
             addTopic(topics) {
                 topics.push({
                     question: '',

@@ -148,4 +148,13 @@ public class VideoListService {
         }
         return videoListVO;
     }
+
+    public VideoList updateOne(VideoList videoList){
+            VideoList temp = videoListDao.findByVlid(videoList.getVlid());
+            temp.setPath(videoList.getPath()).setDuration(videoList.getDuration())
+                    .setCover(videoList.getCover()).setName(videoList.getName());
+            temp = videoListDao.saveAndFlush(temp);
+            entityManager.refresh(temp);
+            return temp;
+    }
 }
