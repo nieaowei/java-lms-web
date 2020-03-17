@@ -15,6 +15,14 @@ create table user_info
 select *
 from user_info;
 
+select *
+from user_info
+where username = 'nieaowei'
+  and password = md5('nieaowei');
+update user_info
+set password=md5('nieaowei')
+where username = 'nieaowei';
+
 insert into user_info (username, password, phonenum)
 values ('nieaowei', md5('nieaowei'), '12222012111');
 
@@ -41,6 +49,9 @@ from doc_list d,
      learn_record l
 where l.dlid = d.dlid
   and l.uiid = 103;
+
+select *
+from doc_list;
 
 create table doc_list
 (
@@ -122,9 +133,19 @@ delete
 from learn_record
 where lrid > 100;
 
+delete
+from video_record
+where lrid >= 100;
+
 select *
 from doc_list
 where dlid = 103;
+
+select *
+from video_list;
+
+select *
+from video_record;
 
 
 create table video_list
@@ -143,7 +164,7 @@ create table video_list
   charset = utf8;
 
 insert into video_list (name, path, cover, uiid)
-VALUES ('java入门', '/dds', '/asdasd', 103);
+VALUES ('java入门1', '/dds', '/asdasd', 103);
 select *
 from video_list;
 
@@ -170,9 +191,11 @@ drop table video_record;
 create table test_info
 (
     tiid       bigint auto_increment primary key,
-    title      varchar(50) not null comment '试题名',
-    uiid       bigint      not null comment '上传人',
-    num        int         not null comment '题目数量',
+    title      varchar(50)  not null comment '试题名',
+    uiid       bigint       not null comment '上传人',
+    num        int          not null comment '题目数量',
+    cover      varchar(100) not null,
+    sum        int          not null comment '总分',
     createtime timestamp default current_timestamp comment '创建时间',
     updatetime timestamp default current_timestamp on update current_timestamp comment '更新时间',
     foreign key (uiid) references user_info (uiid) on delete cascade
@@ -180,6 +203,16 @@ create table test_info
 ) engine = innodb
   auto_increment = 100
   charset = utf8;
+
+insert into test_info (title, uiid, num, cover,sum)
+values ('测验1', 103, 10, '/dsad',100);
+insert into test_info (title, uiid, num)
+values ('测验2', 103, 10);
+insert into test_info (title, uiid, num)
+values ('测验3', 103, 10);
+
+select *
+from test_info;
 
 drop table test_info;
 
@@ -201,6 +234,15 @@ create table test_content
   auto_increment = 100
   charset = utf8;
 
+insert into test_content (tiid, question, score, opa, opb, opc, opd, answer)
+values (101, '你是谁', 5, 4, 3, 2, 1, 3);
+
+insert into test_record(tiid, uiid,grade) VALUES (101,103,20);
+
+select *
+from test_content;
+
+
 drop table test_content;
 
 create table test_record
@@ -211,10 +253,27 @@ create table test_record
     grade      int    not null default 0 comment '成绩',
     foreign key (tiid) references test_info (tiid) on delete cascade,
     foreign key (uiid) references user_info (uiid) on delete cascade,
+    constraint unique (tiid,uiid),
     createtime timestamp       default current_timestamp comment '创建时间',
     updatetime timestamp       default current_timestamp on update current_timestamp comment '更新时间'
 ) engine = innodb
   auto_increment = 100
   charset = utf8;
 
+select * from test_record;
+
 drop table test_record;
+
+delete from test_record where trid>0;
+
+select * from test_content where tcid=114;
+
+select * from test_content where tiid=114;
+
+select * from test_info where tiid = 114;
+
+select * from test_info;
+
+select * from user_info where uiid=103 and md5('nieaowei123');
+
+select * from video_list where vlid=6;

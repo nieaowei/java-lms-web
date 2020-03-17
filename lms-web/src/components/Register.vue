@@ -32,10 +32,22 @@
 <script>
 
 
+    import constant from "../constant";
+
     export default {
         name: "Register",
         data() {
+
             return {
+                checkTwoPass: (rule, value, callback) => {
+                    if (!value) {
+                        callback(new Error('请再次输入密码'))
+                    } else if (value !== this.registerForm.password) {
+                        callback(new Error('两次输入密码不一致!'));
+                    } else {
+                        callback();
+                    }
+                },
                 registerForm: {
                     username: '',
                     password: '',
@@ -44,7 +56,7 @@
                 },
                 rules: {
                     checkPass: [
-                        {validator: this.$store.state.Register.checkTwoPass, trigger: 'blur', required: true}
+                        {validator: this.checkTwoPass, trigger: 'blur', required: true}
                     ],
                 },
                 responseResult: []
@@ -60,7 +72,7 @@
                                     this.$notify({
                                         title: value,
                                         type: 'success',
-                                        position: 'top-left',
+                                        position: constant.NOTIFY_POS,
                                     })
                                     this.$router.push({name: 'Login'})
                                 },
@@ -68,7 +80,7 @@
                                     this.$notify({
                                         title: err,
                                         type: 'error',
-                                        position: 'top-left',
+                                        position: constant.NOTIFY_POS,
                                     })
                                 }
                             )
