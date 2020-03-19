@@ -32,14 +32,14 @@ public class UserService {
         return userDAO.getByUsernameAndPassword(username, password);
     }
 
-    public UserEntity getByUiid(Long uiid){return userDAO.findByUiid(uiid);}
+    public UserEntity findByUiid(Long uiid){return userDAO.findByUiid(uiid);}
 
     /**
      * 增加，更新可在一起，建议直接更名为save
      * @param user
      */
-    public void save(UserEntity user) {
-        userDAO.save(user);
+    public UserEntity save(UserEntity user) {
+        return userDAO.save(user);
     }
 
     public void delete(UserEntity user){userDAO.delete(user);}
@@ -50,6 +50,10 @@ public class UserService {
 
     public boolean isPhoneNumCompliance(UserEntity user){
         return user.getPhonenum().matches("^[1](([3|5|8][\\d])|([4][4,5,6,7,8,9])|([6][2,5,6,7])|([7][^9])|([9][1,8,9]))[\\d]{8}$")?true:false;
+    }
+
+    public UserEntity getUserByUiid(Long uiid){
+        return userDAO.findByUiid(uiid);
     }
 
 }

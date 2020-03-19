@@ -1,11 +1,10 @@
 package com.lms.entity;
 
-import lombok.Data;
+import com.lms.vo.UserDTO;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.sql.Timestamp;
+
 @Entity
 @Table(name = "doc_list")
 @DynamicUpdate
@@ -20,7 +19,7 @@ public class DocList  {
     /**
      * 文档上传人ID，用户表外键
      */
-    @ManyToOne(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    @ManyToOne( fetch = FetchType.EAGER)
     @JoinColumn(name = "uiid",referencedColumnName = "uiid")
     private UserEntity userEntity;
 //    private Integer uiid;
@@ -33,17 +32,30 @@ public class DocList  {
      */
     private String path;
     /**
+     * 封面图片位置
+     */
+    private String cover;
+    /**
      * 学习时长
      */
     private Integer duration;
     /**
      * 创建时间
      */
-    private Timestamp createtime;
+    private String createtime;
     /**
      * 更新时间
      */
-    private Timestamp updatetime;
+    private String updatetime;
+
+    public String getCover() {
+        return cover;
+    }
+
+    public DocList setCover(String cover) {
+        this.cover = cover;
+        return this;
+    }
 
     public Integer getDlid() {
         return dlid;
@@ -65,6 +77,14 @@ public class DocList  {
 
     }
 
+    public UserEntity getUserEntity() {
+        return userEntity;
+    }
+
+    public void setUserEntity(UserEntity userEntity) {
+        this.userEntity = userEntity;
+    }
+
     public String getPath() {
         return path;
     }
@@ -83,21 +103,42 @@ public class DocList  {
         return this;
     }
 
-    public Timestamp getCreatetime() {
+    public String getCreatetime() {
         return createtime;
     }
 
-    public DocList setCreatetime(Timestamp createtime) {
+    public DocList setCreatetime(String createtime) {
         this.createtime = createtime;
         return this;
     }
 
-    public Timestamp getUpdatetime() {
+    public String getUpdatetime() {
         return updatetime;
     }
 
-    public DocList setUpdatetime(Timestamp updatetime) {
+    public DocList setUpdatetime(String updatetime) {
         this.updatetime = updatetime;
         return this;
+    }
+
+    public DocList setUiid(Long uiid){
+        if (this.userEntity==null){
+            this.userEntity= new UserEntity();
+        }
+        this.userEntity.setUiid(uiid);
+        return this;
+    }
+
+    public String getUsername(){
+        return this.userEntity.getUsername();
+    }
+
+    public DocList setUsername(String username){
+        this.userEntity.setUsername(username);
+        return this;
+    }
+
+    public UserDTO getUserDTO(){
+        return (UserDTO) this.userEntity;
     }
 }

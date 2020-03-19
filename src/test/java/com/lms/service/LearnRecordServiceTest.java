@@ -37,4 +37,8 @@ public class LearnRecordServiceTest {
 //        List<LearnRecord> learnRecord=learnRecordDao.findLearnRecordsByUserEntity(userEntity);
 //        System.out.println(learnRecord.get(0).getUserEntity().getUsername());
     }
+
+    @Test
+    public void updateDuration() {
+    }
 }

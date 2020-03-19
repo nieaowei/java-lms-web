@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "web.upload_path",
+      "type": "java.lang.String",
+      "description": "Description for web.upload_path."
+    },
+    {
+      "name": "web.domain",
+      "type": "java.lang.String",
+      "description": "Description for web.domain."
+    }
+  ] }

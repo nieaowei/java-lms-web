@@ -1,9 +1,16 @@
+web:
+  upload_path: /Users/nieaowei/Desktop/upload
+  domain: localhost:8081
 
 
 server:
   port: 8081
 
 spring:
+  mvc:
+    static-path-pattern: /**
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:${web.upload-path}
   datasource:
     url: jdbc:mysql://localhost:3306/lms?characterEncoding=UTF-8
     username: root
@@ -23,3 +30,8 @@ spring:
         max-idle: 8
         min-idle: 0
     timeout: 30000
+  servlet:
+    multipart:
+      max-file-size: 200MB
+      file-size-threshold: 200MB
+      max-request-size: 200MB
