@@ -10,7 +10,7 @@
             </el-form-item>
             <el-form-item label="密码：" prop="password" :rules="[
                             { required: true, message: '密码不能为空'}]">
-                <el-input type="password" v-model="registerForm.password" placeholder="请输入密码"></el-input>
+                <el-input type="password" v-model="registerForm.password" placeholder="请输入8~16位英文+数字密码"></el-input>
             </el-form-item>
             <el-form-item label="确认密码：" prop="checkPass">
                 <el-input type="password" v-model="registerForm.checkPass" placeholder="请再次输入密码"></el-input>
@@ -19,6 +19,18 @@
                             { required: true, message: '手机号码不能为空'},
                             {type:'number', message: '手机号码格式不正确'}]">
                 <el-input type="text" v-model.number="registerForm.phonenum" placeholder="请输入手机号码"></el-input>
+            </el-form-item>
+            <el-form-item label="注册类型：" :rules="[
+                {required:true}
+            ]">
+                <el-select v-model="registerForm.admin" placeholder="请选择" >
+                    <el-option
+                            v-for="item in options"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                    </el-option>
+                </el-select>
             </el-form-item>
             <el-button v-on:click="register">注册</el-button>
         </el-form>
@@ -37,26 +49,38 @@
     export default {
         name: "Register",
         data() {
+            var checkTwoPass = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请再次输入密码'));
+                } else if (value !== this.registerForm.password) {
+                    callback(new Error('两次输入密码不一致!'));
+                } else {
+                    callback();
+                }
+            }
 
             return {
-                checkTwoPass: (rule, value, callback) => {
-                    if (!value) {
-                        callback(new Error('请再次输入密码'))
-                    } else if (value !== this.registerForm.password) {
-                        callback(new Error('两次输入密码不一致!'));
-                    } else {
-                        callback();
+                options:[
+                    {
+                        value:false,
+                        label:'普通用户',
+                    },
+                    {
+                        value:true,
+                        label:'管理员',
                     }
-                },
+                ],
+
                 registerForm: {
                     username: '',
                     password: '',
                     checkPass: '',
-                    phonenum: ''
+                    phonenum: '',
+                    admin:false
                 },
                 rules: {
                     checkPass: [
-                        {validator: this.checkTwoPass, trigger: 'blur', required: true}
+                        {validator: checkTwoPass, trigger: 'blur', required: true}
                     ],
                 },
                 responseResult: []

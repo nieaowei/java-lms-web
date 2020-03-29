@@ -77,7 +77,8 @@ public class VideoListService {
                     .setVlid(videoList.getVlid())
                     .setDuration(videoList.getDuration())
                     .setFlag(false)
-                    .setCover(videoList.getCover());
+                    .setCover(videoList.getCover())
+                    .setCount(videoListDao.countByVlid(videoList.getVlid()));
             for (VideoLearnRecord learnRecord: learnRecords) {
 
                 if (videoList.getVlid().equals(learnRecord.getVideoList().getVlid())){
@@ -144,7 +145,7 @@ public class VideoListService {
         videoListVO.setUsername(learnRecords.get(0).getVideoList().getUserEntity().getUsername());
         for (VideoLearnRecord learnRecord : learnRecords) {
             UserVO userVO = new UserVO(learnRecord.getUserEntity());
-            videoListVO.getUsers().add(userVO);
+            videoListVO.getUsers().add(userVO.setVduration(learnRecord.getDuration()));
         }
         return videoListVO;
     }

@@ -22,13 +22,49 @@ public class TestContentVO implements Serializable {
     private String opb;
     private String opc;
     private String opd;
+    private Integer type;
     /**
      * 单个选项分值
      */
     private Integer score;
 
-    private Integer answer;
+    private String answer;
 
+    public void setTcid(Integer tcid) {
+        this.tcid = tcid;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
+    public void setOpa(String opa) {
+        this.opa = opa;
+    }
+
+    public void setOpb(String opb) {
+        this.opb = opb;
+    }
+
+    public void setOpc(String opc) {
+        this.opc = opc;
+    }
+
+    public void setOpd(String opd) {
+        this.opd = opd;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
+    }
 
     public Integer getTcid() {
         return tcid;
@@ -58,11 +94,11 @@ public class TestContentVO implements Serializable {
         return score;
     }
 
-    public Integer getAnswer() {
+    public String getAnswer() {
         return answer;
     }
 
-    public void setAnswer(int i) {
+    public void setAnswer(String i) {
         this.answer = i;
     }
 }

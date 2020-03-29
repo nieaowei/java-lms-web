@@ -11,6 +11,10 @@
             <span>手机号码：{{this.$store.state.MyProfile.profile['phonenum']}}</span>
             <el-divider></el-divider>
 
+            <span v-if="this.$store.state.MyProfile.profile['admin']===true">用户类型：管理员</span>
+            <span v-else>用户类型：普通用户</span>
+            <el-divider></el-divider>
+
             <span>注册时间：{{this.$store.state.MyProfile.profile['createtime']}}</span>
             <el-divider></el-divider>
 

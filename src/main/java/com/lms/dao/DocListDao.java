@@ -16,4 +16,5 @@ public interface DocListDao extends JpaRepository<DocList, Integer> {
     List<DocList> findAllByOrderByCreatetimeDesc();
     List<DocListDTO> findAllByOrderByCreatetimeAsc();
     Integer deleteDocListByDlid(Integer dlid);
+    Integer countByDlid(Integer dlid);
 }

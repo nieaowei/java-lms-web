@@ -4,6 +4,7 @@ import DocClass from "../../components/home/DocClass";
 import VideoClass from "../../components/home/VideoClass";
 import admin from "../../components/admin/admin";
 import Test from "../../components/home/Test";
+import adminUser from "../../components/admin/adminUser";
 
 const module_AppIndex = {
     namespaced: true,
@@ -11,8 +12,8 @@ const module_AppIndex = {
     state: {
         loading: false,
         currentUsername: '',
-        currentView: MyClass,
-        menuViews: [MyClass, MyProfile, DocClass, VideoClass, Test, admin],
+        currentView: MyProfile,
+        menuViews: [MyClass, MyProfile, DocClass, VideoClass, Test, admin,adminUser,{}],
         classes: [],
         bottom: {
             enable: false,

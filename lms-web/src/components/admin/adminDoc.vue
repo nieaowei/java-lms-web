@@ -4,20 +4,14 @@
         <div style="z-index:3;float: right;position: relative">
             <el-button style="margin-left: 5px" @click="addNewTab">新增文档</el-button>
             <el-input style="margin-left:5px;margin-bottom: 1px;width: 300px" placeholder="请输入内容"
-                      v-model="searchContext" class="input-with-select">
-                <!--                <el-select v-model="select" slot="prepend" placeholder="请选择" >-->
-                <!--                    <el-option label="餐厅名" value="1"></el-option>-->
-                <!--                    <el-option label="订单号" value="2"></el-option>-->
-                <!--                    <el-option label="用户电话" value="3"></el-option>-->
-                <!--                </el-select>-->
-                <el-button slot="append" icon="el-icon-search"></el-button>
+                      v-model="searchContext" suffix-icon="el-icon-search" class="input-with-select">
             </el-input>
         </div>
         <!--        </div>-->
         <el-tabs v-model="editableTabsValue" type="card" @tab-remove="removeTab" @tab-click="clickTab">
             <el-tab-pane label="文档查询">
                 <el-table
-                        :data="this.$store.state.adminDoc.docList"
+                        :data="tableData"
                         height="520px"
                         style="width: 100%">
                     <el-table-column
@@ -57,7 +51,7 @@
                     >
                         <template slot-scope="scope">
                             <el-button @click="getDetail(scope)" type="text" size="small">详情</el-button>
-                            <el-button type="text" size="small" @click="addEdit(scope)">编辑</el-button>
+                            <el-button type="text" size="small" @click="addEdit(scope)">编辑</el-button><br/>
                             <!--                            <el-button type="text" size="small">删除</el-button>-->
                             <el-popconfirm
                                     @onConfirm="deleteDoc(scope)"
@@ -124,7 +118,8 @@
                             <el-input v-model="item.form.name"></el-input>
                         </el-form-item>
                         <el-form-item label="学习时长：">
-                            <el-input v-model="item.form.duration"></el-input>
+                            <el-input v-model="item.form.duration">
+                            </el-input>
                         </el-form-item>
                         <el-button v-if="item.action==='new'" v-on:click="commit(item)">提交</el-button>
                         <el-button v-if="item.action==='edit'" v-on:click="updateDoc(item)">提交</el-button>
@@ -164,7 +159,7 @@
                                     <span>{{item.data.name}}</span>
                                 </el-form-item>
                                 <el-form-item label="学习时长：">
-                                    <span>{{item.data.duration}}</span>
+                                    <span>{{item.data.duration}} 秒</span>
                                 </el-form-item>
                                 <el-form-item label="上传人：">
                                     <span>{{item.data.username}}</span>
@@ -189,6 +184,10 @@
                             <el-table-column
                                     prop="username"
                                     label="用户名"
+                            ></el-table-column>
+                            <el-table-column
+                                    prop="dduration"
+                                    label="已学习时长(秒)"
                             ></el-table-column>
                         </el-table>
                     </div>
@@ -217,6 +216,23 @@
                 curTab: 0,
                 imageUrl: ''
             }
+        },
+        computed:{
+          tableData(){
+                  if (this.searchContext) {
+                      return this.$store.state.adminDoc.docList.filter(
+                          value => {
+                              return Object.keys(value).some(key => {
+                                      // indexOf() 返回某个指定的字符在某个字符串中首次出现的位置，如果没有找到就返回-1；
+                                      // 该方法对大小写敏感！所以之前需要toLowerCase()方法将所有查询到内容变为小写。
+                                      return String(value[key]).toLowerCase().indexOf(this.searchContext) > -1
+                                  }
+                              )
+                          }
+                      )
+                  }
+              return this.$store.state.adminDoc.docList;
+          }
         },
         methods: {
             addEdit(data){
@@ -271,6 +287,7 @@
                 )
             },
             deleteDoc(data) {
+
                 this.$store.dispatch('adminDoc/deleteDoc', data.row).then(
                     (resolve) => {
                         console.log('yes')
@@ -279,7 +296,7 @@
                             message: resolve.msg,
                             position: constant.NOTIFY_POS,
                         })
-                        this.$store.commit('adminDoc/removeDoc', data.$index)
+                        this.$store.commit('adminDoc/removeDoc', data.row)
                     },
                     (reject) => {
                         console.log(reject)

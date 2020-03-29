@@ -105,6 +105,7 @@ public class LearnRecordController {
             // 如果时间超过文档时间，设置为文档时间
             if(learnRecord.getDuration()+10>learnRecord.getDocList().getDuration()){
                 learnRecord.setDuration(learnRecord.getDocList().getDuration());
+                learnRecord = learnRecordService.save(learnRecord);
             }else{// 否则 +10s
                 learnRecord = learnRecordService.save(learnRecord.setDuration(learnRecord.getDuration()+10));//设置新的时间并更新
             }

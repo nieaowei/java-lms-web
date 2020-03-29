@@ -32,16 +32,27 @@ public class TestContent {
     private String opb;
     private String opc;
     private String opd;
+    private Integer type;
     /**
      * 试题答案
      */
-    private Integer answer;
+    private String answer;
     /**
      * 单个选项分值
      */
     private Integer score;
+    @Column(insertable = false,updatable = false)
     private String createtime;
+    @Column(insertable = false,updatable = false)
     private String updatetime;
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
 
     public Integer getTcid() {
         return tcid;
@@ -57,6 +68,7 @@ public class TestContent {
 
     public void setTestInfo(TestInfo testInfo) {
         this.testInfo = testInfo;
+
     }
 
     public String getQuestion() {
@@ -65,6 +77,9 @@ public class TestContent {
 
     public void setQuestion(String question) {
         this.question = question;
+        if("".equals(question)){
+            this.question=null;
+        }
     }
 
     public String getOpa() {
@@ -99,12 +114,15 @@ public class TestContent {
         this.opd = opd;
     }
 
-    public Integer getAnswer() {
+    public String getAnswer() {
         return answer;
     }
 
-    public TestContent setAnswer(Integer answer) {
+    public TestContent setAnswer(String answer) {
         this.answer = answer;
+        if("".equals(answer)){
+            this.answer=null;
+        }
         return this;
     }
 

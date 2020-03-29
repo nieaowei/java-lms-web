@@ -74,13 +74,18 @@
                             <span>{{classe.title}}({{classe.tiid}})</span>
                             <!--                                <el-progress :text-inside="true" :stroke-width="10" :percentage="classe['duration']*100/classe['doc_duration']"></el-progress>-->
                             <div class="bottom clearfix">
-                                <el-tag class="time">完成时间：{{classe.createtime.split(' ')[0]}}</el-tag><br/>
-<!--                                <el-button icon="el-icon-circle-check" type="success"-->
-<!--                                           class="button">{{classe.grade}}-->
-<!--                                </el-button>-->
-                                <el-tag>总 分：{{classe.sum}}</el-tag><br/>
-                                <el-tag type="success">得 分：{{classe.grade}}</el-tag><br/>
-
+                                <el-tag class="time">完成时间：{{classe.updatetime.split(' ')[0]}}</el-tag>
+                                <br/>
+                                <!--                                <el-button icon="el-icon-circle-check" type="success"-->
+                                <!--                                           class="button">{{classe.grade}}-->
+                                <!--                                </el-button>-->
+                                <el-tag>总 分：{{classe.sum}}</el-tag>
+                                <br/>
+                                <el-tag type="success">得 分：{{classe.grade}}</el-tag>
+                                <br/>
+                                <el-tag type="success" v-if="classe.grade>=80">合格</el-tag>
+                                <el-tag type="success" v-else>不合格</el-tag>
+                                <br/>
                             </div>
                         </div>
                     </el-card>
@@ -102,6 +107,16 @@
 
             <el-button type="primary" v-on:click="studyWindowEnable=false">关 闭</el-button>
                     </span>
+            <el-dialog
+                    width="30%"
+                    title="提示"
+                    :visible.sync="studySubWinEnable"
+                    append-to-body>
+                <span>课程已完成</span>
+                <span slot="footer" class="dialog-footer">
+                    <el-button type="primary" @click="closeAll()">确 定</el-button>
+                </span>
+            </el-dialog>
         </el-dialog>
     </el-tabs>
 
@@ -128,7 +143,8 @@
                     enable: false,
                     currentClass: '',
                     title: '',
-                }
+                },
+                studySubWinEnable:false
             }
         },
         watch: {
@@ -142,26 +158,28 @@
                         console.log("start Timer")
                         if (this.$store.state.AppIndex.bottom.percent !== 100) {
 
-                            if (this.studyWindow.instance===studyDoc){
+                            if (this.studyWindow.instance === studyDoc) {
                                 this.studyWindow.timer = setInterval(() => {
                                     console.log("doc exec timer")
                                     this.$store.dispatch("MyClass/updateDuration", this.studyWindow.currentClass.dlid).then(
                                         // eslint-disable-next-line no-unused-vars
                                         (resolve) => {
-                                            console.log("update",resolve)
+                                            console.log("update", resolve)
                                             this.$store.commit("AppIndex/setBottomPercent", resolve.percent)
+                                            if (this.$store.state.AppIndex.bottom.percent === 100) {
+                                                clearInterval(this.studyWindow.timer)
+                                                this.studySubWinEnable = true
+                                            }
                                         },
                                         // eslint-disable-next-line no-unused-vars
                                         (reject) => {
-                                            console.log("update",reject)
+                                            console.log("update", reject)
 
                                         }
                                     )
-                                    if (this.$store.state.AppIndex.bottom.percent === 100) {
-                                        clearInterval(this.studyWindow.timer)
-                                    }
+
                                 }, 10500)
-                            }else if (this.studyWindow.instance===studyVidoe){
+                            } else if (this.studyWindow.instance === studyVidoe) {
                                 this.studyWindow.timer = setInterval(() => {
                                     console.log("exec timer")
                                     this.$store.dispatch("MyClass/updateVideoDuration", this.studyWindow.currentClass).then(
@@ -169,15 +187,17 @@
                                         (resolve) => {
                                             console.log(resolve)
                                             this.$store.commit("AppIndex/setBottomPercent", resolve.percent)
+                                            if (this.$store.state.AppIndex.bottom.percent === 100) {
+                                                clearInterval(this.studyWindow.timer)
+                                                this.studySubWinEnable = true
+                                            }
                                         },
                                         // eslint-disable-next-line no-unused-vars
                                         (reject) => {
 
                                         }
                                     )
-                                    if (this.$store.state.AppIndex.bottom.percent === 100) {
-                                        clearInterval(this.studyWindow.timer)
-                                    }
+
                                 }, 10500)
                             }
 
@@ -187,13 +207,17 @@
                     if (newVal === false) {
                         console.log("clear timer")
                         clearInterval(this.studyWindow.timer)
-                        this.studyWindow.instance=null;
+                        this.studyWindow.instance = null;
                     }
                 },
                 deep: true,
             }
         },
         methods: {
+            closeAll() {
+                this.studySubWinEnable = false;
+                this.studyWindowEnable = false;
+            },
             openDocStudy(title, classe) {
                 console.log(classe)
                 this.studyWindow.instance = studyDoc;
@@ -266,39 +290,37 @@
             // eslint-disable-next-line no-unused-vars
             handleClick(tab, event) {
                 // console.log(tab, event);
-            //     if (tab.index === '1') {
-            //         console.log("get video")
-            //         this.$store.dispatch('MyClass/getMyVideos')
-            //             .then(
-            //                 (value) => {
-            //                     this.$notify({
-            //                         message: value,
-            //                         type: "success",
-            //                         position: constant.NOTIFY_POS,
-            //                     });
-            //                 },
-            //                 (err) => {
-            //                     this.$notify({
-            //                         message: err,
-            //                         type: "error",
-            //                         position: constant.NOTIFY_POS,
-            //                     });
-            //                 }
-            //             )
-            //     }else if (tab.index === '2'){
-            //         console.log('get test')
-            //     }
+                //     if (tab.index === '1') {
+                //         console.log("get video")
+                //         this.$store.dispatch('MyClass/getMyVideos')
+                //             .then(
+                //                 (value) => {
+                //                     this.$notify({
+                //                         message: value,
+                //                         type: "success",
+                //                         position: constant.NOTIFY_POS,
+                //                     });
+                //                 },
+                //                 (err) => {
+                //                     this.$notify({
+                //                         message: err,
+                //                         type: "error",
+                //                         position: constant.NOTIFY_POS,
+                //                     });
+                //                 }
+                //             )
+                //     }else if (tab.index === '2'){
+                //         console.log('get test')
+                //     }
             }
         },
-        created() {
+        async created() {
+            var count = 0;
             this.$store.commit('AppIndex/changeLoading', true);
-            this.$store.dispatch('MyClass/getMyDocs').then(
+            await this.$store.dispatch('MyClass/getMyDocs').then(
+                // eslint-disable-next-line no-unused-vars
                 (resolve) => {
-                    this.$notify({
-                        type: "success",
-                        message: resolve,
-                        position: constant.NOTIFY_POS,
-                    })
+                    count += 1
                 },
                 (reject) => {
                     if (reject === constant.REDIRECT_LOGIN) {
@@ -310,19 +332,13 @@
                         position: constant.NOTIFY_POS,
                     })
                 }
-            ).finally(
-                () => {
-                    this.$store.commit('AppIndex/changeLoading', false);
-                }
-            );
-            this.$store.dispatch('MyClass/getMyVideos')
+            )
+            await this.$store.dispatch('MyClass/getMyVideos')
                 .then(
+                    // eslint-disable-next-line no-unused-vars
                     (value) => {
-                        this.$notify({
-                            message: value,
-                            type: "success",
-                            position: constant.NOTIFY_POS,
-                        });
+                        count++
+
                     },
                     (err) => {
                         this.$notify({
@@ -332,14 +348,11 @@
                         });
                     }
                 )
-            this.$store.dispatch('MyClass/getMyTests')
+            await this.$store.dispatch('MyClass/getMyTests')
                 .then(
+                    // eslint-disable-next-line no-unused-vars
                     (value) => {
-                        this.$notify({
-                            message: value,
-                            type: "success",
-                            position: constant.NOTIFY_POS,
-                        });
+                        count++
                     },
                     (err) => {
                         this.$notify({
@@ -349,6 +362,27 @@
                         });
                     }
                 )
+            this.$store.commit('AppIndex/changeLoading', false);
+            console.log(count)
+            if (count === 3) {
+                this.$notify({
+                    message: "获取所有学习记录成功",
+                    type: "success",
+                    position: constant.NOTIFY_POS,
+                });
+            } else if (count > 0) {
+                this.$notify({
+                    message: "获取学习记录成功,但有些记录可能丢失",
+                    type: "success",
+                    position: constant.NOTIFY_POS,
+                });
+            } else if (count === 0) {
+                this.$notify({
+                    message: "获取学习记录失败",
+                    type: "error",
+                    position: constant.NOTIFY_POS,
+                });
+            }
         }
     }
 </script>
@@ -378,7 +412,7 @@
         alignment: center;
     }
 
-    .el-tab-pane{
+    .el-tab-pane {
         min-height: 520px;
     }
 

@@ -44,10 +44,12 @@ public class TestInfo {
     /**
      * 创建时间
      */
+    @Column(insertable = false,updatable = false)
     private String createtime;
     /**
      * 更新时间
      */
+    @Column(insertable = false,updatable = false)
     private String updatetime;
 
 
@@ -70,11 +72,17 @@ public class TestInfo {
     }
 
     public String getCover() {
+        if("".equals(cover)){
+            return null;
+        }
         return cover;
     }
 
     public TestInfo setCover(String cover) {
         this.cover = cover;
+        if ("".equals(cover)){
+            this.cover=null;
+        }
         return this;
     }
 
@@ -97,11 +105,17 @@ public class TestInfo {
     }
 
     public String getTitle() {
+        if("".equals(title)){
+            return null;
+        }
         return title;
     }
 
     public void setTitle(String title) {
         this.title = title;
+        if ("".equals(title)){
+            this.title=null;
+        }
     }
 
     public String getCreatetime() {

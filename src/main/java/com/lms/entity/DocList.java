@@ -42,18 +42,26 @@ public class DocList  {
     /**
      * 创建时间
      */
+    @Column(insertable = false,updatable = false)
     private String createtime;
     /**
      * 更新时间
      */
+    @Column(insertable = false,updatable = false)
     private String updatetime;
 
     public String getCover() {
+        if("".equals(cover)){
+            return null;
+        }
         return cover;
     }
 
     public DocList setCover(String cover) {
         this.cover = cover;
+        if("".equals(cover)){
+            this.cover=null;
+        }
         return this;
     }
 
@@ -68,11 +76,17 @@ public class DocList  {
 
 
     public String getName() {
+        if("".equals(name)){
+            return null;
+        }
         return name;
     }
 
     public DocList setName(String name) {
         this.name = name;
+        if("".equals(name)){
+            this.name=null;
+        }
         return this;
 
     }
@@ -86,11 +100,17 @@ public class DocList  {
     }
 
     public String getPath() {
+        if("".equals(path)){
+            return null;
+        }
         return path;
     }
 
     public DocList setPath(String path) {
         this.path = path;
+        if("".equals(path)){
+            this.path=null;
+        }
         return this;
     }
 

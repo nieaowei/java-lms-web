@@ -20,7 +20,9 @@ const module_DocClass = {
         changeDoc(state, {key, data}) {
             // state.docList[key] = data
             Vue.$set(state.docList, key, data)
-            console.log(state.docList)
+        },
+        changeDocCount(state,key){
+            state.docList[key].count++;
         }
 
     },
@@ -66,6 +68,7 @@ const module_DocClass = {
                         (success) => {
                             if (success.data.status === 200) {
                                 commit('changeDocFlag', {key: key, data: true})
+                                commit('changeDocCount',key)
                                 resolve(success.data);
                             }
                             reject(success.data.msg);

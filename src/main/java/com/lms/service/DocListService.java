@@ -79,7 +79,8 @@ public class DocListService {
                     .setDlid(docList.getDlid())
                     .setDuration(docList.getDuration())
                     .setFlag(false)
-                    .setCover(docList.getCover());
+                    .setCover(docList.getCover())
+                    .setCount(docListDao.countByDlid(docList.getDlid()));
             for (LearnRecord learnRecord : learnRecords) {
 
                 if (docList.getDlid().equals(learnRecord.getDocList().getDlid())) {
@@ -126,7 +127,7 @@ public class DocListService {
         DocListVO docListVO = new DocListVO(learnRecords.get(0).getDocList());
         for (LearnRecord learnRecord : learnRecords) {
             UserVO userVO = new UserVO(learnRecord.getUserEntity());
-            docListVO.getUsers().add(userVO);
+            docListVO.getUsers().add(userVO.setDduration(learnRecord.getDuration()));
         }
         return docListVO;
     }

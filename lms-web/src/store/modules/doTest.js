@@ -12,6 +12,12 @@ const module_doTest = {
         filterTestData: (state) => {
             // eslint-disable-next-line no-unused-vars
             return state.testData.topics.filter(item => true).map(item => {
+                if (item.type === 1){
+                    // var tempanswer = item.answer.sort()
+                    // var res = ''
+                    // tempanswer=res
+                    return {answer: item.answer.sort().toString, tcid: item.tcid}
+                }
                 return {answer: item.answer, tcid: item.tcid}
             })
         },

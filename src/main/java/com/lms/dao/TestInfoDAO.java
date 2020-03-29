@@ -15,4 +15,5 @@ public interface TestInfoDAO extends JpaRepository<TestInfo, Integer> {
     List<TestInfo> findByUserEntity(UserEntity userEntity);
     List<TestInfo> findAllByOrderByCreatetimeDesc();
     Integer deleteByTiid(Integer tiid);
+    Integer countByTiid(Integer tiid);
 }

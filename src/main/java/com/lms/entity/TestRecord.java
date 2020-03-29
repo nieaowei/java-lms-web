@@ -30,10 +30,21 @@ public class TestRecord {
     private TestInfo testInfo;
 
     private Integer grade;
-
+    @Column(insertable = false,updatable = false)
     private String createtime;
-
+    @Column(insertable = false,updatable = false)
     private String updatetime;
+    @Column(insertable = false,updatable = true)
+    private Integer count;
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public TestRecord setCount(Integer count) {
+        this.count = count;
+        return this;
+    }
 
     public Integer getTrid() {
         return trid;

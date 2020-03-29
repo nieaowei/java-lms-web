@@ -1,5 +1,6 @@
 package com.lms.entity;
 
+import com.fasterxml.jackson.annotation.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
@@ -7,6 +8,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "video_list")
 @DynamicUpdate
+
 public class VideoList {
     /**
      * 学习文档ID
@@ -41,10 +43,12 @@ public class VideoList {
     /**
      * 创建时间
      */
+    @Column(insertable = false,updatable = false)
     private String createtime;
     /**
      * 更新时间
      */
+    @Column(insertable = false,updatable = false)
     private String updatetime;
 
     public String getCover() {
@@ -53,6 +57,9 @@ public class VideoList {
 
     public VideoList setCover(String cover) {
         this.cover = cover;
+        if ("".equals(cover)){
+            this.cover=null;
+        }
         return this;
     }
 
@@ -72,6 +79,9 @@ public class VideoList {
 
     public VideoList setName(String name) {
         this.name = name;
+        if ("".equals(name)){
+            this.name=null;
+        }
         return this;
 
     }
@@ -90,6 +100,9 @@ public class VideoList {
 
     public VideoList setPath(String path) {
         this.path = path;
+        if ("".equals(path)){
+            this.path=null;
+        }
         return this;
     }
 

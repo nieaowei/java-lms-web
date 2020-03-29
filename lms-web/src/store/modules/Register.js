@@ -10,13 +10,13 @@ const module_Reigster = {
     },
     getters: {},
     mutations: {
-        changeLoading(state,bool){
-            state.loading=bool;
+        changeLoading(state, bool) {
+            state.loading = bool;
         }
     },
     actions: {
         register({commit}, registerForm) {
-            commit('changeLoading',true)
+            commit('changeLoading', true)
             return new Promise((resolve, reject) => {
                 axios.post(
                     'api/user/register',
@@ -24,6 +24,7 @@ const module_Reigster = {
                         username: registerForm.username,
                         password: registerForm.password,
                         phonenum: registerForm.phonenum,
+                        admin: registerForm.admin,
                     },
                     {
                         timeout: 3000,
@@ -31,9 +32,9 @@ const module_Reigster = {
                 ).then(
                     (success) => {
                         if (success.data['status'] === 200) {
-                            resolve(success.data['msg'] )
+                            resolve(success.data['msg'])
                         }
-                        reject(success.data['msg'] )
+                        reject(success.data['msg'])
                     }
                 ).catch(
                     () => {
@@ -42,7 +43,7 @@ const module_Reigster = {
                 )
             }).finally(
                 () => {
-                    commit('changeLoading',false)
+                    commit('changeLoading', false)
                 }
             );
         }

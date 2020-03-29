@@ -3,9 +3,11 @@ package com.lms.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.lms.entity.UserEntity;
 import com.lms.interception.AuthInterceptor;
+import com.lms.interception.RequiredAdmin;
 import com.lms.interception.RequiredToken;
 import com.lms.service.UserService;
 import com.lms.utils.Result;
+import com.lms.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.DigestUtils;
@@ -14,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.util.List;
 
 
 @RestController
@@ -83,6 +86,7 @@ public class UserController {
 
     @CrossOrigin
     @PostMapping(value = "/admin/uploadimage")
+    @RequiredAdmin
 //    @RequiredToken
     public Result<String> uploadImage(@RequestParam("file") MultipartFile file) {
         try {
@@ -104,6 +108,7 @@ public class UserController {
 
     @CrossOrigin
     @PostMapping(value = "/admin/uploadpdf")
+    @RequiredAdmin
 //    @RequiredToken
     public Result<String> uploadPdf(@RequestParam("file") MultipartFile file) {
         try {
@@ -125,6 +130,8 @@ public class UserController {
 
     @CrossOrigin
     @PostMapping(value = "/admin/uploadvideo")
+    @RequiredAdmin
+
 //    @RequiredToken
     public Result<String> uploadVideo(@RequestParam("file") MultipartFile file) {
         try {
@@ -144,4 +151,23 @@ public class UserController {
         }
     }
 
+    @CrossOrigin
+    @GetMapping(value = "/admin/getalluser")
+    @RequiredAdmin
+    public Result<List<UserEntity>> getalluser() {
+        List<UserEntity> userEntities = userService.findAll();
+        return new Result<List<UserEntity>>().setStatus(200).setData(userEntities).setMsg("获取用户列表成功");
+    }
+
+    @CrossOrigin
+    @PostMapping(value = "/admin/resetpd")
+    @RequiredAdmin
+    public Result<UserEntity> resetpd(@RequestBody UserEntity userEntity) {
+        try{
+            userEntity = userService.updateOne(userEntity);
+        }catch (Exception e){
+            return new Result<UserEntity>().setMsg("重置密码成功").setStatus(500).setData(userEntity);
+        }
+        return new Result<UserEntity>().setMsg("重置密码成功").setStatus(200).setData(userEntity);
+    }
 }

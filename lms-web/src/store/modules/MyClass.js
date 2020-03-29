@@ -5,9 +5,9 @@ import constant from "../../constant";
 const module_MyClass = {
     namespaced: true,
     state: {
-        myDocs: {},
-        myVideos: {},
-        myTests: {}
+        myDocs: [],
+        myVideos: [],
+        myTests: []
     },
     getters: {},
     mutations: {
@@ -18,25 +18,52 @@ const module_MyClass = {
             state.myVideos = data
         },
         addMyDoc(state, data) {
+            if(state.myDocs===undefined){
+                state.myDocs=[]
+            }
             state.myDocs.unshift(data)
         },
         addMyVideo(state, data) {
+            if(state.myVideos===undefined){
+                state.myVideos=[]
+            }
             state.myVideos.unshift(data)
         },
         changeMyDocPercent(state, {key, data}) {
             state.myDocs.forEach((item)=>{
                 if (item.dlid === key){
                     item.percent = data
+                    if (data===100){
+                        item.finished=true
+                    }
                     return
                 }
             })
             // state.myDocs[key].percent = data
         },
         changeMyVideoPercent(state, {key, data}) {
-            state.myVideos[key].percent = data
+            state.myVideos.forEach((item)=>{
+                if (item.vlid === key){
+                    item.percent = data
+                    if (data===100){
+                        item.finished=true
+                    }
+                    return
+                }
+            })
+            // state.myVideos[key].percent = data
         },
         saveMyTests(state, data) {
-            state.myTests = data;
+            if(state.myTests===undefined){
+                state.myTests=[]
+            }
+            state.myTests.forEach((value, index) => {
+                if (value.tiid===data.tiid){
+                    state.myTests.splice(index,value,data)
+                    return
+                }
+            })
+            state.myTests.unshift(data)
         },
         addMyTest(state,item){
             state.myTests.unshift(item)
@@ -146,6 +173,8 @@ const module_MyClass = {
                     }
                 ).catch(
                     (fail) => {
+                        console.log('fail ',fail)
+
                         if (fail.response.status === 302) {
                             reject(constant.REDIRECT_LOGIN)
                         }

@@ -16,6 +16,9 @@
                 <el-button v-on:click="login">登录</el-button>
             </el-form>
             <div class="some-bt">
+                <el-tooltip class="item" content="请联系管理员为您重置密码" placement="bottom" effect="dark">
+                    <el-button type="text">忘记密码</el-button>
+                </el-tooltip>
                 <el-button v-on:click="jumpRegister" class="register-bt" type="text">立即注册</el-button>
             </div>
         </el-card>

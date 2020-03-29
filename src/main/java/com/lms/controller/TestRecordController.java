@@ -12,17 +12,13 @@ import com.lms.service.TestInfoService;
 import com.lms.service.TestRecordService;
 import com.lms.service.UserService;
 import com.lms.utils.Result;
-import com.lms.utils.TokenUtil;
-import com.lms.vo.LearnVO;
 import com.lms.vo.TestInfoVO;
 import com.lms.vo.TestRecordVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.w3c.dom.html.HTMLScriptElement;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -58,16 +54,28 @@ public class TestRecordController {
         TestRecordVO testRecordVO;
         try {
             Long uiid = (long) request.getAttribute(AuthInterceptor.RESULT_KEY);
+            TestRecord check = testRecordService.findByUiidAndTiid(uiid,testInfoVO.getTiid());
+
             TestRecord testRecord = testContentService.answer(testInfoVO.getTopics());
             testRecord.setUserEntity(new UserEntity().setUiid(uiid));
             testRecord.setTestInfo(new TestInfo().setTiid(testInfoVO.getTiid()));
-            testRecord = testRecordService.saveAndRefresh(testRecord);
+            if (null == check){
+                testRecord = testRecordService.saveAndRefresh(testRecord);
+            }else{
+                if (check.getCount()<=0){
+                    return new Result<TestRecordVO>().setStatus(400).setMsg("您已没有考试次数");
+                }
+                check.setCount(check.getCount()-1);
+                check.setGrade(testRecord.getGrade());
+                testRecord = testRecordService.saveAndFlush(check);
+            }
             testRecordVO=new TestRecordVO();
             BeanUtils.copyProperties(testRecord,testRecordVO);
             BeanUtils.copyProperties(testRecord.getTestInfo(),testRecordVO);
-            testRecordVO.setCreatetime(testRecord.getCreatetime());
+            testRecordVO.setUpdatetime(testRecord.getUpdatetime());
+            testRecordVO.setPersoncount(testRecord.getCount());
         }catch (Exception e){
-            return new Result<TestRecordVO>().setStatus(200).setMsg("提交试卷失败");
+            return new Result<TestRecordVO>().setStatus(400).setMsg("提交试卷失败");
         }
         return new Result<TestRecordVO>().setData(testRecordVO).setStatus(200).setMsg("提交试卷成功");
     }

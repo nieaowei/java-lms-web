@@ -14,7 +14,8 @@ const module_adminVideo = {
             state.videoList.unshift(data)
         },
         // eslint-disable-next-line no-unused-vars
-        removeVideo(state, index) {
+        removeVideo(state, item) {
+            var index = state.videoList.indexOf(item)
             state.videoList.splice(index, 1)
         },
         changeVideo(state, {vlid, newitem}) {
@@ -47,7 +48,13 @@ const module_adminVideo = {
                         }
                     ).catch(
                         (fail) => {
-                            reject(fail)
+                            if (fail.response.status === 302) {
+                                reject(constant.REDIRECT_LOGIN)
+                            }
+                            if (fail.response.status===415){
+                                reject("您不是管理员")
+                            }
+                            reject(constant.SERVER_FAIL)
                         }
                     )
                 }
@@ -81,6 +88,9 @@ const module_adminVideo = {
                             if (fail.response.status === 302) {
                                 reject(constant.REDIRECT_LOGIN)
                             }
+                            if (fail.response.status===415){
+                                reject("您不是管理员")
+                            }
                             reject(constant.SERVER_FAIL)
                         }
                     );
@@ -109,6 +119,9 @@ const module_adminVideo = {
                             if (fail.response.status === 302) {
                                 reject(constant.REDIRECT_LOGIN)
                             }
+                            if (fail.response.status===415){
+                                reject("您不是管理员")
+                            }
                             reject(constant.SERVER_FAIL)
                         }
                     );
@@ -136,6 +149,9 @@ const module_adminVideo = {
                         (fail) => {
                             if (fail.response.status === 302) {
                                 reject(constant.REDIRECT_LOGIN)
+                            }
+                            if (fail.response.status===415){
+                                reject("您不是管理员")
                             }
                             reject(constant.SERVER_FAIL)
                         }
@@ -174,6 +190,9 @@ const module_adminVideo = {
                         (fail) => {
                             if (fail.response.status === 302) {
                                 reject(constant.REDIRECT_LOGIN)
+                            }
+                            if (fail.response.status===415){
+                                reject("您不是管理员")
                             }
                             reject(constant.SERVER_FAIL)
                         }

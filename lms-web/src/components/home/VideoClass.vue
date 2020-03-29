@@ -16,7 +16,7 @@
                             <div class="bottom clearfix">
                                 <span class="time">上传人: {{classe.username}}</span><br/>
                                 <span class="time">学习时长: {{(classe.duration/60).toFixed(2)}}分钟</span><br/>
-                                <time class="time">创建时间: {{classe.createtime}}</time>
+                                <time class="time">创建时间: {{classe.createtime.split(' ')[0]}}</time>
                                 <br/>
 
                             </div>
@@ -27,6 +27,9 @@
                             <el-button v-else icon="el-icon-circle-plus-outline" type="primary" class="button"
                                        v-on:click="addVideoRecord(key)">添加学习
                             </el-button>
+                            <div>
+                                <span class="time" >学习人数: {{classe.count}} 人</span>
+                            </div>
                         </div>
                     </el-card>
                 </el-col>
@@ -111,7 +114,7 @@
     /*}*/
     .el-card {
         box-shadow: 0 0 5px #cac6c6;
-        height: 350px;
+        height: 370px;
     }
 
     .el-card:hover {

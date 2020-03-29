@@ -23,6 +23,18 @@ const module_Test = {
                 }
             })
         },
+        changeTestPerCount(state, {key, data}) {
+            // state.testList[key].flag = data;
+            state.testList.forEach((item) => {
+                if (item.tiid === key) {
+                    item.personcount = data
+                    if (item.personcount<=0){
+                        item.flag=true;
+                    }
+                    return
+                }
+            })
+        },
         changeTest(state, {key, data}) {
             // state.testList[key] = data
             Vue.$set(state.testList, key, data)

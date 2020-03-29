@@ -45,7 +45,13 @@ const module_adminTest = {
                         }
                     ).catch(
                         (fail) => {
-                            reject(fail)
+                            if (fail.response.status === 302) {
+                                reject(constant.REDIRECT_LOGIN)
+                            }
+                            if (fail.response.status===415){
+                                reject("您不是管理员")
+                            }
+                            reject(constant.SERVER_FAIL)
                         }
                     )
                 }
@@ -53,8 +59,17 @@ const module_adminTest = {
         },
         // eslint-disable-next-line no-unused-vars
         addTest({commit}, item) {
+            item.topics.forEach(
+                (value)=>{
+                    console.log(value)
+                    if (value.type === 1){
+                        value.answer=value.answer.sort().toString()
+                    }
+                }
+            )
             return new Promise(
                 (resolve, reject) => {
+
                     axios.post(
                         "api/admin/test/add",
                         {
@@ -77,6 +92,9 @@ const module_adminTest = {
                         (fail) => {
                             if (fail.response.status === 302) {
                                 reject(constant.REDIRECT_LOGIN)
+                            }
+                            if (fail.response.status===415){
+                                reject("您不是管理员")
                             }
                             reject(constant.SERVER_FAIL)
                         }
@@ -106,6 +124,9 @@ const module_adminTest = {
                             if (fail.response.status === 302) {
                                 reject(constant.REDIRECT_LOGIN)
                             }
+                            if (fail.response.status===415){
+                                reject("您不是管理员")
+                            }
                             reject(constant.SERVER_FAIL)
                         }
                     );
@@ -133,6 +154,9 @@ const module_adminTest = {
                         (fail) => {
                             if (fail.response.status === 302) {
                                 reject(constant.REDIRECT_LOGIN)
+                            }
+                            if (fail.response.status===415){
+                                reject("您不是管理员")
                             }
                             reject(constant.SERVER_FAIL)
                         }
@@ -169,6 +193,9 @@ const module_adminTest = {
                         (fail) => {
                             if (fail.response.status === 302) {
                                 reject(constant.REDIRECT_LOGIN)
+                            }
+                            if (fail.response.status===415){
+                                reject("您不是管理员")
                             }
                             reject(constant.SERVER_FAIL)
                         }

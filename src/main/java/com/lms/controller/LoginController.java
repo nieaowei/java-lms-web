@@ -1,8 +1,6 @@
 package com.lms.controller;
 
 import com.lms.entity.UserEntity;
-import com.lms.interception.AuthInterceptor;
-import com.lms.interception.RequiredToken;
 import com.lms.utils.Result;
 import com.lms.service.UserService;
 import com.lms.utils.TokenUtil;
@@ -10,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
@@ -25,7 +22,15 @@ public class LoginController {
         UserEntity user = userService.get(requestUser.getUsername(),requestUser.getPassword());
         if (null != user){
             //登录成功--- 签发token
-            Cookie cookie= new Cookie("token", TokenUtil.getToken(user.getUiid()));
+            Cookie cookie;
+            String msg;
+            if (user.getAdmin()){
+                cookie= new Cookie("token", TokenUtil.getTokenForAdmin(user.getUiid()));
+                msg = "登录成功,您是管理员";
+            }else {
+                cookie= new Cookie("token", TokenUtil.getTokenForUser(user.getUiid()));
+                msg = "登录成功";
+            }
             cookie.setDomain("localhost");
             cookie.setPath("/");
             cookie.setMaxAge((int)TokenUtil.EXPIRE_TIME);
@@ -33,7 +38,7 @@ public class LoginController {
             //有注解 不需要特别设定
 //            response.setHeader("Access-Control-Allow-Origin", "*");
 //            response.setHeader("Access-Control-Allow-Credentials", "true");
-            return new Result<String>().setStatus(200).setMsg("登录成功").setData(user.getUsername());
+            return new Result<String>().setStatus(200).setMsg(msg).setData(user.getUsername());
         }
         return new Result<String>().setStatus(400).setMsg("登录失败");
     }

@@ -54,4 +54,18 @@ public class TestRecordService {
         entityManager.refresh(learnRecord);
         return learnRecord;
     }
+
+    public TestRecord findByUiidAndTiid(Long uiid,Integer tiid){
+        return  testRecordDAO.findByUserEntity_UiidAndTestInfo_Tiid(uiid,tiid);
+    }
+
+    public TestRecord saveAndFlush(TestRecord check) {
+        return testRecordDAO.saveAndFlush(check);
+    }
+
+    public TestRecord updateOne(TestRecord testRecord){
+        testRecord = testRecordDAO.saveAndFlush(testRecord);
+        entityManager.refresh(testRecord);
+        return testRecord;
+    }
 }

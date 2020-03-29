@@ -112,6 +112,7 @@ public class VideoLearnRecordController {
             // 如果时间超过文档时间，设置为文档时间
             if(learnRecord.getDuration()+10>learnRecord.getVideoList().getDuration()){
                 learnRecord.setDuration(learnRecord.getVideoList().getDuration());
+                learnRecord=videoLearnRecordService.save(learnRecord);
             }else{// 否则 +10s
                 learnRecord = videoLearnRecordService.save(learnRecord.setDuration(learnRecord.getDuration()+10));//设置新的时间并更新
             }

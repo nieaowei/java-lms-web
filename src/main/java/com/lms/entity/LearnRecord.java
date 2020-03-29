@@ -34,10 +34,12 @@ public class LearnRecord  {
     /**
      * 创建时间
      */
+    @Column(insertable = false,updatable = false)
     private String createtime;
     /**
      * 更新时间
      */
+    @Column(insertable = false,updatable = false)
     private String updatetime;
 
     public LearnRecord(){
