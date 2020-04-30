@@ -1,12 +1,26 @@
 package com.lms.vo;
 
-public class TestRecordVO {
+import java.io.Serializable;
+
+public class TestRecordVO implements Serializable {
     Integer tiid;
     String title;
     Integer sum;
     Integer grade;
-    String createtime;
+    String updatetime;
     String cover;
+
+    Integer personcount;
+
+    public Integer getPersoncount() {
+        return personcount;
+    }
+
+    public TestRecordVO setPersoncount(Integer personcount) {
+        this.personcount = personcount;
+
+        return this;
+    }
 
     public String getCover() {
         return cover;
@@ -56,13 +70,13 @@ public class TestRecordVO {
 
     }
 
-    public String getCreatetime() {
-        return createtime;
+    public String getUpdatetime() {
+        return updatetime;
 
     }
 
-    public TestRecordVO setCreatetime(String createtime) {
-        this.createtime = createtime;
+    public TestRecordVO setUpdatetime(String updatetime) {
+        this.updatetime = updatetime;
         return this;
     }
 }

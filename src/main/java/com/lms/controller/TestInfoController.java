@@ -5,6 +5,7 @@ import com.lms.entity.TestContent;
 import com.lms.entity.TestInfo;
 import com.lms.entity.UserEntity;
 import com.lms.interception.AuthInterceptor;
+import com.lms.interception.RequiredAdmin;
 import com.lms.interception.RequiredToken;
 import com.lms.service.TestContentService;
 import com.lms.service.TestInfoService;
@@ -91,6 +92,7 @@ public class TestInfoController {
 
     @CrossOrigin
     @GetMapping(value = "/admin/test/all")
+    @RequiredAdmin
     public Result<List<TestInfoVO>> getAll(HttpServletRequest request) {
         List<TestInfoVO> testInfoVOS;
         try {
@@ -103,7 +105,7 @@ public class TestInfoController {
 
     @CrossOrigin
     @PostMapping(value = "/admin/test/add")
-    @RequiredToken
+    @RequiredAdmin
     public Result<TestInfoVO> addTest(@RequestBody TestInfoVO testInfoVO, HttpServletRequest request) {
         TestInfoVO docListVO = new TestInfoVO();
         try {
@@ -116,6 +118,7 @@ public class TestInfoController {
             Integer sum=0;
             //计算总分
             for (TestContent testContent:testInfoVO.getTopics()) {
+                testContent.setScore(10);
                 sum+=testContent.getScore();
             }
             testInfo.setSum(sum);
@@ -133,19 +136,23 @@ public class TestInfoController {
     }
     @CrossOrigin
     @GetMapping(value = "/admin/test/getone")
+    @RequiredAdmin
+
     public Result<TestInfoVO> getone(HttpServletRequest request) {
         TestInfoVO testInfoVO;
         try {
             Integer tiid = Integer.parseInt(request.getParameter("tiid"));
             testInfoVO = testInfoService.findOneForAdmin(tiid);
         } catch (Exception e) {
-            return new Result<TestInfoVO>().setStatus(500).setMsg("获取文档信息失败");
+            return new Result<TestInfoVO>().setStatus(500).setMsg("获取试卷信息失败");
         }
-        return new Result<TestInfoVO>().setStatus(200).setMsg("获取文档信息成功").setData(testInfoVO);
+        return new Result<TestInfoVO>().setStatus(200).setMsg("获取试卷信息成功").setData(testInfoVO);
     }
 
     @CrossOrigin
     @GetMapping(value = "/admin/test/deleteone")
+    @RequiredAdmin
+
     public Result<String> deleteOne(HttpServletRequest request) {
         try {
             Integer tiid = Integer.parseInt(request.getParameter("tiid"));
@@ -160,7 +167,8 @@ public class TestInfoController {
 
     @CrossOrigin
     @PostMapping(value = "/admin/test/updateone")
-    @RequiredToken
+    @RequiredAdmin
+
     public Result<TestInfoVO> updateOne(@RequestBody TestInfoVO testInfoVO,HttpServletRequest request) {
         TestInfoVO docListVO = new TestInfoVO();
         try {

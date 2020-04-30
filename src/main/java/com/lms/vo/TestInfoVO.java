@@ -12,6 +12,28 @@ import java.util.List;
 //@AllArgsConstructor
 @JsonSerialize
 public class TestInfoVO implements Serializable {
+    private Integer count;//'学习人数'
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public TestInfoVO setCount(Integer count) {
+        this.count = count;
+        return this;
+    }
+
+    private Integer personcount;//剩余考试次数
+
+    public Integer getPersoncount() {
+        return personcount;
+    }
+
+    public TestInfoVO setPersoncount(Integer personcount) {
+        this.personcount = personcount;
+        return this;
+    }
+
     private Integer tiid;
     /**
      * 文档上传人ID，用户表外键

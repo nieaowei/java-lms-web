@@ -2,6 +2,7 @@ package com.lms.controller;
 
 import com.lms.entity.DocList;
 import com.lms.entity.VideoList;
+import com.lms.interception.RequiredAdmin;
 import com.lms.interception.RequiredToken;
 import com.lms.service.VideoListService;
 import com.lms.utils.Result;
@@ -68,7 +69,8 @@ public class VideoListController {
 
     @CrossOrigin
     @GetMapping(value = "/admin/video/deleteone")
-    @RequiredToken
+    @RequiredAdmin
+
     public Result<String> deleteOne(HttpServletRequest request) {
         try {
             Integer vlid = Integer.parseInt(request.getParameter("vlid"));
@@ -83,7 +85,7 @@ public class VideoListController {
 
     @CrossOrigin
     @PostMapping(value = "/admin/video/add")
-    @RequiredToken
+    @RequiredAdmin
     public Result<VideoListVO> addDoc(@RequestBody VideoList videoList, HttpServletRequest request) {
         VideoListVO videoListVO = new VideoListVO();
         try {
@@ -99,7 +101,8 @@ public class VideoListController {
 
     @CrossOrigin
     @PostMapping(value = "/admin/video/updateone")
-    @RequiredToken
+    @RequiredAdmin
+
     public Result<VideoListVO> updateOne(@RequestBody VideoList videoList,HttpServletRequest request) {
         VideoListVO videoListVO;
         try {
@@ -131,6 +134,8 @@ public class VideoListController {
 
     @CrossOrigin
     @GetMapping(value = "/admin/video/getone")
+    @RequiredAdmin
+
     public Result<VideoListVO> getOne(HttpServletRequest request) {
         VideoListVO videoListVO;
         try {
@@ -144,6 +149,8 @@ public class VideoListController {
 
     @CrossOrigin
     @GetMapping(value = "/admin/video/all")
+    @RequiredAdmin
+
     public Result<List<VideoListVO>> getAll(HttpServletRequest request) {
         List<VideoListVO> docListVOList;
         try {

@@ -14,7 +14,8 @@ const module_adminDoc = {
             state.docList.unshift(data)
         },
         // eslint-disable-next-line no-unused-vars
-        removeDoc(state, index) {
+        removeDoc(state, item) {
+            var index = state.docList.indexOf(item)
             state.docList.splice(index, 1)
         },
         changeDoc(state, {dlid, newitem}) {
@@ -45,7 +46,13 @@ const module_adminDoc = {
                         }
                     ).catch(
                         (fail) => {
-                            reject(fail)
+                            if (fail.response.status===302){
+                                reject(constant.REDIRECT_LOGIN)
+                            }
+                            if (fail.response.status===415){
+                                reject("您不是管理员")
+                            }
+                            reject()
                         }
                     )
                 }
@@ -80,6 +87,9 @@ const module_adminDoc = {
                             if (fail.response.status === 302) {
                                 reject(constant.REDIRECT_LOGIN)
                             }
+                            if (fail.response.status===415){
+                                reject("您不是管理员")
+                            }
                             reject(constant.SERVER_FAIL)
                         }
                     );
@@ -108,6 +118,9 @@ const module_adminDoc = {
                             if (fail.response.status === 302) {
                                 reject(constant.REDIRECT_LOGIN)
                             }
+                            if (fail.response.status===415){
+                                reject("您不是管理员")
+                            }
                             reject(constant.SERVER_FAIL)
                         }
                     );
@@ -135,6 +148,9 @@ const module_adminDoc = {
                         (fail) => {
                             if (fail.response.status === 302) {
                                 reject(constant.REDIRECT_LOGIN)
+                            }
+                            if (fail.response.status===415){
+                                reject("您不是管理员")
                             }
                             reject(constant.SERVER_FAIL)
                         }
@@ -172,6 +188,9 @@ const module_adminDoc = {
                         (fail) => {
                             if (fail.response.status === 302) {
                                 reject(constant.REDIRECT_LOGIN)
+                            }
+                            if (fail.response.status===415){
+                                reject("您不是管理员")
                             }
                             reject(constant.SERVER_FAIL)
                         }

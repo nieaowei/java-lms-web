@@ -16,18 +16,18 @@ public class RegisterController {
     @PostMapping(value = "/user/register")
     @ResponseBody
     public Result<String> register(@RequestBody UserEntity requestUser){
-        UserEntity user = new UserEntity();
-        user.setUsername(requestUser.getUsername());
-        user.setPassword(requestUser.getPassword());
-        user.setPhonenum(requestUser.getPhonenum());
-        if(!userService.isPassWordCompliance(user)){
+//        UserEntity user = new UserEntity();
+//        user.setUsername(requestUser.getUsername());
+//        user.setPassword(requestUser.getPassword());
+//        user.setPhonenum(requestUser.getPhonenum());
+        if(!userService.isPassWordCompliance(requestUser)){
             return new Result<String>().setStatus(500).setMsg("密码不符合要求。");
         }
-        if(!userService.isPhoneNumCompliance(user)){
+        if(!userService.isPhoneNumCompliance(requestUser)){
             return new Result<String>().setStatus(500).setMsg("手机号码格式错误");
         }
         try{
-            UserEntity userEntity=userService.save(user);
+            UserEntity userEntity=userService.save(requestUser);
         }catch (Exception e){
             if(e.getMessage().contains("username")){
                 return new Result<String>().setStatus(500).setMsg("用户已存在，注册失败");

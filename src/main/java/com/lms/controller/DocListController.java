@@ -2,6 +2,7 @@ package com.lms.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.lms.entity.DocList;
+import com.lms.interception.RequiredAdmin;
 import com.lms.interception.RequiredToken;
 import com.lms.service.DocListService;
 import com.lms.utils.Result;
@@ -64,6 +65,7 @@ public class DocListController {
 
     @CrossOrigin
     @GetMapping(value = "/admin/doc/all")
+    @RequiredAdmin
     public Result<List<DocListVO>> getAll(HttpServletRequest request) {
         List<DocListVO> docListVOList;
         try {
@@ -77,7 +79,7 @@ public class DocListController {
 
     @CrossOrigin
     @PostMapping(value = "/admin/doc/add")
-    @RequiredToken
+    @RequiredAdmin
     public Result<DocListVO> addDoc(@RequestBody DocList docList, HttpServletRequest request) {
         DocListVO docListVO;
         try {
@@ -101,6 +103,7 @@ public class DocListController {
 
     @CrossOrigin
     @GetMapping(value = "/admin/doc/getone")
+    @RequiredAdmin
     public Result<DocListVO> getOne(HttpServletRequest request) {
         DocListVO docListVO;
         try {
@@ -114,6 +117,7 @@ public class DocListController {
 
     @CrossOrigin
     @GetMapping(value = "/admin/doc/deleteone")
+    @RequiredAdmin
     public Result<String> deleteOne(HttpServletRequest request) {
         try {
             Integer dlid = Integer.parseInt(request.getParameter("dlid"));
@@ -128,7 +132,7 @@ public class DocListController {
 
     @CrossOrigin
     @PostMapping(value = "/admin/doc/updateone")
-    @RequiredToken
+    @RequiredAdmin
     public Result<DocListVO> updateOne(@RequestBody DocList docList,HttpServletRequest request) {
         DocListVO docListVO;
         try {

@@ -2,9 +2,42 @@ package com.lms.vo;
 
 import com.lms.entity.UserEntity;
 
-public class UserVO {
+import java.io.Serializable;
+
+public class UserVO implements Serializable {
     private String username;
     private Long uiid;
+    private Boolean admin;
+    private Integer vduration;
+    private Integer dduration;
+    private Integer grade;
+
+    public Integer getVduration() {
+        return vduration;
+    }
+
+    public UserVO setVduration(Integer vduration) {
+        this.vduration = vduration;
+        return this;
+    }
+
+    public Integer getDduration() {
+        return dduration;
+    }
+
+    public UserVO setDduration(Integer dduration) {
+        this.dduration = dduration;
+        return this;
+    }
+
+    public Integer getGrade() {
+        return grade;
+    }
+
+    public UserVO setGrade(Integer grade) {
+        this.grade = grade;
+        return this;
+    }
 
     public UserVO(){
 
@@ -13,6 +46,15 @@ public class UserVO {
     public UserVO(UserEntity userEntity){
         this.username = userEntity.getUsername();
         this.uiid = userEntity.getUiid();
+        this.admin = userEntity.getAdmin();
+    }
+
+    public Boolean getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        this.admin = admin;
     }
 
     public Long getUiid() {

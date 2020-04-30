@@ -77,11 +77,21 @@ public class TestInfoService {
                     .setFlag(false)
                     .setCover(testInfo.getCover())
                     .setSum(testInfo.getSum())
-                    .setNum(testInfo.getNum());
+                    .setNum(testInfo.getNum())
+                    .setCount(testRecordDAO.countByTestInfo_Tiid(testInfo.getTiid()));
+            int temp = 0;
             for (TestRecord learnRecord : testRecords) {
                 if (testInfo.getTiid().equals(learnRecord.getTestInfo().getTiid())) {
-                    testInfoVO.setFlag(true);
+                    testInfoVO.setPersoncount(learnRecord.getCount());
+                    if (learnRecord.getCount()==0){
+                        testInfoVO.setFlag(true);
+                    }
+                    break;
                 }
+                temp++;
+            }
+            if (testRecords.size()==temp){
+                testInfoVO.setPersoncount(3);
             }
             testInfoVOList.add(testInfoVO);
         }
@@ -101,7 +111,7 @@ public class TestInfoService {
         for (TestContent testContent : testContents){
             TestContent testContent1 = new TestContent();
             BeanUtils.copyProperties(testContent,testContent1);
-            testContent1.setAnswer(-2);
+            testContent1.setAnswer("");
             testContents1.add(testContent1);
         }
         testInfoVO.setTopics(testContents1);
@@ -141,7 +151,7 @@ public class TestInfoService {
     }
 
     public TestInfoVO findOneForAdmin(Integer tiid) {
-        List<TestRecord> learnRecords = testRecordDAO.findAllByTestInfo_Tiid(tiid);
+        List<TestRecord> learnRecords = testRecordDAO.findAllByTestInfo_TiidOrderByCreatetimeDesc(tiid);
         if (learnRecords.size() == 0) {
             TestInfo testInfo = testInfoDAO.findByTiid(tiid);
             TestInfoVO testInfoVO = new TestInfoVO();
@@ -152,7 +162,7 @@ public class TestInfoService {
         BeanUtils.copyProperties(learnRecords.get(0).getTestInfo(),testInfoVO);
         for (TestRecord learnRecord : learnRecords) {
             UserVO userVO = new UserVO(learnRecord.getUserEntity());
-            testInfoVO.getUsers().add(userVO);
+            testInfoVO.getUsers().add(userVO.setGrade(learnRecord.getGrade()));
         }
         testInfoVO.setUsername(learnRecords.get(0).getTestInfo().getUserEntity().getUsername());
         return testInfoVO;

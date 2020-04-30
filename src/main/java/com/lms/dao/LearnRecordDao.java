@@ -25,4 +25,8 @@ public interface LearnRecordDao extends JpaRepository<LearnRecord, Integer> {
     LearnRecord update(Long uiid,Integer dlid,Integer duration);
 
     List<LearnRecord> findAllByDocList_Dlid(Integer docList_dlid);
+
+    Integer deleteByDocList_DlidAndUserEntity_Uiid(Integer docList_dlid, Long userEntity_uiid);
+
+    Integer countByDocList_Dlid(Integer docList_dlid);
 }

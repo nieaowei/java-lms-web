@@ -2,6 +2,7 @@ package com.lms.vo;
 
 import com.lms.entity.DocList;
 import com.lms.entity.UserEntity;
+import com.sun.imageio.plugins.common.I18N;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,6 +15,17 @@ import java.util.List;
  */
 
 public class DocListVO implements Serializable {
+    private Integer count;
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public DocListVO setCount(Integer count) {
+        this.count = count;
+        return this;
+    }
+
     private Integer dlid;
     /**
      * 文档上传人ID，用户表外键

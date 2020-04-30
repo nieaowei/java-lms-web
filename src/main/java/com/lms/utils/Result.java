@@ -1,6 +1,8 @@
 package com.lms.utils;
 
-public class Result<T> {
+import java.io.Serializable;
+
+public class Result<T> implements Serializable {
     private int status;
     private String msg;
     private T data;

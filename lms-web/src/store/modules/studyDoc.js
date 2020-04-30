@@ -1,4 +1,3 @@
-import pdf from 'vue-pdf'
 import axios from 'axios'
 import constant from "../../constant";
 
@@ -7,6 +6,7 @@ const module_studyDoc = {
     state: {
         PdfData: '',
         PdfPageNum: 0,
+        PdfSrc:''
     },
     mutations: {
         savePdfData(state, data) {
@@ -14,6 +14,9 @@ const module_studyDoc = {
         },
         savePdfPageNum(state, data) {
             state.PdfPageNum = data;
+        },
+        savePdfSrc(state,data){
+            state.PdfSrc=data
         }
 
     },
@@ -30,22 +33,7 @@ const module_studyDoc = {
                     ).then(
                         (success) => {
                             if (success.data.status === 200) {
-                                var task = pdf.createLoadingTask(success.data.data)
-                                task.then(
-                                    (pdf1) => {
-                                        commit('savePdfData', task);
-                                        commit('savePdfPageNum', pdf1.numPages)
-                                        resolve1("文档获取成功")
-                                    }
-                                ).catch(
-                                    (fail) => {
-                                        console.log(fail)
-                                        commit('savePdfData', '');
-                                        commit('savePdfPageNum', 0)
-                                        reject1("文档获取失败")
-
-                                    }
-                                )
+                                commit('savePdfSrc',success.data.data)
                             }else{
                                 commit('savePdfData', '');
                                 commit('savePdfPageNum', 0)

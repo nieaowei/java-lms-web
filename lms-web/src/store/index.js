@@ -14,6 +14,7 @@ import module_adminVideo from "./modules/adminVideo";
 import module_Test from "./modules/Test";
 import module_doTest from "./modules/doTest";
 import module_adminTest from "./modules/adminTest";
+import module_adminUser from "./modules/adminUser";
 
 Vue.use(Vuex);
 
@@ -34,6 +35,7 @@ const store = new Vuex.Store(
             adminTest: module_adminTest,
             Test: module_Test,
             doTest: module_doTest,
+            adminUser:module_adminUser
         },
         state: {},
         mutations: {},

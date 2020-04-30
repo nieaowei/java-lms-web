@@ -2,13 +2,16 @@ package com.lms.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.lms.entity.LearnRecord;
+import com.lms.entity.UserEntity;
 import com.lms.interception.AuthInterceptor;
+import com.lms.interception.RequiredAdmin;
 import com.lms.interception.RequiredToken;
 import com.lms.service.DocListService;
 import com.lms.service.UserService;
 import com.lms.utils.Result;
 import com.lms.vo.LearnVO;
 import com.lms.service.LearnRecordService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -105,6 +108,7 @@ public class LearnRecordController {
             // 如果时间超过文档时间，设置为文档时间
             if(learnRecord.getDuration()+10>learnRecord.getDocList().getDuration()){
                 learnRecord.setDuration(learnRecord.getDocList().getDuration());
+                learnRecord = learnRecordService.save(learnRecord);
             }else{// 否则 +10s
                 learnRecord = learnRecordService.save(learnRecord.setDuration(learnRecord.getDuration()+10));//设置新的时间并更新
             }
@@ -122,5 +126,15 @@ public class LearnRecordController {
 
     }
 
+    @CrossOrigin
+    @GetMapping(value = "/admin/doc/deleteuser")
+    @RequiredAdmin
+    public Result<String> deleteUser(@RequestBody LearnRecord learnRecord){
+
+        if (learnRecordService.deleteByUiidAndDlid(learnRecord.getUserEntity().getUiid(),learnRecord.getDocList().getDlid())){
+            return new Result<String>().setStatus(200).setMsg("移除学习记录成功");
+        }
+        return new Result<String>().setStatus(400).setMsg("移除学习记录失败");
+    }
 
 }

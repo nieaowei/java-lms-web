@@ -1,10 +1,8 @@
 package com.lms.utils;
 
 import com.lms.entity.UserEntity;
-import javafx.scene.input.DataFormat;
 import org.junit.Test;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,10 +15,10 @@ public class TokenUtilTest {
         userEntity.setUsername("nieaowei");
         userEntity.setPassword("nieaowei1");
         TokenUtil tokenUtil= new TokenUtil();
-        String token = TokenUtil.getToken((long)123);
+        String token = TokenUtil.getTokenForUser((long)123);
         System.out.println(token);
         Thread.sleep(1000);
-        System.out.println(TokenUtil.validateToken(token));
+        System.out.println(TokenUtil.validateTokenUser(token));
     }
 
     @Test

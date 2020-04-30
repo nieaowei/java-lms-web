@@ -7,7 +7,7 @@ import store from "./store";
 
 var axios = require('axios')
 
-// axios.defaults.baseURL = 'http://localhost:8081'
+// axios.defaults.baseURL = 'http://localhost:808'
 Vue.prototype.$axios = axios
 Vue.config.productionTip = false
 Vue.use(ElementUI)

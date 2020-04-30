@@ -11,8 +11,8 @@
         <!--        </div>-->
         <el-tabs v-model="editableTabsValue" type="card" @tab-remove="removeTab" @tab-click="clickTab">
             <el-tab-pane label="试卷查询">
-                <el-table
-                        :data="this.$store.state.adminTest.testList"
+                <el-table stripe
+                        :data="tableData"
                         height="520px"
                         style="width: 100%">
                     <el-table-column
@@ -58,6 +58,7 @@
                         <template slot-scope="scope">
                             <el-button @click="getDetail(scope)" type="text" size="small">详情</el-button>
                             <el-button type="text" size="small" @click="addEdit(scope)">编辑</el-button>
+                            <br/>
                             <!--                            <el-button type="text" size="small">删除</el-button>-->
                             <el-popconfirm
                                     @onConfirm="deleteDoc(scope)"
@@ -96,29 +97,100 @@
                             <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
                         </div>
                     </el-upload>
-                    <el-form label-position="left" label-width="100px" v-model="item.form">
+                    <el-form label-position="left" v-model="item.form">
                         <el-form-item label="封面图片：">
                             <el-input v-model="item.form.cover"></el-input>
                         </el-form-item>
                         <el-form-item label="试卷名：">
                             <el-input v-model="item.form.title"></el-input>
                         </el-form-item>
-                        <el-form-item
-                                style="border: #409EFF dashed 1px;padding: 5px"
-                                v-for="(topic, index) in item.form.topics"
-                                :label="'题目 ' + (index+1)+'：'"
-                                :key="index"
+                        <el-card v-for="(topic, index) in item.form.topics" :key="index"
+                                 style="margin-top: 5px;"
                         >
-                            <el-input placeholder="问题" v-model="topic.question">问题</el-input>
-                            <el-input placeholder="选项A" v-model="topic.opa"></el-input>
-                            <el-input placeholder="选项B" v-model="topic.opb"></el-input>
-                            <el-input placeholder="选项C" v-model="topic.opc"></el-input>
-                            <el-input placeholder="选项D" v-model="topic.opd"></el-input>
-                            <el-input placeholder="答案" v-model="topic.answer"></el-input>
-                            <el-input placeholder="分数" v-model="topic.score"></el-input>
-                                <el-button @click.prevent="removeTopic(item.form.topics,topic)">删除</el-button>
-                        </el-form-item>
-                        <el-button @click="addTopic(item.form.topics)">新增题目</el-button>
+                            <!--                            style="border: #409EFF dashed 1px;padding: 5px"-->
+                            <el-form-item>
+
+
+                                <div v-if="topic.type===0">
+                                    <span>选择题 {{index+1}}</span><br/>
+                                    <el-input placeholder="题目" v-model="topic.question">问题</el-input>
+                                    <br/>
+                                    <el-radio-group v-model="topic.answer">
+                                        <el-radio label="1">
+                                            A.
+                                            <el-input v-model="topic.opa"></el-input>
+                                            <br/>
+                                        </el-radio>
+                                        <br/>
+                                        <el-radio label="2">
+                                            B.
+                                            <el-input v-model="topic.opb"></el-input>
+                                            <br/>
+                                        </el-radio>
+                                        <br/>
+                                        <el-radio label="3">
+                                            C.
+                                            <el-input v-model="topic.opc"></el-input>
+                                            <br/>
+                                        </el-radio>
+                                        <br/>
+                                        <el-radio label="4">
+                                            D.
+                                            <el-input v-model="topic.opd"></el-input>
+                                            <br/>
+                                        </el-radio>
+                                        <br/>
+                                    </el-radio-group>
+                                    <!--                                <el-input placeholder="选项B" v-model="topic.opb"></el-input>-->
+                                    <!--                                <el-input placeholder="选项C" v-model="topic.opc"></el-input>-->
+                                    <!--                                <el-input placeholder="选项D" v-model="topic.opd"></el-input>-->
+                                    <!--                                <el-input placeholder="答案" v-model="topic.answer"></el-input>-->
+                                </div>
+                                <div v-else-if="topic.type===1">
+                                    <span>多选题 {{index+1}}</span><br/>
+                                    <el-input placeholder="题目" v-model="topic.question">问题</el-input>
+                                    <br/>
+                                    <el-checkbox-group v-model="topic.answer">
+                                        <el-checkbox label="1">
+                                            A.
+                                            <el-input v-model="topic.opa"></el-input>
+                                        </el-checkbox>
+                                        <br/>
+                                        <el-checkbox label="2">
+                                            B.
+                                            <el-input v-model="topic.opb"></el-input>
+                                        </el-checkbox>
+                                        <br/>
+                                        <el-checkbox label="3">
+                                            C.
+                                            <el-input v-model="topic.opc"></el-input>
+                                        </el-checkbox>
+                                        <br/>
+                                        <el-checkbox label="4" style="margin-right:30px">
+                                            D.
+                                            <el-input v-model="topic.opd"></el-input>
+                                        </el-checkbox>
+                                        <br/>
+                                    </el-checkbox-group>
+                                    <!--                                <el-input placeholder="选项A" v-model="topic.opa"></el-input>-->
+                                    <!--                                <el-input placeholder="选项B" v-model="topic.opb"></el-input>-->
+                                    <!--                                <el-input placeholder="选项C" v-model="topic.opc"></el-input>-->
+                                    <!--                                <el-input placeholder="选项D" v-model="topic.opd"></el-input>-->
+                                    <!--                                <el-input placeholder="答案" v-model="topic.answer"></el-input>-->
+                                </div>
+                                <div v-else-if="topic.type===2">
+                                    <span>判断题 {{index+1}}</span>
+                                    <el-input placeholder="题目" v-model="topic.question">问题</el-input>
+                                    <el-radio-group v-model="topic.answer">
+                                        <el-radio label="1">对</el-radio>
+                                        <el-radio label="2">错</el-radio>
+
+                                    </el-radio-group>
+                                </div>
+
+                            </el-form-item>
+                        </el-card>
+
                         <el-button v-if="item.action==='new'" v-on:click="commit(item)">提交</el-button>
                         <el-button v-if="item.action==='edit'" v-on:click="updateDoc(item)">提交</el-button>
                     </el-form>
@@ -168,7 +240,14 @@
                     </div>
                     <div style="float:right;width: 50%;text-align: left">
                         <span>已完成试卷用户：</span>
-                        <el-table :data="item.data.users" height="750px">
+                        <el-table stripe :data="item.data.users.map(value=>{
+                            if (value.grade>80){
+                                return{uiid:value.uiid,username:value.username,grade:value.grade,flag:'合格'}
+                            }else{
+                                return{uiid:value.uiid,username:value.username,grade:value.grade,flag:'不合格'}
+                            }
+                        }
+                            )" height="750px">
                             <el-table-column
                                     prop="uiid"
                                     label="用户ID"
@@ -177,16 +256,20 @@
                                     prop="username"
                                     label="用户名"
                             ></el-table-column>
-                            <!--                            <el-table-column-->
-                            <!--                                    prop="grade"-->
-                            <!--                                    label="成绩"-->
-                            <!--                            ></el-table-column>-->
+                            <el-table-column
+                                    prop="grade"
+                                    label="成绩"
+                            ></el-table-column>
+                            <el-table-column
+                                    prop="flag"
+                                    label=""
+                            ></el-table-column>
                         </el-table>
                     </div>
                     <div style="width: 100%;float: left">
                         <el-divider style="width: 100%;position: relative">题目列表</el-divider>
 
-                        <el-table :data="item.data.topics">
+                        <el-table stripe :data="item.data.topics">
                             <el-table-column
                                     prop="tcid"
                                     label="题目号"
@@ -194,6 +277,10 @@
                             <el-table-column
                                     prop="question"
                                     label="问题"
+                            ></el-table-column>
+                            <el-table-column
+                                    prop="type"
+                                    label="题型"
                             ></el-table-column>
                             <el-table-column
                                     prop="opa"
@@ -244,11 +331,28 @@
                 imageUrl: ''
             }
         },
+        computed: {
+            tableData() {
+                if (this.searchContext) {
+                    return this.$store.state.adminTest.testList.filter(
+                        value => {
+                            return Object.keys(value).some(key => {
+                                    // indexOf() 返回某个指定的字符在某个字符串中首次出现的位置，如果没有找到就返回-1；
+                                    // 该方法对大小写敏感！所以之前需要toLowerCase()方法将所有查询到内容变为小写。
+                                    return String(value[key]).toLowerCase().indexOf(this.searchContext) > -1
+                                }
+                            )
+                        }
+                    )
+                }
+                return this.$store.state.adminTest.testList;
+            }
+        },
         methods: {
-            removeTopic(topics,topic){
+            removeTopic(topics, topic) {
                 var index = topics.indexOf(topic)
-                if (index!==-1){
-                    topics.splice(index,1)
+                if (index !== -1) {
+                    topics.splice(index, 1)
                 }
             },
             addTopic(topics) {
@@ -263,8 +367,15 @@
                 })
             },
             addEdit(data) {
-                this.$store.dispatch('adminTest/getDetail',data.row).then(
-                    (success)=>{
+                this.$store.dispatch('adminTest/getDetail', data.row).then(
+                    (success) => {
+                        success.data.topics.forEach(
+                            value => {
+                                if (value.type === 1) {
+                                    value.answer = value.answer.split(',')
+                                }
+                            }
+                        )
                         let newTabName = ++this.tabIndex + '';
                         this.editableTabs.push({
                             title: '编辑试卷',
@@ -276,8 +387,8 @@
                                 title: data.row.title,
                                 cover: data.row.cover,
                                 topics: success.data.topics,
-                                createtime:data.row.createtime,
-                                updatetime:data.row.updatetime,
+                                createtime: data.row.createtime,
+                                updatetime: data.row.updatetime,
                             }
                         });
                         // this.curTab++;
@@ -300,7 +411,7 @@
                         })
                         //@todo 增加到本地试卷列表
                         // this.$store.commit('DocClass')
-                        console.log('update result',resolve)
+                        console.log('update result', resolve)
                         this.removeTab(item.name)
                         this.$store.commit('adminTest/changeTest', {tiid: resolve.data.tiid, newitem: resolve.data})
                     },
@@ -439,13 +550,85 @@
                         cover: '',
                         topics: [{
                             question: '',
+                            type: 0,
                             opa: '',
                             opb: '',
                             opc: '',
                             opd: '',
-                            score: '',
                             answer: '',
-                        }]
+                        }, {
+                            question: '',
+                            type: 0,
+                            opa: '',
+                            opb: '',
+                            opc: '',
+                            opd: '',
+                            answer: '',
+                        }, {
+                            question: '',
+                            type: 0,
+                            opa: '',
+                            opb: '',
+                            opc: '',
+                            opd: '',
+                            answer: '',
+                        }, {
+                            question: '',
+                            type: 0,
+                            opa: '',
+                            opb: '',
+                            opc: '',
+                            opd: '',
+                            answer: '',
+                        }, {
+                            question: '',
+                            type: 0,
+                            opa: '',
+                            opb: '',
+                            opc: '',
+                            opd: '',
+                            answer: '',
+                        }, {
+                            question: '',
+                            type: 1,
+                            opa: '',
+                            opb: '',
+                            opc: '',
+                            opd: '',
+                            answer: [],
+                        }, {
+                            question: '',
+                            type: 1,
+                            opa: '',
+                            opb: '',
+                            opc: '',
+                            opd: '',
+                            answer: [],
+                        }, {
+                            question: '',
+                            type: 1,
+                            opa: '',
+                            opb: '',
+                            opc: '',
+                            opd: '',
+                            answer: [],
+                        }, {
+                            question: '',
+                            type: 2,
+                            opa: '',
+                            opb: '',
+                            opc: '',
+                            opd: '',
+                            answer: '',
+                        }, {
+                            question: '',
+                            type: 2,
+                            opa: '',
+                            opb: '',
+                            opc: '',
+                            opd: '',
+                            answer: '',
+                        },]
                     }
                 });
                 // this.curTab++;
@@ -464,6 +647,53 @@
                             message: resolve.msg,
                             position: constant.NOTIFY_POS,
                         })
+                        resolve.data.topics.forEach(
+                            value => {
+                                if (value.type === 0) {
+                                    value.type = '选择题'
+                                    if (value.answer === '1') {
+                                        value.answer = 'A'
+                                    } else if (value.answer === '2') {
+                                        value.answer = 'B'
+                                    } else if (value.answer === '3') {
+                                        value.answer = 'C'
+                                    } else if (value.answer === '4') {
+                                        value.answer = 'D'
+                                    }
+                                } else if (value.type === 1) {
+                                    value.type = '多选题'
+                                    var temp = value.answer.split(',')
+                                    console.log(temp)
+                                    temp.forEach(
+                                        // eslint-disable-next-line no-unused-vars
+                                        (value1, index) => {
+                                            console.log(value1)
+                                            if (value1 === "1") {
+                                                temp[index] = 'A'
+                                            } else if (value1 === "2") {
+                                                temp[index] = 'B'
+
+                                            } else if (value1 === "3") {
+                                                temp[index] = 'C'
+
+                                            } else if (value1 === "4") {
+                                                temp[index] = 'D'
+                                            }
+                                        }
+                                    )
+                                    console.log(temp.toString())
+                                    value.answer = temp.toString()
+                                } else if (value.type === 2) {
+                                    value.type = '判断题'
+                                    if (value.answer === '1') {
+                                        value.answer = '对'
+                                    } else if (value.answer === '2') {
+                                        value.answer = '错'
+                                    }
+                                }
+
+                            }
+                        )
                         this.addNewDetail(resolve.data)
                     },
                     (reject) => {
@@ -501,12 +731,13 @@
         },
         created() {
             this.$store.dispatch('adminTest/getTestList').then(
+                // eslint-disable-next-line no-unused-vars
                 (resolve) => {
-                    this.$notify({
-                        type: "success",
-                        message: resolve,
-                        position: constant.NOTIFY_POS,
-                    })
+                    // this.$notify({
+                    //     type: "success",
+                    //     message: resolve,
+                    //     position: constant.NOTIFY_POS,
+                    // })
                 },
                 (reject) => {
                     if (reject === constant.REDIRECT_LOGIN) {
@@ -550,4 +781,19 @@
         height: 178px;
         display: block;
     }
+
+    .el-radio {
+        margin-top: 3px;
+    }
+
+    .el-checkbox {
+        margin-top: 3px;
+    }
+    .el-tabs{
+        background: transparent;
+    }
+
+    /*.el-form-item div .el-checkbox-group .el-checkbox .el-input{*/
+    /* width: 120%;*/
+    /*}*/
 </style>

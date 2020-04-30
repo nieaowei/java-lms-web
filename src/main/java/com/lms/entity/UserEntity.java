@@ -30,6 +30,16 @@ public class UserEntity   {
     private String createtime;
     @Column(insertable = false,updatable = false)
     private String updatetime;
+    private Boolean admin;
+
+    public Boolean getAdmin() {
+        return admin;
+    }
+
+    public UserEntity setAdmin(Boolean admin) {
+        this.admin = admin;
+        return this;
+    }
 
     public Long getUiid() {
         return uiid;

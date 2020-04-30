@@ -1,6 +1,7 @@
 web:
   upload_path: /Users/nieaowei/Desktop/upload
   domain: localhost:8081
+  default_reset_password: admin123456
 
 
 server:

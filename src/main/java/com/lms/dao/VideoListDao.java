@@ -18,4 +18,6 @@ public interface VideoListDao extends JpaRepository<VideoList,Integer> {
     List<VideoList> findAllByOrderByCreatetimeDesc();
 
     Integer deleteVideoListByVlid(Integer vlid);
+
+    Integer countByVlid(Integer vlid);
 }

@@ -1,6 +1,6 @@
 <template>
 <!--    <div>-->
-        <video style="width: 100%;height: 100%;object-fit: fill" :src="$store.state.studyVideo.VideoData" controls></video>
+        <video style="width: 100%;height: 100%;object-fit: fill" :src="$store.state.studyVideo.VideoData" autoplay></video>
 <!--    </div>-->
 
 </template>

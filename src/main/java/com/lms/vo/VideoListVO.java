@@ -5,6 +5,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VideoListVO implements Serializable {
+    private Integer count;
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public VideoListVO setCount(Integer count) {
+        this.count = count;
+        return this;
+    }
+
+    public void setUsers(List<UserVO> users) {
+        this.users = users;
+    }
+
     private Integer vlid;
     /**
      * 视频上传人ID，用户表外键

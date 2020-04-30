@@ -14,7 +14,6 @@
 
 <script>
     import adminDoc from "./adminDoc";
-    import constant from "../../constant";
     import adminVideo from "./adminVideo";
     import adminTest from "./adminTest";
 
@@ -61,25 +60,25 @@
             }
         },
         created() {
-            this.$store.dispatch('adminDoc/getDocList').then(
-                (resolve) => {
-                    this.$notify({
-                        type: "success",
-                        message: resolve,
-                        position: constant.NOTIFY_POS,
-                    })
-                },
-                (reject) => {
-                    if (reject === constant.REDIRECT_LOGIN) {
-                        this.$router.push('login')
-                    }
-                    this.$notify({
-                        type: "error",
-                        message: reject,
-                        position: constant.NOTIFY_POS,
-                    })
-                }
-            )
+            // this.$store.dispatch('adminDoc/getDocList').then(
+            //     (resolve) => {
+            //         this.$notify({
+            //             type: "success",
+            //             message: resolve,
+            //             position: constant.NOTIFY_POS,
+            //         })
+            //     },
+            //     (reject) => {
+            //         if (reject === constant.REDIRECT_LOGIN) {
+            //             this.$router.push('login')
+            //         }
+            //         this.$notify({
+            //             type: "error",
+            //             message: reject,
+            //             position: constant.NOTIFY_POS,
+            //         })
+            //     }
+            // )
         }
     }
 </script>
@@ -87,5 +86,8 @@
 <style>
     .el-tab-pane {
         min-height: 520px;
+    }
+    .el-tabs{
+        background: transparent;
     }
 </style>

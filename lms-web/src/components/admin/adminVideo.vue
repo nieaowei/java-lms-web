@@ -4,20 +4,15 @@
         <div style="z-index:3;float: right;position: relative">
             <el-button style="margin-left: 5px" @click="addNewTab">新增视频</el-button>
             <el-input style="margin-left:5px;margin-bottom: 1px;width: 300px" placeholder="请输入内容"
-                      v-model="searchContext" class="input-with-select">
-                <!--                <el-select v-model="select" slot="prepend" placeholder="请选择" >-->
-                <!--                    <el-option label="餐厅名" value="1"></el-option>-->
-                <!--                    <el-option label="订单号" value="2"></el-option>-->
-                <!--                    <el-option label="用户电话" value="3"></el-option>-->
-                <!--                </el-select>-->
-                <el-button slot="append" icon="el-icon-search"></el-button>
+                      v-model="searchContext" suffix-icon="el-icon-search" class="input-with-select">
             </el-input>
         </div>
         <!--        </div>-->
         <el-tabs v-model="editableTabsValue" type="card" @tab-remove="removeTab" @tab-click="clickTab">
             <el-tab-pane label="视频查询">
                 <el-table
-                        :data="this.$store.state.adminVideo.videoList"
+                        stripe
+                        :data="tableData"
                         height="520px"
                         style="width: 100%">
                     <el-table-column
@@ -181,7 +176,25 @@
                     </div>
                     <div style="float:right;width: 50%;text-align: left">
                         <span>已添加学习用户：</span>
-                        <el-table :data="item.data.users">
+                        <el-table stripe :data="item.data.users.map(
+                            (value)=>{
+                                if (value.dduration>=item.data.duration){
+                                    return {
+                                        uiid:value.uiid,
+                                        username:value.username,
+                                        vduration:value.vduration,
+                                        flag:'已完成'
+                                    }
+                                }else{
+                                    return {
+                                        uiid:value.uiid,
+                                        username:value.username,
+                                        vduration:value.vduration,
+                                        flag:'未完成'
+                                    }
+                                }
+                            }
+                        )">
                             <el-table-column
                                     prop="uiid"
                                     label="用户ID"
@@ -189,6 +202,13 @@
                             <el-table-column
                                     prop="username"
                                     label="用户名"
+                            ></el-table-column>
+                            <el-table-column
+                                    prop="vduration"
+                                    label="已学习时长"
+                            ></el-table-column>
+                            <el-table-column
+                                    prop="flag"
                             ></el-table-column>
                         </el-table>
                     </div>
@@ -216,6 +236,23 @@
                 tabIndex: 0,
                 curTab: 0,
                 imageUrl: ''
+            }
+        },
+        computed:{
+            tableData(){
+                if (this.searchContext) {
+                    return this.$store.state.adminVideo.videoList.filter(
+                        value => {
+                            return Object.keys(value).some(key => {
+                                    // indexOf() 返回某个指定的字符在某个字符串中首次出现的位置，如果没有找到就返回-1；
+                                    // 该方法对大小写敏感！所以之前需要toLowerCase()方法将所有查询到内容变为小写。
+                                    return String(value[key]).toLowerCase().indexOf(this.searchContext) > -1
+                                }
+                            )
+                        }
+                    )
+                }
+                return this.$store.state.adminVideo.videoList;
             }
         },
         methods: {
@@ -282,7 +319,7 @@
                             message: resolve.msg,
                             position: constant.NOTIFY_POS,
                         })
-                        this.$store.commit('adminVideo/removeVideo', data.$index)
+                        this.$store.commit('adminVideo/removeVideo', data.row)
                     },
                     (reject) => {
                         console.log(reject)
@@ -454,12 +491,13 @@
         },
         created() {
             this.$store.dispatch('adminVideo/getVideoList').then(
+                // eslint-disable-next-line no-unused-vars
                 (resolve) => {
-                    this.$notify({
-                        type: "success",
-                        message: resolve,
-                        position: constant.NOTIFY_POS,
-                    })
+                    // this.$notify({
+                    //     type: "success",
+                    //     message: resolve,
+                    //     position: constant.NOTIFY_POS,
+                    // })
                 },
                 (reject) => {
                     if (reject === constant.REDIRECT_LOGIN) {
@@ -514,5 +552,9 @@
         overflow: hidden;
         text-overflow: ellipsis;
         /*white-space: normal !important;*/
+    }
+
+    .el-tabs--border-card{
+        background: transparent;
     }
 </style>
