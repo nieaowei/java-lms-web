@@ -1,26 +1,24 @@
 <template>
-    <div class="pdf1">
-        <el-carousel arrow="always" style="width: 100%" :loop="false" :initial-index="0" height="900px" type="card" :autoplay="false">
-            <el-carousel-item  v-for="i in this.$store.state.studyDoc.PdfPageNum" :key="i">
-                <pdf style="width: 90%;border: black solid 1px;"
-                        :src="$store.state.studyDoc.PdfData"
-                        :page="i">
-                </pdf>
-            </el-carousel-item>
-        </el-carousel>
-    </div>
+    <iframe width="100%" height="900px" :src="pdfData"></iframe>
 </template>
 <script>
     import pdf from 'vue-pdf'
     export default {
         name: 'studyDoc',
         components:{
+            // eslint-disable-next-line vue/no-unused-components
             pdf
         },
         data(){
             return {
-                data1: this.$store.state.studyDoc.PdfData
+                data1: this.$store.state.studyDoc.PdfData,
+                scale:100,
             }
+        },
+        computed:{
+          pdfData(){
+              return this.$store.state.studyDoc.PdfSrc
+          },
         },
 
         methods: {

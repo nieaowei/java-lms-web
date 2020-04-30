@@ -16,7 +16,7 @@ const module_doTest = {
                     // var tempanswer = item.answer.sort()
                     // var res = ''
                     // tempanswer=res
-                    return {answer: item.answer.sort().toString, tcid: item.tcid}
+                    return {answer: item.answer.sort().toString(), tcid: item.tcid}
                 }
                 return {answer: item.answer, tcid: item.tcid}
             })

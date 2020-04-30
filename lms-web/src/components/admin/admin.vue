@@ -87,4 +87,7 @@
     .el-tab-pane {
         min-height: 520px;
     }
+    .el-tabs{
+        background: transparent;
+    }
 </style>

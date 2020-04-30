@@ -117,6 +117,9 @@
                             key: resolve.data.tiid,
                             data: resolve.data.personcount
                         })
+                        if(resolve.data.personcount===2){
+                            this.$store.commit('Test/addOneForCount',resolve.data.tiid)
+                        }
                         this.$store.commit('MyClass/addMyTest', resolve.data);
                         this.currentGrade = resolve.data.grade;
                         this.currentCount = resolve.data.personcount;
@@ -220,6 +223,8 @@
 
     .el-card {
         margin-bottom: 20px;
+        background: azure;
+
     }
 
     .button {
@@ -248,5 +253,9 @@
 
     .el-tab-pane {
         min-height: 520px;
+    }
+
+    .el-tabs{
+        background: transparent;
     }
 </style>

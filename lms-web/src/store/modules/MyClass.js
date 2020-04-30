@@ -11,6 +11,24 @@ const module_MyClass = {
     },
     getters: {},
     mutations: {
+        changeMyVideoDuration(state,vlid){
+            state.myVideos.forEach(
+                value => {
+                    if (value.dlid===vlid){
+                        value.duration+=10
+                    }
+                }
+            )
+        },
+        changeMyDocDuration(state,dlid){
+            state.myVideos.forEach(
+                value => {
+                    if (value.dlid===dlid){
+                        value.duration+=10
+                    }
+                }
+            )
+        },
         saveMyDocs(state, data) {
             state.myDocs = data
         },
@@ -54,19 +72,29 @@ const module_MyClass = {
             // state.myVideos[key].percent = data
         },
         saveMyTests(state, data) {
+            // state.myTests.forEach((value, index) => {
+            //     if (value.tiid===data.tiid){
+            //         state.myTests.splice(index,value,data)
+            //         return
+            //     }
+            // })
+            // state.myTests.unshift(data)
+            state.myTests=data
+        },
+        addMyTest(state,item){
             if(state.myTests===undefined){
                 state.myTests=[]
             }
+            var flag= false;
             state.myTests.forEach((value, index) => {
-                if (value.tiid===data.tiid){
-                    state.myTests.splice(index,value,data)
-                    return
+                if (value.tiid===item.tiid){
+                    state.myTests.splice(index,1,item)
+                    flag=true
                 }
             })
-            state.myTests.unshift(data)
-        },
-        addMyTest(state,item){
-            state.myTests.unshift(item)
+            if (!flag){
+                state.myTests.unshift(item)
+            }
         }
     },
     actions: {
@@ -113,6 +141,7 @@ const module_MyClass = {
                         if (success.data.status === 200) {
                             //更新本地数据
                             commit('changeMyDocPercent', {key: _dlid, data: success.data.data.percent})
+                            // commit('changeMyDocDuration',_dlid)
                             resolve(success.data.data)
                         }
                         reject(success.data.msg)
@@ -167,6 +196,7 @@ const module_MyClass = {
                     (success) => {
                         if (success.data.status === 200) {
                             commit('changeMyVideoPercent', {key: _vlid, data: success.data.data.percent})
+                            // commit('changeMyVideoDuration',_vlid)
                             resolve(success.data.data)
                         }
                         reject(success.data.msg)
@@ -193,7 +223,7 @@ const module_MyClass = {
                 ).then(
                     (success) => {
                         if (success.data.status === 200) {
-                            commit('saveMyTests', success.data.data);
+                            commit('saveMyTests', success.data.data)
                             resolve(success.data.msg)
                         }
                         reject(success.data.msg)

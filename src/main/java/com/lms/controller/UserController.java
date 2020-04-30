@@ -170,4 +170,24 @@ public class UserController {
         }
         return new Result<UserEntity>().setMsg("重置密码成功").setStatus(200).setData(userEntity);
     }
+
+    @CrossOrigin
+    @PostMapping(value = "/admin/deleteuser")
+    @RequiredAdmin
+    public Result<String> deleteUser(@RequestBody UserEntity userEntity,HttpServletRequest request) {
+        try{
+            Long curUiid = (long)request.getAttribute(AuthInterceptor.RESULT_KEY);
+            if (curUiid.equals(userEntity.getUiid())){
+                return new Result<String>().setStatus(400).setMsg("您不能删除您自己");
+            }
+            int res = userService.delete(userEntity);
+            if (res>0){
+                return new Result<String>().setMsg("删除用户成功").setStatus(200);
+            }
+            return new Result<String>().setMsg("删除用户失败").setStatus(500);
+        }catch (Exception e){
+            return new Result<String>().setMsg("删除用户失败").setStatus(500);
+        }
+    }
+
 }

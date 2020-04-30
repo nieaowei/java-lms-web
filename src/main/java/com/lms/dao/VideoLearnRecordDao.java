@@ -18,6 +18,6 @@ public interface VideoLearnRecordDao extends JpaRepository<VideoLearnRecord,Inte
     VideoLearnRecord findByLrid(Integer lrid);
     VideoLearnRecord findByLridAndUserEntity(Integer lrid, UserEntity userEntity);
     VideoLearnRecord findByVideoListAndUserEntity(VideoList videoList, UserEntity userEntity);
-
+    Integer countByVideoList_Vlid(Integer videoList_vlid);
     List<VideoLearnRecord> findAllByVideoList_Vlid(Integer vlid);
 }

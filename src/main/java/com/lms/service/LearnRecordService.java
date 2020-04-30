@@ -81,4 +81,8 @@ public class LearnRecordService {
     public void delete(Integer lrid){
         learnRecordDao.deleteById(lrid);
     }
+
+    public Boolean deleteByUiidAndDlid(Long uiid,Integer dlid){
+        return learnRecordDao.deleteByDocList_DlidAndUserEntity_Uiid(dlid,uiid)!=0;
+    }
 }

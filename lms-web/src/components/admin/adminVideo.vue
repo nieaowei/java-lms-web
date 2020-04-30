@@ -11,6 +11,7 @@
         <el-tabs v-model="editableTabsValue" type="card" @tab-remove="removeTab" @tab-click="clickTab">
             <el-tab-pane label="视频查询">
                 <el-table
+                        stripe
                         :data="tableData"
                         height="520px"
                         style="width: 100%">
@@ -175,7 +176,25 @@
                     </div>
                     <div style="float:right;width: 50%;text-align: left">
                         <span>已添加学习用户：</span>
-                        <el-table :data="item.data.users">
+                        <el-table stripe :data="item.data.users.map(
+                            (value)=>{
+                                if (value.dduration>=item.data.duration){
+                                    return {
+                                        uiid:value.uiid,
+                                        username:value.username,
+                                        vduration:value.vduration,
+                                        flag:'已完成'
+                                    }
+                                }else{
+                                    return {
+                                        uiid:value.uiid,
+                                        username:value.username,
+                                        vduration:value.vduration,
+                                        flag:'未完成'
+                                    }
+                                }
+                            }
+                        )">
                             <el-table-column
                                     prop="uiid"
                                     label="用户ID"
@@ -187,6 +206,9 @@
                             <el-table-column
                                     prop="vduration"
                                     label="已学习时长"
+                            ></el-table-column>
+                            <el-table-column
+                                    prop="flag"
                             ></el-table-column>
                         </el-table>
                     </div>
@@ -530,5 +552,9 @@
         overflow: hidden;
         text-overflow: ellipsis;
         /*white-space: normal !important;*/
+    }
+
+    .el-tabs--border-card{
+        background: transparent;
     }
 </style>

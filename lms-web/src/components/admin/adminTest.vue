@@ -11,7 +11,7 @@
         <!--        </div>-->
         <el-tabs v-model="editableTabsValue" type="card" @tab-remove="removeTab" @tab-click="clickTab">
             <el-tab-pane label="试卷查询">
-                <el-table
+                <el-table stripe
                         :data="tableData"
                         height="520px"
                         style="width: 100%">
@@ -57,7 +57,8 @@
                     >
                         <template slot-scope="scope">
                             <el-button @click="getDetail(scope)" type="text" size="small">详情</el-button>
-                            <el-button type="text" size="small" @click="addEdit(scope)">编辑</el-button><br/>
+                            <el-button type="text" size="small" @click="addEdit(scope)">编辑</el-button>
+                            <br/>
                             <!--                            <el-button type="text" size="small">删除</el-button>-->
                             <el-popconfirm
                                     @onConfirm="deleteDoc(scope)"
@@ -153,25 +154,21 @@
                                         <el-checkbox label="1">
                                             A.
                                             <el-input v-model="topic.opa"></el-input>
-                                            <br/>
                                         </el-checkbox>
                                         <br/>
                                         <el-checkbox label="2">
                                             B.
                                             <el-input v-model="topic.opb"></el-input>
-                                            <br/>
                                         </el-checkbox>
                                         <br/>
                                         <el-checkbox label="3">
                                             C.
                                             <el-input v-model="topic.opc"></el-input>
-                                            <br/>
                                         </el-checkbox>
                                         <br/>
-                                        <el-checkbox label="4">
+                                        <el-checkbox label="4" style="margin-right:30px">
                                             D.
                                             <el-input v-model="topic.opd"></el-input>
-                                            <br/>
                                         </el-checkbox>
                                         <br/>
                                     </el-checkbox-group>
@@ -243,7 +240,14 @@
                     </div>
                     <div style="float:right;width: 50%;text-align: left">
                         <span>已完成试卷用户：</span>
-                        <el-table :data="item.data.users" height="750px">
+                        <el-table stripe :data="item.data.users.map(value=>{
+                            if (value.grade>80){
+                                return{uiid:value.uiid,username:value.username,grade:value.grade,flag:'合格'}
+                            }else{
+                                return{uiid:value.uiid,username:value.username,grade:value.grade,flag:'不合格'}
+                            }
+                        }
+                            )" height="750px">
                             <el-table-column
                                     prop="uiid"
                                     label="用户ID"
@@ -252,16 +256,20 @@
                                     prop="username"
                                     label="用户名"
                             ></el-table-column>
-                            <!--                            <el-table-column-->
-                            <!--                                    prop="grade"-->
-                            <!--                                    label="成绩"-->
-                            <!--                            ></el-table-column>-->
+                            <el-table-column
+                                    prop="grade"
+                                    label="成绩"
+                            ></el-table-column>
+                            <el-table-column
+                                    prop="flag"
+                                    label=""
+                            ></el-table-column>
                         </el-table>
                     </div>
                     <div style="width: 100%;float: left">
                         <el-divider style="width: 100%;position: relative">题目列表</el-divider>
 
-                        <el-table :data="item.data.topics">
+                        <el-table stripe :data="item.data.topics">
                             <el-table-column
                                     prop="tcid"
                                     label="题目号"
@@ -323,8 +331,8 @@
                 imageUrl: ''
             }
         },
-        computed:{
-            tableData(){
+        computed: {
+            tableData() {
                 if (this.searchContext) {
                     return this.$store.state.adminTest.testList.filter(
                         value => {
@@ -780,6 +788,9 @@
 
     .el-checkbox {
         margin-top: 3px;
+    }
+    .el-tabs{
+        background: transparent;
     }
 
     /*.el-form-item div .el-checkbox-group .el-checkbox .el-input{*/

@@ -11,8 +11,14 @@ const module_adminUser={
             state.userList=data;
         },
         changeUserList(state,{item,data}){
+            console.log(item)
+            console.log(data)
             var index  = state.userList.indexOf(item)
             state.userList.splice(index,1,data)
+        },
+        removeUser(state,item){
+            var index  = state.userList.indexOf(item)
+            state.userList.splice(index,1)
         }
     },
     actions:{
@@ -61,7 +67,40 @@ const module_adminUser={
                     ).then(
                         (success) => {
                             if (success.data.status === 200) {
-                                commit('changeUserList',data,success.data)
+                                commit('changeUserList', {item:data, data:success.data.data})
+                                resolve(success.data)
+                            }
+                            reject(success.data.msg)
+                        }
+                    ).catch(
+                        // eslint-disable-next-line no-unused-vars
+                        (fail) => {
+                            if (fail.response.status === 302) {
+                                reject(constant.REDIRECT_LOGIN)
+                            }
+                            if (fail.response.status===415){
+                                reject("您不是管理员")
+                            }
+                            reject(constant.SERVER_FAIL)
+                        }
+                    );
+                }
+            )
+        },
+        deleteUser({commit},data){
+            return new Promise(
+                (resolve, reject) => {
+                    axios.post(
+                        "api/admin/deleteuser",
+
+                        data,
+                        {
+                            timeout: 3000,
+                        }
+                    ).then(
+                        (success) => {
+                            if (success.data.status === 200) {
+                                commit('removeUser', data)
                                 resolve(success.data)
                             }
                             reject(success.data.msg)

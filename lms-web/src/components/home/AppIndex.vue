@@ -1,7 +1,9 @@
 <template>
     <div class="main-container">
         <el-container style="height: 100%" class="outside-container">
-            <el-header height="80px">学习管理系统</el-header>
+            <el-header height="80px">
+                <el-image src="/logo.png" fit="cover" style="width: 100%;height: 100%;"></el-image>
+            </el-header>
             <!--            <div class="midille-container">-->
 
             <el-container class="midille-container">
@@ -22,7 +24,8 @@
                         <el-menu
                                 :default-active="menuActive"
                                 @select="handleSelect">
-                            <el-menu-item index="1" @click="test=false" v-if="this.$store.state.MyProfile.profile['admin']===false">
+                            <el-menu-item index="1" @click="test=false"
+                                          v-if="this.$store.state.MyProfile.profile['admin']===false">
                                 <!--                                    <template slot="title">-->
                                 <i class="el-icon-menu"></i>
                                 <span>我的课程</span>
@@ -65,14 +68,19 @@
                         </keep-alive>
                     </el-main>
                 </el-container>
-                <el-footer>
+                <el-footer height="80px">
+                        <span>
+                            Copyright © 2020-2020 LMS. All rights reserved.
+                        </span>
                 </el-footer>
             </el-container>
 
         </el-container>
         <div id="entire-bottom" v-show="this.$store.state.AppIndex.bottom.enable">
-            <el-progress v-if="this.$store.state.AppIndex.bottom.percent===100" status="success" :text-inside="true" :stroke-width="20" :percentage="100"></el-progress>
-            <el-progress v-else="" :text-inside="true" :stroke-width="20" :percentage="this.$store.state.AppIndex.bottom.percent"></el-progress>
+            <el-progress v-if="this.$store.state.AppIndex.bottom.percent===100" status="success" :text-inside="true"
+                         :stroke-width="20" :percentage="100"></el-progress>
+            <el-progress v-else="" :text-inside="true" :stroke-width="20"
+                         :percentage="this.$store.state.AppIndex.bottom.percent"></el-progress>
         </div>
     </div>
 </template>
@@ -85,13 +93,13 @@
         name: "AppIndex",
         data() {
             return {
-                menuActive:'-1',
+                menuActive: '-1',
             }
         },
         methods: {
             // eslint-disable-next-line no-unused-vars
             handleSelect(key, keyPath) {
-                if (key==='8'){
+                if (key === '8') {
                     var keys = document.cookie.match(/[^ =;]+(?==)/g)
                     if (keys) {
                         for (var i = keys.length; i--;) {
@@ -101,20 +109,20 @@
                         }
                         this.$router.push('login')
                     }
-                }else {
+                } else {
                     this.$store.commit('AppIndex/changeCurrentView', this.$store.state.AppIndex.menuViews[parseInt(key, 10) - 1])
                 }
             },
         },
         created() {
             this.$store.dispatch('MyProfile/getProfile').then(
-                ()=>{
-                    if (this.$store.state.MyProfile.profile['admin']===true){
+                () => {
+                    if (this.$store.state.MyProfile.profile['admin'] === true) {
                         console.log('jump admin')
-                        this.$store.commit('AppIndex/changeCurrentView',admin)
-                    }else{
+                        this.$store.commit('AppIndex/changeCurrentView', admin)
+                    } else {
                         console.log('jump user')
-                        this.$store.commit('AppIndex/changeCurrentView',MyClass)
+                        this.$store.commit('AppIndex/changeCurrentView', MyClass)
                     }
                 }
             )
@@ -125,8 +133,21 @@
 
 <style scoped>
 
+    .el-menu{
+        background: transparent;
+        /*box-shadow: 0px 0px 5px #2c3e50;*/
+        border: 1px solid #cac6c6;
+        box-shadow: 0 0 30px #cac6c6;
+    }
+
+
+    .el-card{
+        background: transparent;
+        border: 2px solid #cac6c6;
+    }
+
     .el-header {
-        background-color: #B3C0D1;
+        /*background-color: #B3C0D1;*/
         color: #333;
         text-align: center;
         line-height: 60px;
@@ -134,7 +155,7 @@
     }
 
     .el-footer {
-        background-color: #B3C0D1;
+        /*background-color: #B3C0D1;*/
         color: #333;
         text-align: center;
         line-height: 60px;
@@ -146,7 +167,7 @@
         color: #333;
         text-align: center;
         margin-top: 10px;
-        border: #dcdfe6 solid 1px;
+        /*border: #dcdfe6 solid 1px;*/
     }
 
     .el-main {
@@ -180,7 +201,7 @@
         padding-right: 5%;
     }
 
-    #entire-bottom{
+    #entire-bottom {
         left: 0;
         position: fixed;
         bottom: 0;

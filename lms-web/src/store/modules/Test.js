@@ -11,11 +11,21 @@ const module_Test = {
     },
     getters: {},
     mutations: {
+        addOneForCount(state, key) {
+
+            state.testList.forEach(
+                (value) => {
+                    if (value.tiid === key) {
+                        value.count+=1;
+                        return false
+                    }
+                }
+            )
+        },
         saveTestList(state, data) {
             state.testList = data;
         },
         changeTestFlag(state, {key, data}) {
-            // state.testList[key].flag = data;
             state.testList.forEach((item) => {
                 if (item.tiid === key) {
                     item.flag = data
@@ -24,19 +34,17 @@ const module_Test = {
             })
         },
         changeTestPerCount(state, {key, data}) {
-            // state.testList[key].flag = data;
             state.testList.forEach((item) => {
                 if (item.tiid === key) {
                     item.personcount = data
-                    if (item.personcount<=0){
-                        item.flag=true;
+                    if (item.personcount <= 0) {
+                        item.flag = true;
                     }
                     return
                 }
             })
         },
         changeTest(state, {key, data}) {
-            // state.testList[key] = data
             Vue.$set(state.testList, key, data)
             console.log(state.testList)
         }

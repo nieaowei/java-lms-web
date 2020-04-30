@@ -144,9 +144,9 @@ public class TestInfoController {
             Integer tiid = Integer.parseInt(request.getParameter("tiid"));
             testInfoVO = testInfoService.findOneForAdmin(tiid);
         } catch (Exception e) {
-            return new Result<TestInfoVO>().setStatus(500).setMsg("获取文档信息失败");
+            return new Result<TestInfoVO>().setStatus(500).setMsg("获取试卷信息失败");
         }
-        return new Result<TestInfoVO>().setStatus(200).setMsg("获取文档信息成功").setData(testInfoVO);
+        return new Result<TestInfoVO>().setStatus(200).setMsg("获取试卷信息成功").setData(testInfoVO);
     }
 
     @CrossOrigin

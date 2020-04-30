@@ -1,5 +1,6 @@
 package com.lms.service;
 
+import com.lms.dao.VideoLearnRecordDao;
 import com.lms.dao.VideoListDao;
 import com.lms.entity.*;
 import com.lms.vo.DocListVO;
@@ -23,6 +24,8 @@ import java.util.List;
 public class VideoListService {
     @Resource
     private VideoListDao videoListDao;
+    @Resource
+    private VideoLearnRecordDao videoLearnRecordDao;
 
     @Autowired
     public EntityManager entityManager;
@@ -78,7 +81,7 @@ public class VideoListService {
                     .setDuration(videoList.getDuration())
                     .setFlag(false)
                     .setCover(videoList.getCover())
-                    .setCount(videoListDao.countByVlid(videoList.getVlid()));
+                    .setCount(videoLearnRecordDao.countByVideoList_Vlid(videoList.getVlid()));
             for (VideoLearnRecord learnRecord: learnRecords) {
 
                 if (videoList.getVlid().equals(learnRecord.getVideoList().getVlid())){

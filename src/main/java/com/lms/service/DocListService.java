@@ -1,6 +1,7 @@
 package com.lms.service;
 
 import com.lms.dao.DocListDao;
+import com.lms.dao.LearnRecordDao;
 import com.lms.entity.DocList;
 import com.lms.entity.LearnRecord;
 import com.lms.entity.UserEntity;
@@ -29,6 +30,9 @@ public class DocListService {
 
     @Autowired
     private LearnRecordService learnRecordService;
+
+    @Resource
+    private LearnRecordDao learnRecordDao;
 
     public DocList findByName(String name) {
         return docListDao.findByName(name);
@@ -80,7 +84,7 @@ public class DocListService {
                     .setDuration(docList.getDuration())
                     .setFlag(false)
                     .setCover(docList.getCover())
-                    .setCount(docListDao.countByDlid(docList.getDlid()));
+                    .setCount(learnRecordDao.countByDocList_Dlid(docList.getDlid()));
             for (LearnRecord learnRecord : learnRecords) {
 
                 if (docList.getDlid().equals(learnRecord.getDocList().getDlid())) {

@@ -10,7 +10,7 @@
         <!--        </div>-->
         <el-tabs v-model="editableTabsValue" type="card" @tab-remove="removeTab" @tab-click="clickTab">
             <el-tab-pane label="文档查询">
-                <el-table
+                <el-table stripe
                         :data="tableData"
                         height="520px"
                         style="width: 100%">
@@ -176,7 +176,25 @@
                     </div>
                     <div style="float:right;width: 50%;text-align: left">
                         <span>已添加学习用户：</span>
-                        <el-table :data="item.data.users">
+                        <el-table stripe :data="item.data.users.map(
+                            (value)=>{
+                                if (value.dduration>=item.data.duration){
+                                    return {
+                                        uiid:value.uiid,
+                                        username:value.username,
+                                        dduration:value.dduration,
+                                        flag:'已完成'
+                                    }
+                                }else{
+                                    return {
+                                        uiid:value.uiid,
+                                        username:value.username,
+                                        dduration:value.dduration,
+                                        flag:'未完成'
+                                    }
+                                }
+                            }
+                        )">
                             <el-table-column
                                     prop="uiid"
                                     label="用户ID"
@@ -189,6 +207,10 @@
                                     prop="dduration"
                                     label="已学习时长(秒)"
                             ></el-table-column>
+                            <el-table-column
+                                    prop="flag"
+                            >
+                            </el-table-column>
                         </el-table>
                     </div>
 
@@ -491,6 +513,9 @@
 </script>
 
 <style scoped>
+    .el-tabs{
+        background: transparent;
+    }
     .avatar-uploader .el-upload {
         border: 1px dashed #d9d9d9;
         border-radius: 6px;
@@ -517,4 +542,8 @@
         height: 178px;
         display: block;
     }
+    .el-tabs{
+        background: transparent;
+    }
+
 </style>

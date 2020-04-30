@@ -61,6 +61,7 @@ public class TestRecordController {
             testRecord.setTestInfo(new TestInfo().setTiid(testInfoVO.getTiid()));
             if (null == check){
                 testRecord = testRecordService.saveAndRefresh(testRecord);
+                
             }else{
                 if (check.getCount()<=0){
                     return new Result<TestRecordVO>().setStatus(400).setMsg("您已没有考试次数");

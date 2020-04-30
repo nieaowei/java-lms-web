@@ -8,8 +8,6 @@ server:
   port: 8081
 
 spring:
-  jackson:
-    default-property-inclusion: non_empty
   mvc:
     static-path-pattern: /**
   resources:

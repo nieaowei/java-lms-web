@@ -78,7 +78,7 @@ public class TestInfoService {
                     .setCover(testInfo.getCover())
                     .setSum(testInfo.getSum())
                     .setNum(testInfo.getNum())
-                    .setCount(testInfoDAO.countByTiid(testInfo.getTiid()));
+                    .setCount(testRecordDAO.countByTestInfo_Tiid(testInfo.getTiid()));
             int temp = 0;
             for (TestRecord learnRecord : testRecords) {
                 if (testInfo.getTiid().equals(learnRecord.getTestInfo().getTiid())) {
@@ -151,7 +151,7 @@ public class TestInfoService {
     }
 
     public TestInfoVO findOneForAdmin(Integer tiid) {
-        List<TestRecord> learnRecords = testRecordDAO.findAllByTestInfo_Tiid(tiid);
+        List<TestRecord> learnRecords = testRecordDAO.findAllByTestInfo_TiidOrderByCreatetimeDesc(tiid);
         if (learnRecords.size() == 0) {
             TestInfo testInfo = testInfoDAO.findByTiid(tiid);
             TestInfoVO testInfoVO = new TestInfoVO();
@@ -162,7 +162,7 @@ public class TestInfoService {
         BeanUtils.copyProperties(learnRecords.get(0).getTestInfo(),testInfoVO);
         for (TestRecord learnRecord : learnRecords) {
             UserVO userVO = new UserVO(learnRecord.getUserEntity());
-            testInfoVO.getUsers().add(userVO);
+            testInfoVO.getUsers().add(userVO.setGrade(learnRecord.getGrade()));
         }
         testInfoVO.setUsername(learnRecords.get(0).getTestInfo().getUserEntity().getUsername());
         return testInfoVO;

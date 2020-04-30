@@ -102,6 +102,10 @@
 </script>
 
 <style scoped>
+
+    .el-tabs{
+        background: transparent;
+    }
     .time {
         font-size: 13px;
         color: #999;
@@ -115,6 +119,8 @@
     .el-card {
         box-shadow: 0 0 5px #cac6c6;
         height: 370px;
+        background: azure;
+
     }
 
     .el-card:hover {

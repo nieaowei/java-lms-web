@@ -13,7 +13,8 @@ public interface TestRecordDAO extends JpaRepository<TestRecord, Integer> {
 
     List<TestRecord> findByUserEntity_Uiid(long uiid);
 
-    List<TestRecord> findAllByTestInfo_Tiid(Integer testInfo_tiid);
+    List<TestRecord> findAllByTestInfo_TiidOrderByCreatetimeDesc(Integer testInfo_tiid);
 
     TestRecord findByUserEntity_UiidAndTestInfo_Tiid(Long userEntity_uiid, Integer testInfo_tiid);
+    Integer countByTestInfo_Tiid(Integer testInfo_tiid);
 }

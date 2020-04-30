@@ -34,8 +34,9 @@ public class UserVO implements Serializable {
         return grade;
     }
 
-    public void setGrade(Integer grade) {
+    public UserVO setGrade(Integer grade) {
         this.grade = grade;
+        return this;
     }
 
     public UserVO(){

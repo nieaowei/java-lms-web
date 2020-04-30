@@ -50,7 +50,7 @@ public class UserService {
         return userDAO.save(user);
     }
 
-    public void delete(UserEntity user){userDAO.delete(user);}
+//    public void delete(UserEntity user){userDAO.delete(user);}
 
     public boolean isPassWordCompliance(UserEntity user){
         return user.getPassword().matches("^(?![0-9]+$)(?![a-zA-Z]+$)[a-zA-Z0-9]{8,16}$");
@@ -78,5 +78,9 @@ public class UserService {
         temp = userDAO.saveAndFlush(temp);
         entityManager.refresh(temp);
         return temp;
+    }
+
+    public Integer delete(UserEntity userEntity){
+        return userDAO.deleteByUiid(userEntity.getUiid());
     }
 }

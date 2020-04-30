@@ -17,4 +17,5 @@ public interface UserDAO extends JpaRepository<UserEntity,Integer> {
     UserDTO findByPhonenum(String phonenum);
 //    @Update("update user_info set password")
 //    Integer updateUserPasswordByUiid(Long uiid,String password);
+    Integer deleteByUiid(Long uiid);
 }

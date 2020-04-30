@@ -32,15 +32,47 @@
                 </el-step>
             </el-steps>
             <!--            </el-card>-->
-            <div>
-                <el-input v-if="active===0" type="text" label="旧密码："  placeholder="请输入旧密码" v-model="oldPd"
-                          style="padding: 10%"></el-input>
-                <el-input v-else-if="active===1" type="text" label="新密码：" placeholder="请输入新密码" v-model="newPd"
-                          style="padding: 10%"></el-input>
-                <span v-else>修改成功</span>
+            <div style="position: absolute;margin-left: 40%;margin-top: 10%">
+<!--                <el-form :model="registerForm" :status-icon="true" ref="registerForm" :rules="rules">-->
+<!--                    <el-form-item   prop="oldPd"-->
+<!--                                  :rules="[{require:true,message: '密码不能为空'}]">-->
+<!--                        <el-input type="text"   placeholder="请输入旧密码"-->
+<!--                                  v-model="registerForm.oldPd"></el-input>-->
+<!--                    </el-form-item>-->
+<!--&lt;!&ndash;                    <div v-else-if="active===1">&ndash;&gt;-->
+<!--                        <el-form-item  :rules="[{require:true,message: '密码不能为空'}]" prop="newPd">-->
+<!--                            <el-input type="text"   placeholder="请输入8位字母+数字的新密码"-->
+<!--                                      v-model="registerForm.newPd"></el-input>-->
+<!--                        </el-form-item>-->
+
+<!--                        <el-form-item  prop="checkNewPd">-->
+<!--                            <el-input type="text"   placeholder="请再次输入密码"-->
+<!--                                      v-model="registerForm.checkNewPd"></el-input>-->
+<!--                        </el-form-item>-->
+
+<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                    <span v-else>修改成功</span>&ndash;&gt;-->
+<!--                </el-form>-->
+                <el-form :model="registerForm" ref="registerForm1"  :status-icon="true" class="register-container">
+                    <el-form-item v-if="active===0" prop="oldPd" :rules="[
+                            { required: true, message: '旧密码不能为空'}]">
+                        <el-input type="password" v-model="registerForm.oldPd" placeholder="请输旧密码"></el-input>
+                    </el-form-item>
+                    <el-form ref="registerForm" :model="registerForm" v-else-if="active===1" :rules="rules" :status-icon="true">
+                        <el-form-item   prop="newPd" :rules="[
+                            { required: true, message: '新密码不能为空'}]">
+                            <el-input type="password" show-password v-model="registerForm.newPd" placeholder="请输入8~16位英文+数字新密码"></el-input>
+                        </el-form-item>
+                        <el-form-item prop="checkNewPd" >
+                            <el-input type="password" show-password v-model="registerForm.checkNewPd" placeholder="请再次输入新密码"></el-input>
+                        </el-form-item>
+                    </el-form>
+                </el-form>
+                <el-button v-if="active<2" style="margin-bottom: 12px;" @click="nextStep">下一步</el-button>
+                <el-button v-else style="margin-bottom: 12px;" @click="nextStep">完成</el-button>
             </div>
-            <el-button v-if="active<2" style="margin-bottom: 12px;" @click="nextStep">下一步</el-button>
-            <el-button v-else style="margin-bottom: 12px;" @click="nextStep">完成</el-button>
+
         </el-tab-pane>
 
     </el-tabs>
@@ -56,7 +88,7 @@
             var checkTwoPass = (rule, value, callback) => {
                 if (!value) {
                     callback(new Error('请再次输入密码'))
-                } else if (value !== this.registerForm.password) {
+                } else if (value !== this.registerForm.newPd) {
                     callback(new Error('两次输入密码不一致!'));
                 } else {
                     callback();
@@ -64,16 +96,16 @@
             };
             return {
                 active: 0,
-                newPd: '',
-                oldPd: '',
+                // newPd: '',
+                // oldPd: '',
+                // checkNewPd:'',
                 registerForm: {
-                    username: '',
-                    password: '',
-                    checkPass: '',
-                    phonenum: ''
+                    newPd: '',
+                    oldPd: '',
+                    checkNewPd: '',
                 },
                 rules: {
-                    checkPass: [
+                    checkNewPd: [
                         {validator: checkTwoPass, trigger: 'blur', required: true}
                     ],
                 },
@@ -82,37 +114,54 @@
         },
         methods: {
             nextStep() {
-                if (this.active++ > 2) {
+                if (this.active+1 > 2) {
                     this.active = 0;
-                }
-                if (this.active === 2) {
-                    this.$store.dispatch('MyProfile/changeMyPd', {newVal: this.newPd, oldVal: this.oldPd}).then(
-                        (resolve) => {
-                            this.$notify({
-                                type: "success",
-                                message: resolve.msg,
-                                position: constant.NOTIFY_POS,
-                            })
-                            this.active = 3
-                        },
-                        (reject) => {
-                            if (reject === constant.REDIRECT_LOGIN) {
-                                this.$router.push('login')
+                }else if(this.active === 0){
+                    this.$refs['registerForm1'].validate(
+                        (valid)=>{
+                            if (valid){
+                                this.active++
                             }
-                            this.$notify({
-                                type: "error",
-                                message: reject,
-                                position: constant.NOTIFY_POS,
-                            })
-                            this.active = 0
-                        }
-                    ).finally(
-                        ()=>{
-                            this.newPd=''
-                            this.oldPd=''
                         }
                     )
+                } else if(this.active === 1) {
+                    this.$refs['registerForm'].validate((valid) => {
+                        if (valid) {
+                            this.active++
+                            this.$store.dispatch('MyProfile/changeMyPd', {newVal: this.registerForm.newPd, oldVal: this.registerForm.oldPd}).then(
+                                (resolve) => {
+                                    this.$notify({
+                                        type: "success",
+                                        message: resolve.msg,
+                                        position: constant.NOTIFY_POS,
+                                    })
+                                    this.active = 3
+                                },
+                                (reject) => {
+                                    if (reject === constant.REDIRECT_LOGIN) {
+                                        this.$router.push('login')
+                                    }
+                                    this.$notify({
+                                        type: "error",
+                                        message: reject,
+                                        position: constant.NOTIFY_POS,
+                                    })
+                                    this.active = 0
+                                }
+                            ).finally(
+                                () => {
+                                    this.registerForm.newPd = ''
+                                    this.registerForm.oldPd = ''
+                                }
+                            )
+                        }else{
+                            return
+                        }
+                    })
+
                 }
+                console.log(this.active)
+
             }
         },
         created() {
@@ -154,8 +203,20 @@
         width: 400px;
         margin: 25%;
     }
+    .el-card{
+        background: azure;
+
+    }
 
     .el-tab-pane {
         min-height: 520px;
+    }
+    .el-tabs{
+        background: transparent;
+    }
+
+    .is-right{
+        background: transparent;
+
     }
 </style>

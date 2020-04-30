@@ -2,13 +2,16 @@ package com.lms.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.lms.entity.LearnRecord;
+import com.lms.entity.UserEntity;
 import com.lms.interception.AuthInterceptor;
+import com.lms.interception.RequiredAdmin;
 import com.lms.interception.RequiredToken;
 import com.lms.service.DocListService;
 import com.lms.service.UserService;
 import com.lms.utils.Result;
 import com.lms.vo.LearnVO;
 import com.lms.service.LearnRecordService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -123,5 +126,15 @@ public class LearnRecordController {
 
     }
 
+    @CrossOrigin
+    @GetMapping(value = "/admin/doc/deleteuser")
+    @RequiredAdmin
+    public Result<String> deleteUser(@RequestBody LearnRecord learnRecord){
+
+        if (learnRecordService.deleteByUiidAndDlid(learnRecord.getUserEntity().getUiid(),learnRecord.getDocList().getDlid())){
+            return new Result<String>().setStatus(200).setMsg("移除学习记录成功");
+        }
+        return new Result<String>().setStatus(400).setMsg("移除学习记录失败");
+    }
 
 }
